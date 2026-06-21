@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="hermes-local">
+  <title>Modulo 1.5 · O trade-off: privacidade, performance e preco | Hermes Local</title>
+
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <a href="#conteudo" class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg">Pular para o conteudo</a>
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-3">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Mao na massa</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projetos</span></a>
+          <button type="button" data-inema-journey-open class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Minha jornada"><span aria-hidden="true">◷</span><span class="hidden md:inline">Jornada</span><span class="inema-journey-badge hidden" data-inema-journey-badge data-count="0"></span></button>
+          <div class="relative">
+            <button type="button" data-inema-appearance-toggle="[data-inema-appearance]" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Aparencia"><span aria-hidden="true">◑</span><span class="hidden md:inline">Aparencia</span></button>
+            <div data-inema-appearance class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left">
+              <div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-theme="inema-dark" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Escuro</button>
+                <button data-inema-set-theme="claro" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Claro</button>
+                <button data-inema-set-theme="sepia" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sepia</button>
+                <button data-inema-set-theme="foco" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Foco</button>
+                <button data-inema-set-theme="contraste" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Alto contraste</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Fonte</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-font="inter" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Inter</button>
+                <button data-inema-set-font="system" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sistema</button>
+                <button data-inema-set-font="leitura" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Leitura</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Tamanho</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-fontscale="100" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A</button>
+                <button data-inema-set-fontscale="112" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A+</button>
+                <button data-inema-set-fontscale="125" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A++</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Entrelinha</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-leading="1.45" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Compacto</button>
+                <button data-inema-set-leading="1.7" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Confortavel</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
+                <button data-inema-set-accent="emerald" class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" title="Emerald"></button>
+                <button data-inema-set-accent="blue" class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" title="Blue"></button>
+                <button data-inema-set-accent="purple" class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" title="Purple"></button>
+                <button data-inema-set-accent="amber" class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" title="Amber"></button>
+                <button data-inema-set-accent="teal" class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" title="Teal"></button>
+                <button data-inema-set-accent="rose" class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" title="Rose"></button>
+              </div></div>
+            </div>
+          </div>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" title="Alternar claro/escuro">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="conteudo">
+    <header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+          <a href="../../index.html" class="hover:text-emerald-400">Inicio</a><span>/</span>
+          <a href="index.html" class="hover:text-emerald-400">Trilha 1</a><span>/</span>
+          <span class="text-emerald-400">Modulo 1.5</span>
+        </nav>
+        <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULO 1.5</span>
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">⚖️ O trade-off: privacidade, performance e preco</h1>
+        <p class="text-lg text-neutral-400 max-w-3xl">Nada e de graca de verdade — voce sempre troca uma coisa por outra. Local te da privacidade e custo zero, mas voce paga em performance bruta. Neste modulo voce aprende a LER esse trade-off com olho critico: o que cada eixo ganha, o que perde, e por que "1 ano atras da fronteira" ja e mais do que suficiente para a maior parte do seu trabalho.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Basico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Teoria</div><div class="text-xs text-neutral-400">Tipo</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="lg:flex lg:gap-10">
+
+        <!-- TOC sticky -->
+        <aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
+          <nav data-inema-toc aria-label="Indice da pagina" class="lg:sticky lg:top-20">
+            <p class="text-sm text-neutral-400 mb-2">Secao <span class="inema-toc-pos" data-inema-section-counter>1</span> de 6</p>
+            <ol class="space-y-1 text-sm">
+              <li><a href="#topico-1" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-emerald-400">1. Privacidade</a></li>
+              <li><a href="#topico-2" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-emerald-400">2. Performance: 1 ano atras</a></li>
+              <li><a href="#topico-3" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-emerald-400">3. Preco $0</a></li>
+              <li><a href="#topico-4" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-emerald-400">4. Os benchmarks</a></li>
+              <li><a href="#topico-5" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-emerald-400">5. Rapido quanto a maquina</a></li>
+              <li><a href="#topico-6" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-emerald-400">6. Dividir o trabalho</a></li>
+            </ol>
+            <div class="mt-4" data-inema-meter="modulo:1-5" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 1.5">
+              <div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill style="width:0%"></div></div>
+              <span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span>
+            </div>
+          </nav>
+        </aside>
+
+        <div class="lg:flex-1 min-w-0 inema-prose" id="modulo-1-5" data-inema-module="1-5" data-inema-track="1">
+
+          <!-- TOPICO 1 -->
+          <section id="topico-1" data-inema-topic="modulo-1-5#topico-1" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
+              <h2 class="text-2xl font-bold">🔐 Privacidade: o que voce ganha</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t1-p1">Comecemos pelo eixo onde o local ganha de lavada: <strong class="text-emerald-400">privacidade</strong>. Quando o modelo roda na sua maquina, o texto que voce digita, os arquivos que voce abre e as respostas que voce recebe <strong>nunca saem dali</strong>. Nao ha servidor de terceiros no meio, nao ha registro guardado por uma empresa, nao ha politica de retencao que possa mudar amanha. O dado e seu e fica seu.</p>
+
+            <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🛡️</span> Os tres "nunca" do local</h3>
+              <ul class="space-y-2 text-neutral-300">
+                <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">•</span><span>O dado <strong>nunca</strong> trafega pela internet — fica entre o teclado e o disco.</span></li>
+                <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">•</span><span>Nenhuma empresa <strong>nunca</strong> guarda o que voce pergunta para treinar outro modelo.</span></li>
+                <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">•</span><span>O acesso <strong>nunca</strong> depende de um login que pode ser revogado.</span></li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <p class="text-sm text-neutral-300"><strong class="text-primary">Novo aqui?</strong> "Trade-off" e quando voce melhora uma coisa as custas de outra — nao existe almoco gratis. Aqui o trade-off central e: voce ganha privacidade e custo, e em troca abre mao de um pouco de performance bruta. O modulo inteiro e sobre medir essa troca com honestidade.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Trade-off</span><p class="text-sm text-neutral-400 mt-1">Toda escolha melhora um eixo e cobra de outro; o segredo e escolher de propósito.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Privacidade por design</span><p class="text-sm text-neutral-400 mt-1">O dado nao sai porque nao HA caminho de saida, nao porque alguem promete.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Retencao zero</span><p class="text-sm text-neutral-400 mt-1">Nenhum log fica num servidor que voce nao controla.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Sem revogacao</span><p class="text-sm text-neutral-400 mt-1">Ninguem corta seu acesso ao seu proprio modelo.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- TOPICO 2 -->
+          <section id="topico-2" data-inema-topic="modulo-1-5#topico-2" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
+              <h2 class="text-2xl font-bold">⚡ Performance: o "1 ano atras" da fronteira</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t2-p1">Agora o eixo onde o local perde — mas perde menos do que voce imagina. Os melhores modelos abertos que rodam no seu laptop hoje estao, em media, <strong class="text-emerald-400">cerca de um ano atras da fronteira</strong> (os modelos de ponta na nuvem). A boa noticia: a fronteira de hoje e absurdamente boa, entao "um ano atras" ainda e excelente para a esmagadora maioria das tarefas do dia a dia.</p>
+
+            <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+              <svg viewBox="0 0 980 230" class="w-full h-auto" role="img" aria-label="Escada do tempo: a fronteira na nuvem avanca um degrau a cada ano; o modelo local fica um degrau atras, mas no patamar de um ano atras da fronteira, que ainda e muito alto">
+                <defs>
+                  <filter id="m15-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  <pattern id="m15-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
+                  <marker id="m15-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"/></marker>
+                </defs>
+                <rect x="0" y="0" width="980" height="230" fill="url(#m15-grid)"/>
+                <line x1="60" y1="200" x2="940" y2="200" stroke="#374151" stroke-width="1.5"/>
+                <text x="60" y="222" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12">tempo →</text>
+                <!-- degraus fronteira -->
+                <g font-family="Inter,sans-serif">
+                  <rect x="120" y="150" width="150" height="48" rx="10" fill="#1f2937" stroke="#38bdf8" stroke-width="2"/><text x="195" y="172" text-anchor="middle" fill="#7dd3fc" font-size="12">fronteira 2024</text><text x="195" y="189" text-anchor="middle" fill="#9ca3af" font-size="11">nuvem</text>
+                  <rect x="320" y="108" width="150" height="48" rx="10" fill="#1f2937" stroke="#38bdf8" stroke-width="2"/><text x="395" y="130" text-anchor="middle" fill="#7dd3fc" font-size="12">fronteira 2025</text><text x="395" y="147" text-anchor="middle" fill="#9ca3af" font-size="11">nuvem</text>
+                  <g filter="url(#m15-glow)"><rect x="520" y="66" width="150" height="48" rx="10" fill="#0e2018" stroke="#38bdf8" stroke-width="2.5"/></g><text x="595" y="88" text-anchor="middle" fill="#7dd3fc" font-size="12" font-weight="700">fronteira 2026</text><text x="595" y="105" text-anchor="middle" fill="#9ca3af" font-size="11">nuvem (topo)</text>
+                  <!-- modelo local: um degrau atras -->
+                  <g filter="url(#m15-glow)"><rect x="320" y="150" width="150" height="48" rx="10" fill="#0e2018" stroke="#34d399" stroke-width="2.5"/></g><text x="395" y="172" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">LOCAL hoje</text><text x="395" y="189" text-anchor="middle" fill="#a7f3d0" font-size="11">≈ fronteira -1 ano</text>
+                  <path d="M395,150 L395,118 L520,90" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#m15-ah)"/>
+                  <text x="700" y="50" fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600">o gap nao cresce —</text>
+                  <text x="700" y="68" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12">o local sobe junto, sempre ~1 ano atras</text>
+                </g>
+              </svg>
+              <p class="text-xs text-neutral-400 mt-1 px-1">Repare: o modelo <span class="text-emerald-400">local de hoje</span> fica no patamar onde a <span class="text-sky-400">fronteira estava ha um ano</span>. Como a fronteira de um ano atras ja era otima, o local de hoje resolve quase tudo — e o gap se mantem constante, nao explode.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+                <h4 class="font-bold text-emerald-400 mb-4">✓ Onde "1 ano atras" basta</h4>
+                <ul class="space-y-3 text-neutral-300 text-sm">
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Resumir, reescrever, traduzir, responder e-mail.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Rascunhar codigo e explicar trechos.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Conversar sobre documentos privados.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Tarefas repetitivas rodando o dia inteiro.</span></li>
+                </ul>
+              </div>
+              <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+                <h4 class="font-bold text-red-400 mb-4">✗ Onde a fronteira ainda vence</h4>
+                <ul class="space-y-3 text-neutral-300 text-sm">
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Problemas de raciocinio muito longos e dificeis.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Tarefas de codigo grandes e cabeludas (ver benchmarks).</span></li>
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Quando o ultimo 5% de qualidade muda o resultado.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Quando velocidade da nuvem importa mais que privacidade.</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Fronteira</span><p class="text-sm text-neutral-400 mt-1">Os modelos de ponta do momento, quase sempre rodando na nuvem.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Gap de ~1 ano</span><p class="text-sm text-neutral-400 mt-1">O atraso tipico do melhor modelo aberto em relacao a fronteira.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Bom o bastante</span><p class="text-sm text-neutral-400 mt-1">Para a maioria das tarefas, "1 ano atras" ja resolve com folga.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Gap constante</span><p class="text-sm text-neutral-400 mt-1">O aberto sobe junto com a fronteira; a distancia nao cresce.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- TOPICO 3 -->
+          <section id="topico-3" data-inema-topic="modulo-1-5#topico-3" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
+              <h2 class="text-2xl font-bold">💰 Preco: $0 por uso, para sempre</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t3-p1">O terceiro eixo: <strong class="text-emerald-400">preco</strong>. Na nuvem voce paga por token — cada pergunta e cada resposta tem um medidor rodando. Localmente, depois de baixar o modelo uma unica vez, <strong>cada uso e gratuito</strong>. Nao ha fatura no fim do mes, nao ha "voce gastou X dolares hoje". O unico custo e o hardware que voce ja tem e um pouco de energia.</p>
+
+            <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Custo: nuvem vs local</h3>
+              <ul class="space-y-2 text-neutral-300 text-sm">
+                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Nuvem:</strong> custo VARIAVEL que sobe com o uso (OPEX) — quanto mais voce usa, mais paga.</span></li>
+                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Local:</strong> custo FIXO ja pago (o computador) + ~$0 por chamada (CAPEX).</span></li>
+                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Como cada chamada e $0, da pra deixar <strong>agentes 24/7</strong> sem medo da fatura — vira o tema do 1.6.</span></li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+              <p class="text-sm text-neutral-300">Como explorar e de graca, baixe, teste e apague modelos a vontade. O "preco" de errar e zero. Trate cada download como um experimento barato, nao como compromisso.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">$0 por token</span><p class="text-sm text-neutral-400 mt-1">Uso gratuito apos o download — sem medidor.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">CAPEX vs OPEX</span><p class="text-sm text-neutral-400 mt-1">Investe no hardware uma vez, em vez de pagar por uso recorrente.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Sem surpresa na fatura</span><p class="text-sm text-neutral-400 mt-1">Custo previsivel: voce ja sabe que e zero.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Custo de energia</span><p class="text-sm text-neutral-400 mt-1">O unico "uso" pago e a eletricidade da sua maquina.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- TOPICO 4 -->
+          <section id="topico-4" data-inema-topic="modulo-1-5#topico-4" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
+              <h2 class="text-2xl font-bold">📊 Os benchmarks: ler com olho critico</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t4-p1">Aqui o trade-off vira <strong>numero</strong>. O grafico abaixo e o <strong class="text-emerald-400">SWE-bench</strong> — um teste de resolver problemas reais de programacao. A pontuacao e a porcentagem de tarefas que o modelo resolve sozinho. Quanto maior, melhor. Vale ler com calma: a fronteira ganha, mas o modelo que "roda no laptop" chega perto o bastante para impressionar.</p>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <p class="text-sm text-neutral-300"><strong class="text-primary">Novo aqui?</strong> "Benchmark" e um teste padronizado para comparar modelos com o mesmo regua. "SWE-bench" mede capacidade de resolver bugs/tarefas de software de verdade. O numero e o % de tarefas resolvidas — nao confunda com "nota de prova"; e dificil, e ate a fronteira nao chega a 90%.</p>
+            </div>
+
+            <figure class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 overflow-hidden mb-6">
+              <img src="../../assets/img/benchmarks.jpg" alt="Grafico SWE-bench do video comparando modelos: Opus 4.8 com 88.6, GPT-5.5 82.6, DeepSeek V4 77.4, Qwen 3.6 27B 74.0 marcado como 'runs on a laptop', GLM-5.1 73.0 e gpt-oss 120B 61.0" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
+              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ SWE-bench: Opus 4.8 = 88.6 · GPT-5.5 = 82.6 · DeepSeek V4 = 77.4 · Qwen 3.6 27B = 74.0 ("runs on a laptop") · GLM-5.1 = 73.0 · gpt-oss 120B = 61.0.</div>
+              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Frame do video (SWE-bench). O que olhar: a diferenca entre o topo (Opus 4.8, fronteira na nuvem) e o Qwen 3.6 27B "runs on a laptop" e de ~14.6 pontos — grande no papel, pequena na pratica para a maioria das tarefas. Esse e o trade-off virando numero.</figcaption>
+            </figure>
+
+            <!-- BOX DE DADOS (blue) -->
+            <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6" data-inema-block="m1-5-t4-p2">
+              <h3 class="text-lg font-semibold text-blue-400 mb-4 flex items-center"><span class="mr-2">🔢</span> Os numeros reais (SWE-bench, do video)</h3>
+              <div class="space-y-2.5 text-sm">
+                <div class="flex items-center gap-3"><span class="w-44 text-neutral-300 flex-shrink-0">Opus 4.8 <span class="text-neutral-500">(fronteira)</span></span><span class="flex-1 h-3 rounded-full bg-dark-700 overflow-hidden"><span class="block h-full bg-blue-500" style="width:88.6%"></span></span><span class="w-14 text-right font-mono text-blue-400 font-bold">88.6</span></div>
+                <div class="flex items-center gap-3"><span class="w-44 text-neutral-300 flex-shrink-0">GPT-5.5</span><span class="flex-1 h-3 rounded-full bg-dark-700 overflow-hidden"><span class="block h-full bg-blue-500/70" style="width:82.6%"></span></span><span class="w-14 text-right font-mono text-neutral-200">82.6</span></div>
+                <div class="flex items-center gap-3"><span class="w-44 text-neutral-300 flex-shrink-0">DeepSeek V4</span><span class="flex-1 h-3 rounded-full bg-dark-700 overflow-hidden"><span class="block h-full bg-blue-500/70" style="width:77.4%"></span></span><span class="w-14 text-right font-mono text-neutral-200">77.4</span></div>
+                <div class="flex items-center gap-3"><span class="w-44 text-emerald-400 font-semibold flex-shrink-0">Qwen 3.6 27B 💻</span><span class="flex-1 h-3 rounded-full bg-dark-700 overflow-hidden"><span class="block h-full bg-emerald-500" style="width:74.0%"></span></span><span class="w-14 text-right font-mono text-emerald-400 font-bold">74.0</span></div>
+                <div class="flex items-center gap-3"><span class="w-44 text-neutral-300 flex-shrink-0">GLM-5.1</span><span class="flex-1 h-3 rounded-full bg-dark-700 overflow-hidden"><span class="block h-full bg-blue-500/70" style="width:73.0%"></span></span><span class="w-14 text-right font-mono text-neutral-200">73.0</span></div>
+                <div class="flex items-center gap-3"><span class="w-44 text-neutral-300 flex-shrink-0">gpt-oss 120B</span><span class="flex-1 h-3 rounded-full bg-dark-700 overflow-hidden"><span class="block h-full bg-blue-500/70" style="width:61.0%"></span></span><span class="w-14 text-right font-mono text-neutral-200">61.0</span></div>
+              </div>
+              <p class="text-xs text-neutral-400 mt-4 border-t border-blue-500/30 pt-3"><strong class="text-emerald-400">A leitura critica:</strong> o <strong>Qwen 3.6 27B</strong>, marcado como <em>"runs on a laptop"</em>, faz <strong>74.0</strong> — contra <strong>88.6</strong> do Opus 4.8 na nuvem. Sao ~14.6 pontos de diferenca para um modelo que cabe na sua maquina, roda offline e custa $0 por uso. E exatamente a tese do "1 ano atras": perto o bastante para quase tudo.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">SWE-bench</span><p class="text-sm text-neutral-400 mt-1">Teste de resolver tarefas reais de software; % de tarefas resolvidas.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">88.6 vs 74.0</span><p class="text-sm text-neutral-400 mt-1">Fronteira (Opus 4.8) vs local (Qwen 3.6 27B): ~14.6 pontos.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">"Runs on a laptop"</span><p class="text-sm text-neutral-400 mt-1">O Qwen 74.0 cabe na sua maquina — quase a metade da lista.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Olho critico</span><p class="text-sm text-neutral-400 mt-1">14 pontos no papel raramente viram 14 pontos no SEU trabalho.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- TOPICO 5 -->
+          <section id="topico-5" data-inema-topic="modulo-1-5#topico-5" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
+              <h2 class="text-2xl font-bold">🐢 Tao rapido quanto a sua maquina</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t5-p1">Tem um quarto eixo escondido na "performance": <strong class="text-emerald-400">velocidade</strong>. Na nuvem, voce aluga GPUs gigantes, entao a resposta sai rapida nao importa o seu computador. Localmente, a velocidade depende inteiramente do <strong>seu hardware</strong> — chip, memoria e o tamanho do modelo. Um modelo maior numa maquina modesta vai responder devagar; o mesmo modelo num chip forte voa.</p>
+
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
+                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">O chip faz o ritmo</h4><p class="text-sm text-neutral-400">Um chip moderno (ex.: Apple M com bastante memoria unificada) gera tokens muito mais rapido.</p></div>
+              </div>
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
+                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Modelo maior = mais lento</h4><p class="text-sm text-neutral-400">Mais parametros pesam mais; um modelo menor responde mais rapido na mesma maquina.</p></div>
+              </div>
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
+                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">A escolha e sua</h4><p class="text-sm text-neutral-400">Voce equilibra: modelo menor e rapido para o dia a dia, modelo maior e capaz para a tarefa pesada.</p></div>
+              </div>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <p class="text-sm text-neutral-300"><strong class="text-primary">Dica pratica:</strong> velocidade local nao e fixa — e ajustavel. Se um modelo esta lento, troque por um menor ou mais quantizado (vamos ver isso na Trilha 2). "Lento" quase sempre quer dizer "modelo grande demais para esse hardware", nao "local e ruim".</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Velocidade = hardware</span><p class="text-sm text-neutral-400 mt-1">A rapidez do local depende do SEU chip e memoria, nao de um servidor.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Tamanho vs ritmo</span><p class="text-sm text-neutral-400 mt-1">Modelo maior responde mais devagar na mesma maquina.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Memoria unificada</span><p class="text-sm text-neutral-400 mt-1">Em chips Apple M, RAM e GPU compartilham memoria — ajuda muito.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Ajustavel</span><p class="text-sm text-neutral-400 mt-1">Trocar de modelo muda a velocidade — "lento" tem conserto.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- TOPICO 6 -->
+          <section id="topico-6" data-inema-topic="modulo-1-5#topico-6" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
+              <h2 class="text-2xl font-bold">🧩 Dividir o trabalho em porcentagens</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t6-p1">A conclusao pratica do trade-off: voce <strong>nao escolhe um lado</strong>. Voce divide o trabalho. Imagine 100% das suas tarefas com IA. Uma fatia exige privacidade absoluta — vai de local. Outra exige a melhor resposta possivel — vai de fronteira. Outra so precisa ser rapida e barata — local de novo. Cada fatia tem a ferramenta ideal, e o segredo e <strong class="text-emerald-400">rotear</strong> conscientemente.</p>
+
+            <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+              <svg viewBox="0 0 980 200" class="w-full h-auto" role="img" aria-label="Barra de 100% do trabalho dividida em tres fatias: a maior fatia vai para local por privacidade e custo, uma fatia menor para a fronteira na nuvem por qualidade maxima, e uma fatia rapida e barata tambem local">
+                <defs>
+                  <pattern id="m15b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.1"/></pattern>
+                </defs>
+                <rect x="0" y="0" width="980" height="200" fill="url(#m15b-grid)"/>
+                <text x="40" y="40" fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600">100% do seu trabalho com IA →</text>
+                <g font-family="Inter,sans-serif">
+                  <!-- fatia 1: local privacidade -->
+                  <rect x="40" y="70" width="430" height="64" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/>
+                  <text x="255" y="98" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700">LOCAL · privacidade + custo</text>
+                  <text x="255" y="118" text-anchor="middle" fill="#a7f3d0" font-size="12">dados sensiveis, dia a dia, offline · ~$0</text>
+                  <!-- fatia 2: rapido barato local -->
+                  <rect x="478" y="70" width="240" height="64" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2" opacity="0.8"/>
+                  <text x="598" y="98" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700">LOCAL · rapido/barato</text>
+                  <text x="598" y="118" text-anchor="middle" fill="#a7f3d0" font-size="12">tarefas em massa</text>
+                  <!-- fatia 3: fronteira nuvem -->
+                  <rect x="726" y="70" width="214" height="64" rx="12" fill="#0a1a2a" stroke="#38bdf8" stroke-width="2"/>
+                  <text x="833" y="98" text-anchor="middle" fill="#7dd3fc" font-size="13" font-weight="700">NUVEM · fronteira</text>
+                  <text x="833" y="118" text-anchor="middle" fill="#bae6fd" font-size="12">o problema cabeludo</text>
+                  <line x1="40" y1="158" x2="940" y2="158" stroke="#374151" stroke-width="1.5"/>
+                  <text x="40" y="180" fill="#9ca3af" font-size="12">a maior parte cabe no local; a nuvem entra so onde o ultimo 5% importa</text>
+                </g>
+              </svg>
+              <p class="text-xs text-neutral-400 mt-1 px-1">A barra inteira e o seu trabalho. A <span class="text-emerald-400">maior parte</span> cai no local (privacidade, custo, dia a dia); a <span class="text-sky-400">fatia da fronteira</span> entra so quando o ultimo 5% de qualidade muda o resultado. Roteirizar essas fatias e o que o Hermes faz com os tres modos.</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-emerald-400 mb-3 flex items-center"><span class="mr-2">🧭</span> Ponte para o proximo modulo</h3>
+              <p class="text-neutral-300 text-sm mb-3">Essa divisao em porcentagens nao fica na teoria. No <strong>modulo 1.6</strong> ela vira os tres modos concretos do Hermes — <strong>Vault</strong> (tudo local), <strong>Connected</strong> (meio-termo) e <strong>Cloud</strong> (qualidade maxima). Voce vai aprender quando usar cada um.</p>
+              <p class="text-neutral-400 text-xs">Na Trilha 3 voce monta na pratica o fluxo que alterna entre eles conforme a sensibilidade da tarefa.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Divisao por %</span><p class="text-sm text-neutral-400 mt-1">Cada fatia do trabalho pede a ferramenta ideal — nao escolha um lado so.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Roteamento</span><p class="text-sm text-neutral-400 mt-1">Mandar cada tarefa para o lugar certo, de propósito.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Maior parte = local</span><p class="text-sm text-neutral-400 mt-1">A nuvem entra so onde o ultimo 5% de qualidade pesa.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-emerald-400 font-semibold text-sm">Tres modos</span><p class="text-sm text-neutral-400 mt-1">Vault, Connected e Cloud — o tema do modulo 1.6.</p></div>
+            </div>
+
+            <!-- CHECAGEM LEVE -->
+            <div data-inema-check="modulo-1-5#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
+              <p class="font-medium mb-4">Auto-checagem (opcional): no SWE-bench do video, qual a leitura honesta do Qwen 3.6 27B "runs on a laptop"?</p>
+              <div class="inema-check-options space-y-2">
+                <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Faz 88.6 e empata com o Opus 4.8 — local ja igualou a fronteira.</button>
+                <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Faz 74.0 contra 88.6 do Opus 4.8: ~14.6 pontos atras, mas cabe no laptop, roda offline e custa $0 — perto o bastante para quase tudo.</button>
+                <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Faz 61.0, o pior da lista, entao nao vale usar local.</button>
+              </div>
+              <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+            </div>
+
+            <div class="flex justify-start mt-6">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- RESUMO -->
+          <section class="mb-8">
+            <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+              <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Resumo do modulo</h2>
+              <div class="space-y-4 mb-8">
+                <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-neutral-100">Privacidade e preco</strong><span class="text-neutral-400"> — local ganha de lavada: dado nunca sai e cada uso custa $0.</span></div></div>
+                <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-neutral-100">Performance: ~1 ano atras</strong><span class="text-neutral-400"> — o gap existe mas e constante, e "1 ano atras" ja resolve quase tudo.</span></div></div>
+                <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-neutral-100">Benchmarks com olho critico</strong><span class="text-neutral-400"> — Opus 4.8 = 88.6 vs Qwen 3.6 27B = 74.0 "runs on a laptop": ~14.6 pontos no papel.</span></div></div>
+                <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-neutral-100">Velocidade e divisao por %</strong><span class="text-neutral-400"> — rapidez depende do hardware; e voce divide o trabalho entre local e nuvem.</span></div></div>
+              </div>
+              <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+                <h3 class="font-semibold text-emerald-400 mb-2">Proximo modulo:</h3>
+                <p class="text-neutral-300">1.6 — Os tres modos: Vault, Connected e Cloud</p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a Trilha</a>
+                <a href="modulo-1-6.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Proximo modulo →</a>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+      <p>🔒 Agente Hermes + Ollama — Seu SO de IA 100% Privado</p>
+      <p>Modulo 1.5 · Trilha 1 · <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+  <script src="../../assets/learn.js"></script>
+  <script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init({ autoResume: false }); }
+    document.addEventListener('DOMContentLoaded', function(){
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-5#q1', {
+          answer: 1,
+          explain: {
+            0: 'Nao — o Qwen 3.6 27B faz 74.0, nao 88.6. Quem faz 88.6 e o Opus 4.8 na nuvem. Local nao igualou a fronteira; ficou ~1 ano atras.',
+            1: 'Isso! 74.0 vs 88.6 = ~14.6 pontos atras, mas roda no laptop, offline e a $0 — perto o bastante para a maioria das tarefas.',
+            2: 'Nao — 61.0 e o gpt-oss 120B. O Qwen "runs on a laptop" faz 74.0, quase no meio da lista, e e otimo pelo custo/privacidade.'
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

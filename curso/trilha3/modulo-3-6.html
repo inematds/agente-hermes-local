@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="hermes-local">
+  <title>Modulo 3.6 · Projeto 6: Alternar Vault, Connected e Cloud | Hermes Local</title>
+
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124,58,237,0.10); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <a href="#conteudo" class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg">Pular para o conteudo</a>
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-3">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Mao na massa</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projetos</span></a>
+          <button type="button" data-inema-journey-open class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Minha jornada"><span aria-hidden="true">◷</span><span class="hidden md:inline">Jornada</span><span class="inema-journey-badge hidden" data-inema-journey-badge data-count="0"></span></button>
+          <div class="relative">
+            <button type="button" data-inema-appearance-toggle="[data-inema-appearance]" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Aparencia"><span aria-hidden="true">◑</span><span class="hidden md:inline">Aparencia</span></button>
+            <div data-inema-appearance class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left">
+              <div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-theme="inema-dark" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Escuro</button>
+                <button data-inema-set-theme="claro" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Claro</button>
+                <button data-inema-set-theme="sepia" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sepia</button>
+                <button data-inema-set-theme="foco" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Foco</button>
+                <button data-inema-set-theme="contraste" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Alto contraste</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Fonte</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-font="inter" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Inter</button>
+                <button data-inema-set-font="system" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sistema</button>
+                <button data-inema-set-font="leitura" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Leitura</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Tamanho</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-fontscale="100" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A</button>
+                <button data-inema-set-fontscale="112" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A+</button>
+                <button data-inema-set-fontscale="125" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A++</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Entrelinha</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-leading="1.45" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Compacto</button>
+                <button data-inema-set-leading="1.7" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Confortavel</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
+                <button data-inema-set-accent="emerald" class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" title="Emerald"></button>
+                <button data-inema-set-accent="blue" class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" title="Blue"></button>
+                <button data-inema-set-accent="purple" class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" title="Purple"></button>
+                <button data-inema-set-accent="amber" class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" title="Amber"></button>
+                <button data-inema-set-accent="teal" class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" title="Teal"></button>
+                <button data-inema-set-accent="rose" class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" title="Rose"></button>
+              </div></div>
+            </div>
+          </div>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" title="Alternar claro/escuro">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="conteudo">
+   <div id="modulo-3-6" data-inema-module="3-6" data-inema-track="3">
+    <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+          <a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span>
+          <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
+          <span class="text-purple-400">Modulo 3.6</span>
+        </nav>
+        <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULO 3.6</span>
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">🔄 Projeto 6: Alternar Vault, Connected e Cloud</h1>
+        <p class="text-lg text-neutral-400 max-w-3xl">Voce ja sabe rodar tudo no Vault (3.2) e deixar agentes 24/7 a $0 (3.5). Agora o pulo do gato: <strong class="text-purple-400">rotear cada tarefa para o modo certo</strong> pela sensibilidade do dado. Neste projeto voce monta uma regra de decisao simples — privado, equilibrio ou qualidade — e aprende a pedir a troca no meio da conversa. O resultado e um fluxo hibrido que e privado quando precisa e potente quando pode.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Etapas</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~25</div><div class="text-xs text-neutral-400">Minutos</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Inter.</div><div class="text-xs text-neutral-400">Nivel</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Projeto</div><div class="text-xs text-neutral-400">Tipo</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="lg:flex lg:gap-10">
+
+        <!-- TOC sticky -->
+        <aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
+          <nav data-inema-toc aria-label="Indice da pagina" class="lg:sticky lg:top-20">
+            <p class="text-sm text-neutral-400 mb-2">Etapa <span class="inema-toc-pos" data-inema-section-counter>1</span> de 6</p>
+            <ol class="space-y-1 text-sm">
+              <li><a href="#topico-1" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400">1. Objetivo do projeto</a></li>
+              <li><a href="#topico-2" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400">2. Vault p/ dado sensivel</a></li>
+              <li><a href="#topico-3" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400">3. Connected p/ equilibrio</a></li>
+              <li><a href="#topico-4" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400">4. Cloud p/ qualidade</a></li>
+              <li><a href="#topico-5" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400">5. Pedir a troca</a></li>
+              <li><a href="#topico-6" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400">6. Resultado: fluxo hibrido</a></li>
+            </ol>
+            <div class="mt-4" data-inema-meter="modulo:3-6" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.6">
+              <div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div>
+              <span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span>
+            </div>
+          </nav>
+        </aside>
+
+        <div class="lg:flex-1 min-w-0 inema-prose">
+
+          <!-- ETAPA 1 -->
+          <section id="topico-1" data-inema-topic="modulo-3-6#topico-1" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span>
+              <h2 class="text-2xl font-bold">🎯 Objetivo: roteirizar por sensibilidade</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t1-p1">O objetivo deste projeto e simples de dizer e poderoso na pratica: para <strong class="text-purple-400">cada tarefa que voce manda ao agente</strong>, escolher de forma consciente onde ela roda — Vault, Connected ou Cloud — usando a sensibilidade do dado como criterio. No fim voce vai ter uma regra de bolso e a fluencia de trocar de modo no meio da conversa, sem fricao.</p>
+
+            <figure class="rounded-2xl border border-purple-500/30 bg-dark-900/40 overflow-hidden mb-6">
+              <img src="../../assets/img/modes.jpg" alt="Diagrama 'Toggle your privacy' do video: os tres modos Vault (airgapped), Connected (modelo local + private pipe + busca) e Cloud (nuvem por qualidade)" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
+              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ "Toggle your privacy" — Vault (airgapped) ⇄ Connected (local + private pipe + busca) ⇄ Cloud (qualidade).</div>
+              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Frame do video: o "Toggle your privacy". Repare que os tres modos vivem no MESMO agente — voce desliza entre eles. Vault desconecta a internet; Connected mantem o modelo local mas abre um cano seguro para busca; Cloud entrega a tarefa a um modelo de fronteira. Este projeto e sobre saber QUANDO deslizar cada um.</figcaption>
+            </figure>
+
+            <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧭</span> O que voce vai entregar</h3>
+              <ul class="space-y-2 text-neutral-300 text-sm">
+                <li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>Uma <strong>regra de decisao</strong> escrita: "se o dado e X, uso o modo Y".</span></li>
+                <li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>3 tarefas reais classificadas — uma por modo — para treinar o olho.</span></li>
+                <li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>A frase pronta para pedir a troca no meio do chat ("manda esse pro privado").</span></li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <p class="text-sm text-neutral-300"><strong class="text-primary">Lembrete dos modos (do 1.6):</strong> <strong>Vault</strong> = tudo local, cabo de internet "desconectado" (airgapped). <strong>Connected</strong> = modelo local + um "private pipe" para buscar na web quando necessario. <strong>Cloud</strong> = liga a nuvem e usa um modelo de fronteira quando a qualidade vale o trade-off de privacidade.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Roteamento</span><p class="text-sm text-neutral-400 mt-1">Mandar cada tarefa para o modo certo, em vez de um modo fixo.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Sensibilidade do dado</span><p class="text-sm text-neutral-400 mt-1">O criterio: quanto o dado nao pode vazar define o modo.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Fluxo hibrido</span><p class="text-sm text-neutral-400 mt-1">Privado quando precisa, potente quando pode — no mesmo agente.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Regra de bolso</span><p class="text-sm text-neutral-400 mt-1">Uma decisao rapida, sem precisar pensar do zero toda vez.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ETAPA 2 -->
+          <section id="topico-2" data-inema-topic="modulo-3-6#topico-2" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span>
+              <h2 class="text-2xl font-bold">🗄️ Vault para dado sensivel</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t2-p1">A primeira regra e a mais importante: <strong class="text-purple-400">na duvida, Vault</strong>. Se o dado pode te causar problema legal, contratual ou de confianca caso vaze, ele nao sai da maquina — ponto. No Hermes, isso e ligar o modo Vault (airgapped) com o seu modelo local selecionado (o <code class="text-purple-400">qwen3-coder-64k</code> que voce criou no 2.4).</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+                <h4 class="font-bold text-purple-400 mb-4">✓ Mande para o Vault quando</h4>
+                <ul class="space-y-3 text-neutral-300 text-sm">
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Dados de cliente, financas ou contratos.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Notas de saude ou qualquer informacao regulada.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Codigo proprietario / segredo de negocio.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Voce esta offline (aviao, off-grid) e precisa trabalhar.</span></li>
+                </ul>
+              </div>
+              <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+                <h4 class="font-bold text-emerald-400 mb-4">✓ Como ligar o Vault (acao na UI)</h4>
+                <ul class="space-y-3 text-neutral-300 text-sm">
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">1</span><span>Selecione o modelo local no canto inferior direito.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">2</span><span>Acione o modo <strong>Vault</strong> (airgapped) no agente.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">3</span><span>Confirme que nenhuma busca web esta habilitada.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-emerald-400">4</span><span>Agora a tarefa roda 100% na sua maquina.</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> O erro caro</h3>
+              <p class="text-neutral-300 text-sm">Mandar dado sensivel para a Cloud "por preguica" ou porque a resposta vem mais bonita. Isso pode violar contrato (NDA), lei (GDPR) ou simplesmente queimar a confianca de um cliente. O custo de uma resposta um pouco pior no Vault e quase sempre menor que o de um vazamento.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Airgapped</span><p class="text-sm text-neutral-400 mt-1">Sem ponte com a internet — o dado nao tem por onde sair.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">"Na duvida, Vault"</span><p class="text-sm text-neutral-400 mt-1">O default seguro quando a classificacao nao e obvia.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Dado regulado</span><p class="text-sm text-neutral-400 mt-1">Saude, financas, dados pessoais — mandar pra fora pode ser ilegal.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Custo de vazamento</span><p class="text-sm text-neutral-400 mt-1">Quase sempre maior que o ganho de uma resposta melhor.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ETAPA 3 -->
+          <section id="topico-3" data-inema-topic="modulo-3-6#topico-3" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span>
+              <h2 class="text-2xl font-bold">🔗 Connected para equilibrio</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t3-p1">O modo <strong class="text-purple-400">Connected</strong> e o meio-termo elegante: o raciocinio continua no seu modelo local, mas o agente abre um "private pipe" para <strong>buscar na web</strong> quando a tarefa precisa de informacao fresca. Voce ganha atualidade sem entregar a inteligencia inteira para a nuvem — o pensamento fica em casa, so a consulta sai.</p>
+
+            <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Quando o Connected brilha</h3>
+              <ul class="space-y-2 text-neutral-300 text-sm">
+                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Pesquisa atual:</strong> "qual a versao mais recente da lib X?" — precisa olhar a web.</span></li>
+                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Dado nao-sensivel:</strong> a pergunta nao expoe nada confidencial.</span></li>
+                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Quer velocidade + alcance:</strong> resposta local rapida, complementada por busca.</span></li>
+              </ul>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <p class="text-sm text-neutral-300"><strong class="text-primary">Novo aqui?</strong> "Private pipe" (cano privado) e o canal controlado que o agente usa para consultar a web sem despejar a sua conversa inteira la fora. Pense numa janelinha estreita: passa a consulta, volta o resultado, e o resto da conversa nunca atravessa.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Private pipe</span><p class="text-sm text-neutral-400 mt-1">Cano estreito de busca; o pensamento fica local.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Informacao fresca</span><p class="text-sm text-neutral-400 mt-1">Quando o modelo precisa de algo recente que nao "sabe".</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Meio-termo</span><p class="text-sm text-neutral-400 mt-1">Privacidade alta + alcance da web, sem ir all-in na nuvem.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Dado nao-sensivel</span><p class="text-sm text-neutral-400 mt-1">A consulta nao revela nada que precise ficar trancado.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ETAPA 4 -->
+          <section id="topico-4" data-inema-topic="modulo-3-6#topico-4" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span>
+              <h2 class="text-2xl font-bold">☁️ Cloud para qualidade</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t4-p1">Tem tarefa em que voce simplesmente quer a melhor resposta possivel e o dado nao e sensivel — um problema cabeludo de arquitetura, um texto que precisa brilhar, um raciocinio longo. Para isso existe o modo <strong class="text-purple-400">Cloud</strong>: ligar a nuvem e usar um modelo de fronteira. Lembre do trade-off da Trilha 1 — o local fica ~1 ano atras da fronteira, entao em tarefas dificeis a Cloud ainda ganha.</p>
+
+            <!-- SVG: FLUXO DE DECISAO -->
+            <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+              <svg viewBox="0 0 980 360" class="w-full h-auto" role="img" aria-label="Fluxo de decisao: o dado e sensivel? Se sim, Vault. Se nao, precisa de busca na web? Se sim, Connected. Se nao e quer qualidade maxima, Cloud.">
+                <defs>
+                  <filter id="m36-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                  <pattern id="m36-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+                  <marker id="m36-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
+                  <marker id="m36-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+                </defs>
+                <rect x="0" y="0" width="980" height="360" fill="url(#m36-grid)"/>
+                <text x="490" y="28" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-size="14" font-weight="700">Qual modo usar? — siga o fluxo</text>
+                <g font-family="Inter,sans-serif">
+                  <!-- entrada -->
+                  <rect x="405" y="46" width="170" height="44" rx="11" fill="#1a1230" stroke="#c084fc" stroke-width="2"/><text x="490" y="73" text-anchor="middle" fill="#e9d5ff" font-size="13">nova tarefa</text>
+                  <path d="M490,90 L490,118" fill="none" stroke="#c084fc" stroke-width="2" marker-end="url(#m36-ah)"/>
+                  <!-- decisao 1: sensivel? -->
+                  <path d="M490,120 L588,165 L490,210 L392,165 Z" fill="#1f2937" stroke="#c084fc" stroke-width="2"/><text x="490" y="160" text-anchor="middle" fill="#e5e7eb" font-size="13">o dado e</text><text x="490" y="178" text-anchor="middle" fill="#e5e7eb" font-size="13" font-weight="700">sensivel?</text>
+                  <!-- sim -> vault -->
+                  <path d="M392,165 L210,165" fill="none" stroke="#c084fc" stroke-width="2" marker-end="url(#m36-ah)"/><text x="300" y="155" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="700">SIM</text>
+                  <g filter="url(#m36-glow)"><rect x="40" y="140" width="150" height="52" rx="13" fill="#1a1230" stroke="#c084fc" stroke-width="2.5"/></g>
+                  <text x="115" y="162" text-anchor="middle" fill="#c084fc" font-size="14" font-weight="700">🗄️ VAULT</text><text x="115" y="180" text-anchor="middle" fill="#e9d5ff" font-size="11">airgapped, local</text>
+                  <!-- nao -> decisao 2 -->
+                  <path d="M490,210 L490,238" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#m36-ahc)"/><text x="512" y="228" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">NAO</text>
+                  <path d="M490,240 L588,285 L490,330 L392,285 Z" fill="#1f2937" stroke="#38bdf8" stroke-width="2"/><text x="490" y="280" text-anchor="middle" fill="#e5e7eb" font-size="13">precisa de</text><text x="490" y="298" text-anchor="middle" fill="#e5e7eb" font-size="13" font-weight="700">busca web?</text>
+                  <!-- sim -> connected -->
+                  <path d="M588,285 L770,285" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#m36-ahc)"/><text x="680" y="275" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">SIM</text>
+                  <g filter="url(#m36-glow)"><rect x="790" y="260" width="150" height="52" rx="13" fill="#0e1f2b" stroke="#38bdf8" stroke-width="2.5"/></g>
+                  <text x="865" y="282" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="700">🔗 CONNECTED</text><text x="865" y="300" text-anchor="middle" fill="#bae6fd" font-size="11">local + private pipe</text>
+                  <!-- nao -> cloud -->
+                  <path d="M392,285 L210,285" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#m36-ah)"/><text x="300" y="275" text-anchor="middle" fill="#9ca3af" font-size="12" font-weight="700">NAO + quer top</text>
+                  <rect x="40" y="260" width="150" height="52" rx="13" fill="#1f2937" stroke="#9ca3af" stroke-width="2"/>
+                  <text x="115" y="282" text-anchor="middle" fill="#e5e7eb" font-size="14" font-weight="700">☁️ CLOUD</text><text x="115" y="300" text-anchor="middle" fill="#9ca3af" font-size="11">modelo de fronteira</text>
+                </g>
+              </svg>
+              <p class="text-xs text-neutral-400 mt-1 px-1">Leia de cima pra baixo: <span class="text-purple-400">sensivel? → Vault</span> (e fim da linha, sem brecha). Se nao, <span class="text-sky-400">precisa de web? → Connected</span>. Se nem isso e voce quer a melhor resposta, <span class="text-neutral-300">Cloud</span>. O ramo "sensivel" NUNCA leva a Cloud — essa e a regra que protege voce.</p>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Dica pratica</h3>
+              <p class="text-sm text-neutral-300">Antes de mandar uma tarefa pra Cloud, faca um teste mental: "se esse texto aparecesse num print publico, eu me importaria?". Se a resposta for sim, volte para o Vault. Se for nao, a Cloud e justa.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Modelo de fronteira</span><p class="text-sm text-neutral-400 mt-1">O estado da arte na nuvem; vence em tarefas dificeis.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Trade-off de 1 ano</span><p class="text-sm text-neutral-400 mt-1">O local fica ~1 ano atras; por isso a Cloud para o "top".</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Teste do print publico</span><p class="text-sm text-neutral-400 mt-1">Se te incomodaria vazar, nao vai pra Cloud.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Qualidade > privacidade</span><p class="text-sm text-neutral-400 mt-1">A unica situacao em que a Cloud e a escolha certa.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ETAPA 5 -->
+          <section id="topico-5" data-inema-topic="modulo-3-6#topico-5" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span>
+              <h2 class="text-2xl font-bold">🗣️ Pedir a troca no meio da conversa</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t5-p1">A parte mais fluida do Hermes: voce nao precisa abrir menus para mudar de modo. Da pra <strong class="text-purple-400">pedir a troca em linguagem natural</strong>, no meio do chat. Comecou uma pergunta geral na Cloud, percebeu que vai colar um trecho confidencial? E so dizer "manda esse proximo pro privado" e seguir.</p>
+
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Comece onde fizer sentido</h4><p class="text-sm text-neutral-400">Pergunta geral? Pode comecar na Connected ou Cloud. Veja o modo ativo no canto inferior direito.</p></div>
+              </div>
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Sinalize antes de colar o sensivel</h4><p class="text-sm text-neutral-400">Peca a troca ANTES de colar o dado confidencial — nao depois. A ordem importa.</p></div>
+              </div>
+              <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Confirme no indicador</h4><p class="text-sm text-neutral-400">Olhe o canto inferior direito: o modelo/modo ativo deve refletir o Vault antes de voce enviar o dado.</p></div>
+              </div>
+            </div>
+
+            <div class="bg-dark-800 border border-dark-600 rounded-xl p-5 mb-6">
+              <h3 class="text-sm font-semibold text-purple-400 mb-3">Frases prontas para pedir a troca</h3>
+              <pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">manda &lt;essa proxima tarefa&gt; pro privado (Vault), vou colar dado de cliente
+
+agora pode voltar pro modo conectado pra buscar &lt;a versao da lib&gt; na web
+
+esse problema e dificil e nao tem nada sensivel — usa a nuvem (Cloud) pra essa</code></pre>
+              <p class="text-xs text-neutral-400 mt-3">Troque o que esta em <code class="text-purple-400">&lt;...&gt;</code> pelo seu caso. Verificar: depois do pedido, o indicador de modo (canto inferior direito) muda para o modo solicitado antes de voce enviar o conteudo.</p>
+            </div>
+
+            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+              <p class="text-sm text-neutral-300"><strong class="text-primary">Honestidade:</strong> a frase exata e livre — o agente entende a intencao. O que e fixo e a UI: o modo/modelo ativo aparece no <strong>canto inferior direito</strong> e ha os modos Vault / Connected / Cloud. Sempre confirme nesse indicador antes de mandar algo sensivel; nao confie so na frase.</p>
+            </div>
+
+            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+            <div class="grid sm:grid-cols-2 gap-3 mb-6">
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Troca em linguagem natural</span><p class="text-sm text-neutral-400 mt-1">Pedir o modo no chat, sem abrir menu.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">A ordem importa</span><p class="text-sm text-neutral-400 mt-1">Trocar ANTES de colar o dado, nunca depois.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Indicador de modo</span><p class="text-sm text-neutral-400 mt-1">Canto inferior direito mostra o modo/modelo ativo.</p></div>
+              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Confiar no que ve</span><p class="text-sm text-neutral-400 mt-1">Confirme no indicador, nao so na frase digitada.</p></div>
+            </div>
+
+            <div class="flex justify-start">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ETAPA 6 -->
+          <section id="topico-6" data-inema-topic="modulo-3-6#topico-6" class="mb-16">
+            <div class="flex items-center space-x-4 mb-6">
+              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span>
+              <h2 class="text-2xl font-bold">✅ Resultado: o fluxo hibrido</h2>
+            </div>
+            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t6-p1">No fim deste projeto voce tem um <strong class="text-purple-400">fluxo hibrido</strong> funcionando: o mesmo agente atende dado de cliente no Vault, pesquisa atual no Connected e o problema cabeludo na Cloud — e voce desliza entre eles sem perder o ritmo. A privacidade deixou de ser "tudo ou nada" e virou uma escolha por tarefa.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+                <h4 class="font-bold text-purple-400 mb-4">✓ Como verificar que deu certo</h4>
+                <ul class="space-y-3 text-neutral-300 text-sm">
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Voce classifica 3 tarefas reais sem hesitar (uma por modo).</span></li>
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Consegue pedir a troca no chat e ver o indicador mudar.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Nenhum dado sensivel passou pela Cloud em nenhum teste.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Em offline, o Vault continua respondendo normalmente.</span></li>
+                </ul>
+              </div>
+              <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+                <h4 class="font-bold text-red-400 mb-4">✗ Sinais de que falhou</h4>
+                <ul class="space-y-3 text-neutral-300 text-sm">
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Voce so usa um modo fixo "pra nao pensar".</span></li>
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Colou o dado e SO depois lembrou de trocar de modo.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Nao confere o indicador antes de enviar o sensivel.</span></li>
+                  <li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Manda tudo pra Cloud porque "a resposta e melhor".</span></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+              <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧩</span> A regra em uma frase</h3>
+              <p class="text-neutral-300 text-sm">"<strong>Sensivel → Vault. Precisa de web e nao e sensivel → Connected. Quer o melhor e nao e sensivel → Cloud.</strong>" Decore isso e voce nunca mais decide no escuro.</p>
+            </div>
+
+            <!-- CHECAGEM LEVE -->
+            <div data-inema-check="modulo-3-6#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
+              <p class="font-medium mb-4">Auto-checagem (opcional): voce vai pedir ao agente para revisar o contrato de um cliente (NDA assinado). Qual modo?</p>
+              <div class="inema-check-options space-y-2">
+                <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Cloud — o contrato e dificil e a nuvem da a melhor analise.</button>
+                <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Vault — e dado de cliente sob NDA; sensivel vai para o modo airgapped, ponto.</button>
+                <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Connected — precisa buscar a legislacao na web.</button>
+              </div>
+              <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+            </div>
+
+            <div class="flex justify-start mt-6">
+              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
+                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
+                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- RESUMO -->
+          <section class="mb-8">
+            <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+              <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Resumo do projeto</h2>
+              <div class="space-y-4 mb-8">
+                <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Roteamento por sensibilidade</strong><span class="text-neutral-400"> — cada tarefa vai para o modo certo, nao para um modo fixo.</span></div></div>
+                <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Os tres modos</strong><span class="text-neutral-400"> — Vault (sensivel), Connected (web + nao-sensivel), Cloud (qualidade + nao-sensivel).</span></div></div>
+                <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Troca no chat</strong><span class="text-neutral-400"> — pedir o modo em linguagem natural e confirmar no indicador (canto inferior direito).</span></div></div>
+                <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Fluxo hibrido</strong><span class="text-neutral-400"> — privado quando precisa, potente quando pode, sem ideologia.</span></div></div>
+              </div>
+              <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+                <h3 class="font-semibold text-purple-400 mb-2">Proximo modulo:</h3>
+                <p class="text-neutral-300">3.7 — Projeto 7: Hermes no celular de qualquer lugar (e o encerramento do curso)</p>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a Trilha</a>
+                <a href="modulo-3-7.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Proximo modulo →</a>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+   </div>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+      <p>🔒 Agente Hermes + Ollama — Seu SO de IA 100% Privado</p>
+      <p>Modulo 3.6 · Trilha 3 · <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+  <script src="../../assets/learn.js"></script>
+  <script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init({ autoResume: false }); }
+    document.addEventListener('DOMContentLoaded', function(){
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-6#q1', {
+          answer: 1,
+          explain: {
+            0: 'Nao — contrato de cliente sob NDA e dado sensivel. A regra e clara: sensivel nunca vai pra Cloud, por melhor que seja a analise.',
+            1: 'Isso! Dado de cliente sob NDA e sensivel — vai para o Vault (airgapped). Na duvida, Vault.',
+            2: 'Cuidado — buscar legislacao na web e ate util, mas o contrato em si e sensivel; o conteudo dele tem que ficar no Vault, nao no private pipe.'
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="inema-course" content="hermes-local">
+  <title>Trilha 3 · Projetos | Hermes Local</title>
+
+  <script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+
+  <script type="application/json" data-inema-manifest>
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/learn.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124,58,237,0.10); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen">
+
+  <a href="#conteudo" class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg">Pular para o conteudo</a>
+
+  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-14">
+        <div class="flex items-center space-x-3">
+          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300">
+            <span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span>
+          </a>
+          <span class="text-neutral-600">|</span>
+          <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
+        </div>
+        <div class="flex items-center space-x-1 sm:space-x-2">
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Mao na massa</span></a>
+          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projetos</span></a>
+          <button type="button" data-inema-journey-open class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Minha jornada"><span aria-hidden="true">◷</span><span class="hidden md:inline">Jornada</span><span class="inema-journey-badge hidden" data-inema-journey-badge data-count="0"></span></button>
+          <div class="relative">
+            <button type="button" data-inema-appearance-toggle="[data-inema-appearance]" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Aparencia"><span aria-hidden="true">◑</span><span class="hidden md:inline">Aparencia</span></button>
+            <div data-inema-appearance class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left">
+              <div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-theme="inema-dark" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Escuro</button>
+                <button data-inema-set-theme="claro" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Claro</button>
+                <button data-inema-set-theme="sepia" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sepia</button>
+                <button data-inema-set-theme="foco" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Foco</button>
+                <button data-inema-set-theme="contraste" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Alto contraste</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Fonte</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-font="inter" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Inter</button>
+                <button data-inema-set-font="system" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sistema</button>
+                <button data-inema-set-font="leitura" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Leitura</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Tamanho</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-fontscale="100" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A</button>
+                <button data-inema-set-fontscale="112" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A+</button>
+                <button data-inema-set-fontscale="125" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A++</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Entrelinha</p><div class="inema-segment flex flex-wrap gap-1.5">
+                <button data-inema-set-leading="1.45" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Compacto</button>
+                <button data-inema-set-leading="1.7" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Confortavel</button>
+              </div></div>
+              <div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
+                <button data-inema-set-accent="emerald" class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" title="Emerald"></button>
+                <button data-inema-set-accent="blue" class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" title="Blue"></button>
+                <button data-inema-set-accent="purple" class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" title="Purple"></button>
+                <button data-inema-set-accent="amber" class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" title="Amber"></button>
+                <button data-inema-set-accent="teal" class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" title="Teal"></button>
+                <button data-inema-set-accent="rose" class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" title="Rose"></button>
+              </div></div>
+            </div>
+          </div>
+          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" title="Alternar claro/escuro">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="conteudo">
+    <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+          <a href="../../index.html" class="hover:text-purple-400">Inicio</a><span>/</span><span class="text-purple-400">Trilha 3</span>
+        </nav>
+        <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">TRILHA 3</span>
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">🚀 Projetos</h1>
+        <p class="text-lg text-neutral-400 max-w-3xl mb-6">Sai do "saber" para o "fazer". Cada modulo aqui e um projeto inteiro, passo a passo: chat privado offline, o agente Hermes rodando 100% local no Vault, memoria e skills, conexoes, agentes 24/7 a $0, alternancia entre os tres modos e o agente no seu bolso. Voce sai com coisas funcionando.</p>
+
+        <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+          <svg viewBox="0 0 1000 230" class="w-full h-auto" role="img" aria-label="Os 7 projetos da Trilha 3 montam, em camadas, o seu SO de IA local: do chat privado ate o agente no celular, tudo partindo da sua maquina">
+            <defs>
+              <linearGradient id="t3h-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+              <filter id="t3h-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <pattern id="t3h-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+              <marker id="t3h-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
+              <marker id="t3h-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+            </defs>
+            <rect x="0" y="0" width="1000" height="230" fill="url(#t3h-grid)"/>
+            <g font-family="Inter,sans-serif">
+              <g filter="url(#t3h-glow)"><rect x="40" y="74" width="180" height="82" rx="16" fill="url(#t3h-grad)" opacity="0.16" stroke="url(#t3h-grad)" stroke-width="2.5"/></g>
+              <text x="130" y="106" text-anchor="middle" fill="#c084fc" font-size="16" font-weight="700">Sua maquina</text>
+              <text x="130" y="130" text-anchor="middle" fill="#e9d5ff" font-size="12">modelo local + Hermes</text>
+              <g fill="none" stroke="#c084fc" stroke-width="2" opacity="0.7">
+                <path d="M220,95  C300,95 320,52 400,52" marker-end="url(#t3h-ah)"/>
+                <path d="M220,108 C300,108 320,90 400,90" marker-end="url(#t3h-ah)"/>
+                <path d="M220,118 L400,128" marker-end="url(#t3h-ah)"/>
+                <path d="M220,131 C300,131 320,166 400,166" marker-end="url(#t3h-ah)"/>
+              </g>
+              <g font-size="12.5" font-weight="600">
+                <g class="wf-a"><rect x="400" y="38" width="172" height="30" rx="9" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="486" y="58" text-anchor="middle" fill="#e9d5ff">P1 chat privado</text></g>
+                <g class="wf-a"><rect x="400" y="76" width="172" height="30" rx="9" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="486" y="96" text-anchor="middle" fill="#e9d5ff">P2 agente no Vault</text></g>
+                <g class="wf-a"><rect x="400" y="114" width="172" height="30" rx="9" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="486" y="134" text-anchor="middle" fill="#e9d5ff">P3-5 SO + 24/7</text></g>
+                <g class="wf-a"><rect x="400" y="152" width="172" height="30" rx="9" fill="#1a1230" stroke="#a855f7" stroke-width="2"/><text x="486" y="172" text-anchor="middle" fill="#e9d5ff">P6-7 modos + celular</text></g>
+              </g>
+              <g fill="none" stroke="#38bdf8" stroke-width="1.8" opacity="0.55">
+                <path d="M572,53  C620,53 640,110 660,110"/>
+                <path d="M572,91  C620,91 640,110 660,110"/>
+                <path d="M572,129 C620,129 640,110 660,110"/>
+                <path d="M572,167 C620,167 640,110 660,110"/>
+              </g>
+              <g filter="url(#t3h-glow)"><rect x="660" y="78" width="184" height="66" rx="15" fill="#0e1b26" stroke="#38bdf8" stroke-width="2.5"/></g>
+              <text x="752" y="106" text-anchor="middle" fill="#9ad6ff" font-size="15" font-weight="700">SO de IA</text>
+              <text x="752" y="128" text-anchor="middle" fill="#bfe6ff" font-size="12">seu, rodando local</text>
+              <path d="M844,111 L912,111" fill="none" stroke="#c084fc" stroke-width="2" marker-end="url(#t3h-ah)"/>
+              <g filter="url(#t3h-glow)"><rect x="912" y="86" width="76" height="50" rx="12" fill="#1f1604" stroke="#FACC15" stroke-width="2.5"/></g>
+              <text x="950" y="108" text-anchor="middle" fill="#FACC15" font-size="13" font-weight="700">$0</text>
+              <text x="950" y="125" text-anchor="middle" fill="#fde68a" font-size="10">privado</text>
+            </g>
+          </svg>
+          <p class="text-xs text-neutral-400 mt-1 px-1">Leia da esquerda pra direita: tudo parte da <span class="text-purple-400">sua maquina</span>; os 7 projetos vao empilhando capacidades ate formar o seu <span class="text-sky-400">SO de IA</span> local — privado e a custo zero.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">7</div><div class="text-xs text-neutral-400">Projetos</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">42</div><div class="text-xs text-neutral-400">Topicos</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~4h</div><div class="text-xs text-neutral-400">Duracao</div></div>
+          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Pratico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+        </div>
+
+        <div class="mt-6 max-w-md" data-inema-meter="trilha:3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso da trilha 3">
+          <div class="flex items-center justify-between mb-1"><span class="text-xs text-neutral-400">Progresso da trilha</span><span class="text-xs font-bold text-purple-400" data-inema-meter-pct>0%</span></div>
+          <div class="inema-bar h-2 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div>
+          <span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 42</span> topicos</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      <!-- MAPA DA TRILHA -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">Mapa da trilha</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <a href="#modulo-3-1" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.1</span><span class="text-xs text-neutral-500">~35 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">💬 Chat privado local</h3>
+            <p class="text-xs text-neutral-400">Conversa sem internet</p>
+          </a>
+          <a href="#modulo-3-2" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🤖 Hermes no Vault</h3>
+            <p class="text-xs text-neutral-400">Agente inteiro offline</p>
+          </a>
+          <a href="#modulo-3-3" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.3</span><span class="text-xs text-neutral-500">~35 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🧠 Memoria e skills</h3>
+            <p class="text-xs text-neutral-400">O SO com a sua cara</p>
+          </a>
+          <a href="#modulo-3-4" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.4</span><span class="text-xs text-neutral-500">~35 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🔌 GitHub e documentos</h3>
+            <p class="text-xs text-neutral-400">Agente sobre suas fontes</p>
+          </a>
+          <a href="#modulo-3-5" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">♻️ Agentes 24/7</h3>
+            <p class="text-xs text-neutral-400">Automacao a custo zero</p>
+          </a>
+          <a href="#modulo-3-6" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🔄 Alternar os modos</h3>
+            <p class="text-xs text-neutral-400">Vault, Connected, Cloud</p>
+          </a>
+          <a href="#modulo-3-7" class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all">
+            <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.7</span><span class="text-xs text-neutral-500">~25 min</span></div>
+            <h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">📱 Hermes no celular</h3>
+            <p class="text-xs text-neutral-400">Seu agente no bolso</p>
+          </a>
+        </div>
+      </section>
+
+      <h2 class="text-2xl font-bold mb-6">Conteudo detalhado</h2>
+
+      <!-- MODULO 3.1 -->
+      <div id="modulo-3-1" data-inema-module="3-1" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.1</span><span class="text-xs text-neutral-500">~35 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">💬 Projeto 1: Chat privado 100% local</h3>
+          <p class="text-neutral-400 text-sm mb-3">Seu primeiro projeto de ponta a ponta: garantir um modelo, abrir o chat, desligar a internet e ainda conversar — alem de forkar a conversa em duas linhas de raciocinio.</p>
+          <div data-inema-meter="modulo:3-1" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.1"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t31-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- conversar 100% offline</span></div></button><div id="t31-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ter um chat de IA que funciona sem nenhuma conexao com a internet, rodando no seu computador.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a prova mais simples e direta de que o local funciona — e a base de todos os outros projetos.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">No fim, o modelo responde com o wi-fi desligado.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t31-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">⬇️</span><div><span class="font-medium">Garantir um modelo</span><span class="text-neutral-500 text-sm ml-2">- ollama pull</span></div></button><div id="t31-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Baixar (ou confirmar que ja existe) o modelo rapido do curso com <code>ollama pull qwen3:30b-a3b-q4_K_M</code>.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem o modelo no disco, nao ha o que rodar offline.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm"><code>ollama list</code> mostra o modelo.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t31-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">💬</span><div><span class="font-medium">Abrir o chat</span><span class="text-neutral-500 text-sm ml-2">- ollama run ou app</span></div></button><div id="t31-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Iniciar a conversa pelo terminal (<code>ollama run ...</code>) ou pelo app do Ollama.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Os dois caminhos levam ao mesmo modelo; escolha o que for mais confortavel.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O modelo responde a uma primeira pergunta.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t31-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">✈️</span><div><span class="font-medium">Testar offline</span><span class="text-neutral-500 text-sm ml-2">- desligar o wi-fi</span></div></button><div id="t31-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Desconectar a internet e fazer outra pergunta para provar que nada depende da nuvem.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o teste que transforma "acredito" em "vi funcionar".</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A resposta chega mesmo sem rede.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t31-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🌿</span><div><span class="font-medium">Forkar a conversa</span><span class="text-neutral-500 text-sm ml-2">- duas linhas de raciocinio</span></div></button><div id="t31-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Criar um "galho" (branch/fork) de um chat para explorar duas respostas a partir do mesmo ponto.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Deixa voce comparar caminhos sem perder a conversa original.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Existem duas linhas de conversa partindo da mesma mensagem.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t31-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Resultado</span><span class="text-neutral-500 text-sm ml-2">- chat privado sem internet</span></div></button><div id="t31-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um chat de IA totalmente seu: privado, gratuito e que funciona em qualquer lugar.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o primeiro "isso e meu" do curso — a fundacao do agente do Projeto 2.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Responde offline, sem custo e sem mandar dado pra fora.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-1')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-1.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- MODULO 3.2 -->
+      <div id="modulo-3-2" data-inema-module="3-2" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.2</span><span class="text-xs text-neutral-500">~40 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">🤖 Projeto 2: Agente Hermes rodando local (Vault end-to-end)</h3>
+          <p class="text-neutral-400 text-sm mb-3">Conectar o modelo de 64k ao Agente Hermes, ligar o modo Vault (airgapped) e mandar o agente fazer uma tarefa real — tudo sem um unico byte saindo da maquina.</p>
+          <div data-inema-meter="modulo:3-2" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.2"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t32-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- o agente inteiro no Vault</span></div></button><div id="t32-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Rodar o Agente Hermes de ponta a ponta usando so o modelo local, em modo Vault (isolado da internet).</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o "santo graal" do curso: um agente capaz, 100% privado e a $0.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente executa uma tarefa com a internet desconectada.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t32-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🪟</span><div><span class="font-medium">Ter o qwen3-coder-64k</span><span class="text-neutral-500 text-sm ml-2">- o modelo do agente</span></div></button><div id="t32-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Confirmar que o modelo de contexto 64k criado no Modulo 2.4 esta disponivel no Ollama.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O Hermes exige 64k de contexto; um modelo menor nao serve para o agente.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm"><code>ollama list</code> mostra <code>qwen3-coder-64k</code>.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t32-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔗</span><div><span class="font-medium">Conectar ao Hermes</span><span class="text-neutral-500 text-sm ml-2">- selecionar o modelo local</span></div></button><div id="t32-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">No seletor do Hermes, escolher o modelo do Ollama; ele aparece no canto inferior direito.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o passo que faz o agente "pensar" com o seu modelo local em vez da nuvem.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O nome do modelo local aparece selecionado na interface.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t32-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🗄️</span><div><span class="font-medium">Ligar o Vault</span><span class="text-neutral-500 text-sm ml-2">- modo airgapped</span></div></button><div id="t32-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ativar o modo Vault, que isola o agente da rede — como puxar o cabo de internet.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a garantia tecnica de que nada vaza: o agente nao tem por onde sair.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O Hermes indica que esta em Vault / offline.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t32-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🧪</span><div><span class="font-medium">Tarefa real local</span><span class="text-neutral-500 text-sm ml-2">- pedir algo ao agente</span></div></button><div id="t32-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Dar ao agente uma tarefa concreta (resumir, organizar, redigir) e ver ele usar ferramentas.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Prova que o agente nao so conversa — ele age, mesmo offline.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A tarefa termina com um resultado util.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t32-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Confirmar privacidade</span><span class="text-neutral-500 text-sm ml-2">- nada saiu</span></div></button><div id="t32-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Checar que tudo aconteceu localmente e nenhum dado foi para a internet.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a confirmacao que torna o agente usavel com dados sensiveis.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Tudo funcionou com a rede desconectada, em Vault.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-2')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-2.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- MODULO 3.3 -->
+      <div id="modulo-3-3" data-inema-module="3-3" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.3</span><span class="text-xs text-neutral-500">~35 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">🧠 Projeto 3: Memoria, personas e skills</h3>
+          <p class="text-neutral-400 text-sm mb-3">Configurar o "SO" do agente: ligar a memoria, criar uma persona, plugar uma skill e deixar o agente voltar com sugestoes proativas — tudo pela interface.</p>
+          <div data-inema-meter="modulo:3-3" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.3"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t33-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- configurar o SO</span></div></button><div id="t33-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Transformar o agente generico em um sistema com a sua cara: o que ele lembra, como age e o que sabe fazer.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o que separa um "chatbot" de um SO de IA pessoal.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente lembra de algo seu e age na persona definida.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t33-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🧠</span><div><span class="font-medium">Ligar a memoria</span><span class="text-neutral-500 text-sm ml-2">- o que ele lembra</span></div></button><div id="t33-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ativar a memoria persistente para o agente lembrar de fatos entre conversas.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem memoria, voce repete tudo toda vez; com ela, o agente evolui com voce.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Numa nova sessao, ele lembra de algo dito antes.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t33-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🎭</span><div><span class="font-medium">Criar uma persona</span><span class="text-neutral-500 text-sm ml-2">- como ele age</span></div></button><div id="t33-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir o comportamento e o tom do agente (formal, direto, professoral...).</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">A persona faz o agente caber no seu jeito de trabalhar.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">As respostas mudam de tom conforme a persona escolhida.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t33-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🧩</span><div><span class="font-medium">Adicionar uma skill</span><span class="text-neutral-500 text-sm ml-2">- uma capacidade nova</span></div></button><div id="t33-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Plugar uma habilidade especifica que o agente passa a saber executar.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Skills expandem o que o agente faz sem trocar o modelo.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A skill aparece disponivel e o agente a usa quando pedido.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t33-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔁</span><div><span class="font-medium">Sugestoes proativas</span><span class="text-neutral-500 text-sm ml-2">- o agente volta com ideias</span></div></button><div id="t33-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Deixar o agente trazer sugestoes por conta propria, com base na memoria e nas skills.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o "agente que te faz crescer" — ele propoe, nao so responde.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente sugere algo util sem voce ter pedido.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t33-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Resultado</span><span class="text-neutral-500 text-sm ml-2">- SO com a sua cara</span></div></button><div id="t33-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um agente que lembra, age na sua persona e tem skills proprias — o seu SO de IA.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a base para os projetos de conexoes e automacao que vem a seguir.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Memoria + persona + skill funcionando juntas.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-3')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-3.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- MODULO 3.4 -->
+      <div id="modulo-3-4" data-inema-module="3-4" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.4</span><span class="text-xs text-neutral-500">~35 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">🔌 Projeto 4: GitHub e documentos</h3>
+          <p class="text-neutral-400 text-sm mb-3">Dar fontes ao agente: conectar o GitHub, deixar ele ler seus documentos, pedir algo sobre o repo/arquivo — e manter tudo em Vault porque e dado proprietario.</p>
+          <div data-inema-meter="modulo:3-4" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.4"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t34-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- conectar fontes</span></div></button><div id="t34-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ligar o agente as suas fontes de informacao — codigo e documentos — para ele operar sobre elas.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o que tira o agente do vazio e o coloca trabalhando no SEU material.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente responde com base em algo que so esta no seu repo/doc.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t34-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🐙</span><div><span class="font-medium">Conectar GitHub</span><span class="text-neutral-500 text-sm ml-2">- acesso ao codigo</span></div></button><div id="t34-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Adicionar a conexao com o GitHub para o agente ler/entender um repositorio.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Codigo e o caso de uso classico de um agente local privado.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente lista/descreve arquivos do repo conectado.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t34-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">📄</span><div><span class="font-medium">Ler documentos</span><span class="text-neutral-500 text-sm ml-2">- arquivos locais</span></div></button><div id="t34-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Apontar o agente para documentos seus para ele consultar o conteudo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Permite perguntar coisas sobre PDFs, notas e relatorios sem mandar nada pra nuvem.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente cita algo que so esta no documento.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t34-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🔎</span><div><span class="font-medium">Pedir algo sobre o repo/doc</span><span class="text-neutral-500 text-sm ml-2">- usar as fontes</span></div></button><div id="t34-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Fazer uma pergunta real (resumir um arquivo, achar um bug, explicar uma funcao).</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E onde a conexao vira valor concreto.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A resposta usa o conteudo real da fonte.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t34-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔒</span><div><span class="font-medium">Manter no Vault</span><span class="text-neutral-500 text-sm ml-2">- dado proprietario</span></div></button><div id="t34-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Garantir que codigo e documentos sensiveis sejam processados em modo Vault.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Dado proprietario nao pode vazar; o Vault assegura isso.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O trabalho com as fontes ocorre offline, sem rede.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t34-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Resultado</span><span class="text-neutral-500 text-sm ml-2">- agente sobre suas fontes</span></div></button><div id="t34-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um agente que opera sobre o seu codigo e seus documentos, mantendo a privacidade.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o agente deixando de ser "geral" e virando ferramenta de trabalho.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Respostas uteis, baseadas nas suas fontes, em Vault.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-4')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-4.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- MODULO 3.5 -->
+      <div id="modulo-3-5" data-inema-module="3-5" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">♻️ Projeto 5: Background agents 24/7 a $0</h3>
+          <p class="text-neutral-400 text-sm mb-3">Deixar agentes trabalhando o tempo todo: agendar com <code>hermes cron</code>, entender por que o custo e $0, manter em Vault e monitorar com status/doctor.</p>
+          <div data-inema-meter="modulo:3-5" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.5"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t35-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- agentes rodando sempre</span></div></button><div id="t35-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ter agentes executando tarefas em segundo plano, de forma agendada, o tempo todo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E uma vantagem unica do local: na nuvem isso custaria caro.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Existe uma tarefa agendada que dispara sozinha.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t35-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">⏰</span><div><span class="font-medium">Agendar</span><span class="text-neutral-500 text-sm ml-2">- hermes cron</span></div></button><div id="t35-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar <code>hermes cron</code> para programar quando o agente roda uma tarefa.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o comando que liga a automacao recorrente.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A tarefa aparece agendada e executa no horario.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t35-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">💸</span><div><span class="font-medium">Por que $0</span><span class="text-neutral-500 text-sm ml-2">- custo local</span></div></button><div id="t35-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Como o modelo roda local, cada execucao nao tem cobranca por token.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Muda a economia: da pra deixar rodando sem medo da fatura.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Nenhuma cobranca aparece por usar o agente.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t35-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🗄️</span><div><span class="font-medium">Em Vault</span><span class="text-neutral-500 text-sm ml-2">- automacao privada</span></div></button><div id="t35-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Rodar os agentes agendados em modo Vault, sem mandar dado pra fora.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Automacao continua + privacidade total e uma combinacao rara.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">As tarefas agendadas rodam offline.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t35-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🩺</span><div><span class="font-medium">Monitorar</span><span class="text-neutral-500 text-sm ml-2">- status e doctor</span></div></button><div id="t35-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Acompanhar a saude com <code>hermes status</code> e <code>hermes doctor</code>.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Automacao sem monitoramento e armadilha; esses comandos te avisam de problemas.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Os comandos mostram que os agentes estao saudaveis.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t35-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Resultado</span><span class="text-neutral-500 text-sm ml-2">- automacao gratis</span></div></button><div id="t35-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Agentes trabalhando 24/7, privados e a custo zero, monitorados por voce.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o tipo de alavancagem que so o local barato permite.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A tarefa agendada produz resultados sem custo.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-5')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-5.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- MODULO 3.6 -->
+      <div id="modulo-3-6" data-inema-module="3-6" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">🔄 Projeto 6: Alternar Vault, Connected e Cloud</h3>
+          <p class="text-neutral-400 text-sm mb-3">Montar o fluxo hibrido: dado sensivel no Vault, equilibrio no Connected, qualidade no Cloud — e pedir a troca em linguagem natural ("manda esse pro privado").</p>
+          <div data-inema-meter="modulo:3-6" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.6"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t36-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- roteirizar por sensibilidade</span></div></button><div id="t36-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Definir, por tarefa, qual modo usar conforme a sensibilidade do dado e a qualidade necessaria.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o que tira voce do "tudo local" ou "tudo nuvem" e te da o melhor dos dois.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Voce consegue dizer qual modo cada tarefa deve usar.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t36-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🗄️</span><div><span class="font-medium">Vault p/ sensivel</span><span class="text-neutral-500 text-sm ml-2">- privacidade total</span></div></button><div id="t36-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Mandar tarefas com dado sensivel para o modo Vault, isolado da rede.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a regra inegociavel para dado de cliente, saude ou IP.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A tarefa sensivel roda offline.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t36-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔗</span><div><span class="font-medium">Connected p/ equilibrio</span><span class="text-neutral-500 text-sm ml-2">- meio-termo</span></div></button><div id="t36-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar o modo Connected quando precisa de mais potencia sem ir ao extremo da nuvem.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o equilibrio para tarefas medianas.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A tarefa roda em Connected com bom resultado.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t36-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">☁️</span><div><span class="font-medium">Cloud p/ qualidade</span><span class="text-neutral-500 text-sm ml-2">- a melhor resposta</span></div></button><div id="t36-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Ligar a nuvem para uma tarefa dificil que exige o modelo de fronteira — e que nao tem dado sensivel.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Sem ideologia: a nuvem ganha em qualidade quando a privacidade nao e o ponto.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">A tarefa dificil melhora no Cloud.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t36-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🗣️</span><div><span class="font-medium">Pedir a troca</span><span class="text-neutral-500 text-sm ml-2">- "manda pro privado"</span></div></button><div id="t36-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Trocar de modo em linguagem natural, dizendo ao agente para mandar a tarefa pro modo certo.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o fluxo fluido e dinamico, sem ficar mexendo em config a cada passo.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O agente muda de modo a pedido.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t36-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Resultado</span><span class="text-neutral-500 text-sm ml-2">- fluxo hibrido</span></div></button><div id="t36-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Um fluxo de trabalho que roteia cada tarefa para o modo ideal, com uma regra de decisao clara.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E a sintese pratica da filosofia "a melhor ferramenta por tarefa".</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Voce sabe, para cada tipo de tarefa, qual modo usar.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-6')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-6.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- MODULO 3.7 -->
+      <div id="modulo-3-7" data-inema-module="3-7" data-inema-track="3" class="bg-dark-800 rounded-xl border border-dark-600 mb-6">
+        <div class="p-6 border-b border-dark-600">
+          <div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.7</span><span class="text-xs text-neutral-500">~25 min</span></div>
+          <h3 class="text-2xl font-bold mb-2">📱 Projeto 7: Hermes no celular de qualquer lugar</h3>
+          <p class="text-neutral-400 text-sm mb-3">Levar o agente pro bolso: falar com ele via Telegram, de qualquer lugar, mantendo a privacidade — com os cuidados de rede e acesso. E o encerramento do curso.</p>
+          <div data-inema-meter="modulo:3-7" class="max-w-xs" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 3.7"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span></div>
+        </div>
+        <div class="divide-y divide-dark-600">
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t37-1" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🎯</span><div><span class="font-medium">Objetivo</span><span class="text-neutral-500 text-sm ml-2">- acessar do celular, privado</span></div></button><div id="t37-1" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Falar com o seu agente local pelo celular, de onde voce estiver, sem perder a privacidade.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o que transforma o agente de "coisa do desktop" em assistente sempre disponivel.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Voce manda uma mensagem do celular e o agente responde.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t37-2" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">📲</span><div><span class="font-medium">Via Telegram</span><span class="text-neutral-500 text-sm ml-2">- o canal de chat</span></div></button><div id="t37-2" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Usar o Telegram como porta de entrada para conversar com o agente Hermes.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">E o jeito mais simples de falar com o agente sem abrir o desktop.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">As mensagens do Telegram chegam ao agente.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t37-3" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🌍</span><div><span class="font-medium">De qualquer lugar</span><span class="text-neutral-500 text-sm ml-2">- mobilidade</span></div></button><div id="t37-3" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Acionar o agente que roda em casa mesmo estando na rua, viajando ou em outro lugar.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">O cerebro fica na sua maquina; voce so manda o pedido.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Funciona estando fora de casa.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t37-4" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🔒</span><div><span class="font-medium">Mantendo privado</span><span class="text-neutral-500 text-sm ml-2">- o cerebro fica em casa</span></div></button><div id="t37-4" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Garantir que o processamento continua na sua maquina; o celular e so o controle remoto.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Mobilidade nao precisa custar a sua privacidade.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">O modelo continua sendo o local de casa.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t37-5" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">⚙️</span><div><span class="font-medium">Cuidados</span><span class="text-neutral-500 text-sm ml-2">- rede e acesso</span></div></button><div id="t37-5" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">Pontos de atencao para o acesso remoto continuar seguro (rede, quem pode falar com o agente).</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Acesso de qualquer lugar pede atencao a quem tem acesso.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">So voce consegue acionar o agente.</p></div></div></div></div>
+          <div class="topic-item"><button onclick="toggleTopic(this)" aria-expanded="false" aria-controls="t37-6" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Resultado + fim do curso</span><span class="text-neutral-500 text-sm ml-2">- recap das 3 trilhas</span></div></button><div id="t37-6" class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-purple-400 font-semibold">O que e:</span><p class="text-neutral-300 text-sm">O agente no seu bolso — e o encerramento do curso, com o recap das tres trilhas.</p></div><div><span class="text-purple-400 font-semibold">Por que aprender:</span><p class="text-neutral-300 text-sm">Fecha a jornada: fundamentos, mao na massa e projetos, tudo conectado.</p></div><div><span class="text-purple-400 font-semibold">Como verificar:</span><p class="text-neutral-300 text-sm">Voce tem um SO de IA local, privado, acessivel ate do celular.</p></div></div></div></div>
+        </div>
+        <div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button onclick="openModal('modal-3-7')" class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors">Ver em Modal</button><a href="modulo-3-7.html" class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors">Ver Completo</a></div>
+      </div>
+
+      <!-- Navegacao entre trilhas -->
+      <div class="flex flex-col sm:flex-row gap-4 mt-10">
+        <a href="../trilha2/index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Trilha 2: Mao na massa</a>
+        <a href="../../index.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Inicio →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="border-t border-dark-600 py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+      <p>🔒 Agente Hermes + Ollama — Seu SO de IA 100% Privado</p>
+      <p>Trilha 3 · Projetos · <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
+    </div>
+  </footer>
+
+  <!-- MODAIS (iframe) -->
+  <div id="modal-3-1" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.1</span><span class="font-semibold">Chat privado 100% local</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-1.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+  <div id="modal-3-2" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.2</span><span class="font-semibold">Agente Hermes rodando local</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-2.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+  <div id="modal-3-3" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.3</span><span class="font-semibold">Memoria, personas e skills</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-3.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+  <div id="modal-3-4" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.4</span><span class="font-semibold">GitHub e documentos</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-4.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+  <div id="modal-3-5" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.5</span><span class="font-semibold">Background agents 24/7 a $0</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-5.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+  <div id="modal-3-6" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.6</span><span class="font-semibold">Alternar Vault, Connected e Cloud</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-6.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+  <div id="modal-3-7" class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.7</span><span class="font-semibold">Hermes no celular de qualquer lugar</span></div><button onclick="closeModal()" class="text-neutral-400 hover:text-white text-2xl leading-none">&times;</button></div><iframe data-src="modulo-3-7.html" class="flex-1 w-full rounded-b-xl"></iframe></div></div>
+
+  <script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ const f=m.querySelector('iframe'); if(f && !f.src && f.dataset.src){ f.src=f.dataset.src; } m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+  <script src="../../assets/learn.js"></script>
+  <script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>
