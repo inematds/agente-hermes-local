@@ -254,6 +254,11 @@
             </div>
             <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t1-p1">Com o Ollama ja instalado (modulo 2.1) e o modelo escolhido (modulo 2.2), o primeiro passo e <strong class="text-blue-400">baixar</strong> o modelo pro seu disco. Vamos usar o <code class="font-mono text-sm bg-dark-700 px-1.5 py-0.5 rounded">qwen3:30b-a3b-q4_K_M</code> — o modelo "rapido" recomendado, com cerca de <strong>18 GB</strong>. O download e a unica etapa que pede internet; depois disso, o modelo roda 100% offline.</p>
 
+            <figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
+              <img src="../../assets/img/ollama-pull.jpg" alt="Terminal rodando ollama pull qwen3:30b-a3b-q4_K_M com barra de progresso em 3%, mostrando 512MB de 18GB baixados" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
+              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Terminal: <code>ollama pull qwen3:30b-a3b-q4_K_M</code> — barra de progresso 3%, 512MB/18GB.</div>
+              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Repare na <strong>barra de progresso</strong> e no contador "512MB / 18GB": o Ollama mostra exatamente quanto falta. Enquanto isso roda, voce pode ir tomar um cafe — sao gigabytes vindo pra sua maquina UMA vez.</figcaption>
+            </figure>
 
             <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
               <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🎯</span> Code-run: baixar o modelo</h3>
@@ -350,6 +355,11 @@
             </div>
             <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t3-p1">Nao curte terminal? Sem problema. O app do Ollama tem uma <strong class="text-blue-400">janela de chat</strong> parecida com qualquer app de mensagem: voce escolhe o modelo numa lista e conversa com o mouse e o teclado, sem digitar comandos. O motor por baixo e o mesmo — muda so a interface.</p>
 
+            <figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
+              <img src="../../assets/img/ollama-app-qwen.jpg" alt="App do Ollama com qwen3:30b-a3b-q4_K_M na lista de modelos e o comando ollama run sendo mostrado" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
+              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ App do Ollama com <code>qwen3:30b-a3b-q4_K_M</code> na lista de modelos.</div>
+              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">No app, o <strong>modelo baixado aparece na lista</strong> pronto pra selecionar. Note que e o mesmo <code class="font-mono">qwen3:30b-a3b-q4_K_M</code> do terminal — app e terminal compartilham os modelos baixados, voce nao baixa duas vezes.</figcaption>
+            </figure>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
@@ -396,6 +406,11 @@
             </div>
             <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t4-p1">Voce vai notar que, antes de responder, o modelo as vezes mostra algo como <strong class="text-blue-400">"Thought for 6.2 seconds"</strong>. Isso e o <strong>thinking</strong> (raciocinio): modelos modernos "pensam" em silencio antes de escrever a resposta final. Esse passo extra costuma deixar a resposta mais correta — em troca de um pouquinho mais de tempo.</p>
 
+            <figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
+              <img src="../../assets/img/qwen-chat.jpg" alt="Conversa com o Qwen mostrando 'Thought for 6.2 seconds' e uma resposta sobre teoria das cores" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
+              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Chat com o Qwen: "Thought for 6.2 seconds" + resposta sobre teoria das cores.</div>
+              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Olhe o <strong>"Thought for 6.2 seconds"</strong> no topo da resposta: o modelo raciocinou ~6s antes de escrever. Esse tempo nao e "travamento" — e o modelo pensando. A resposta sobre teoria das cores veio inteira da sua maquina, sem nuvem.</figcaption>
+            </figure>
 
             <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
               <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> O que o "thinking" muda</h3>
