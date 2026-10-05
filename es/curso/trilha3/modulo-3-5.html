@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Módulo 3.5 · Proyecto 5: Background agents 24/7 a $0 | Hermes Local</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124,58,237,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/agente-hermes-local/curso/trilha3/modulo-3-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/curso/trilha3/modulo-3-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/curso/trilha3/modulo-3-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Ir al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Manos a la obra</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Proyectos</span></a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="Mi recorrido" type="button"><span aria-hidden="true">◷</span><span class="hidden md:inline">Recorrido</span><span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span></button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Apariencia" type="button"><span aria-hidden="true">◑</span><span class="hidden md:inline">Apariencia</span></button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Oscuro</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Claro</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Enfoque</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">Alto contraste</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Fuente</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">Sistema</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Lectura</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Tamaño</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Interlineado</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compacto</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Cómodo</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Verde azulado"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div></div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Alternar entre claro y oscuro">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+<a class="hover:text-purple-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Ruta 3</a><span>/</span>
+<span class="text-purple-400">Módulo 3.5</span>
+</nav>
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.5 · PROYECTO 5</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">♻️ Proyecto 5: Background agents 24/7 a $0</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Hasta aquí conversabas con el agente en tiempo real. En este proyecto, él <strong class="text-purple-400">trabaja solo</strong>: programas tareas con el <code class="text-purple-400">hermes cron</code>, se ejecutan en segundo plano todo el tiempo —24 horas, 7 días— y, como todo es local, el costo es <strong class="text-purple-400">$0</strong>. Funcionará en Vault (privado) y aprenderás a monitorear el estado del agente con <code class="text-purple-400">hermes status</code> e <code class="text-purple-400">hermes doctor</code>.</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Etapas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~35</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Práctico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Proyecto</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:flex lg:gap-10">
+<!-- TOC sticky -->
+<aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
+<nav aria-label="Índice de la página" class="lg:sticky lg:top-20" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-2">Etapa <span class="inema-toc-pos" data-inema-section-counter="">1</span> de 6</p>
+<ol class="space-y-1 text-sm">
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-1">1. Objetivo</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-2">2. Programar (hermes cron)</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-3">3. Por qué $0</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-4">4. En Vault</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-5">5. Monitorear el estado</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-6">6. Resultado</a></li>
+</ol>
+<div aria-label="Progreso del módulo 3.5" aria-valuemax="100" aria-valuemin="0" class="mt-4" data-inema-meter="modulo:3-5" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 de 6</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</nav>
+</aside>
+<div class="lg:flex-1 min-w-0 inema-prose" data-inema-module="3-5" data-inema-track="3" id="modulo-3-5">
+<!-- ETAPA 1 -->
+<section class="mb-16" data-inema-topic="modulo-3-5#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🎯 Objetivo: agentes funcionando todo el tiempo</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-5-t1-p1">Hasta ahora, el agente solo trabajaba cuando estabas delante, escribiendo. Un <strong class="text-purple-400">background agent</strong> y es lo contrario: funciona <em>en segundo plano</em>, por su cuenta, en los horarios que definiste: resumir correos electrónicos cada mañana, revisar un repositorio cada noche, organizar tus notas al final del día. Te vas y él continúa. Y como el modelo es local, dejarlo encendido 24/7 no genera ninguna factura.</p>
+<figure class="rounded-2xl border border-purple-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="Dashboard de Hermes que muestra los paneles Skills, Memory y Activity, con la CLI hermes setup/login/status/cron en el pie" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../../assets/img/hero-os.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Dashboard de Hermes — paneles Skills · Memory · Activity, el "SO de IA".</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Mira el panel <span class="text-purple-400">Activity</span> desde el panel: ahí es donde aparecen los background agents. Cada ejecución programada que se activa queda registrada en ese log, y es tu «ojo» para confirmar que el agente trabajó mientras no estabas. La CLI del pie de página (incluido el <code class="text-purple-400">hermes cron</code>) y así creas estas programaciones.</figcaption>
+</figure>
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">📋</span> Qué vas a entregar</h3>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>Una tarea <strong>programada</strong> con <code class="text-purple-400">hermes cron</code>.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>La confirmación de que funciona <strong>por sí sola</strong>, sin que estés presente.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>Todo en <strong>Vault</strong> — privado, sin que nada salga de la máquina.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>El agente <strong>monitoreado</strong> con <code class="text-purple-400">hermes status</code> e <code class="text-purple-400">hermes doctor</code>.</span></li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Requisitos previos:</strong> agente Hermes ya instalado y conectado al modelo local (Proyectos 2 y 3). Aquí usamos la CLI real de Hermes: los comandos <code class="text-purple-400">hermes cron</code>, <code class="text-purple-400">hermes status</code> e <code class="text-purple-400">hermes doctor</code> son reales; lo que no tiene un comando propio (como activar Vault) lo describimos como una acción en la interfaz.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Agente en segundo plano</span><p class="text-sm text-neutral-400 mt-1">Agente que se ejecuta en segundo plano, sin que estés presente.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">24/7</span><p class="text-sm text-neutral-400 mt-1">Disponible todo el día, todos los días.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Panel Activity</span><p class="text-sm text-neutral-400 mt-1">Dónde ves cada ejecución programada que se activó.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Costo $0</span><p class="text-sm text-neutral-400 mt-1">Ejecutar en local no tiene costo por ejecución.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 2 -->
+<section class="mb-16" data-inema-topic="modulo-3-5#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">⏰ Etapa 1 — Programar con hermes cron</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-5-t2-p1">El comando que crea la programación y el <strong class="text-purple-400"><code>hermes cron</code></strong>. Abre el administrador de tareas recurrentes de Hermes, donde indicas <em>qué</em> el agente debe hacer y <em>cuando</em>. A partir de ahí, Hermes ejecuta esa tarea a la hora acordada, incluso cuando no estás frente al teclado.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">¿Nuevo por aquí?</strong> "Cron" es un término clásico de la informática: es el sistema que activa una tarea <em>recurrente</em> en horarios fijos («todas las mañanas a las 8h», «todos los lunes»). El <code class="text-purple-400">hermes cron</code> lleva esta idea al agente: en vez de que tengas que pedirlo cada vez, recuerda hacerlo por sí solo.</p>
+</div>
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objetivo del comando</h3>
+<p class="text-sm text-neutral-300 mb-4">Abrir el administrador de tareas programadas de Hermes para crear una tarea recurrente que el agente ejecutará por su cuenta.</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">hermes cron</code></pre>
+<p class="text-sm text-neutral-300 mt-4">Hermes abre el asistente de programación. <strong>Sigue el prompt interactivo</strong> (o la interfaz del dashboard) para definir la tarea; por ejemplo: <span class="italic">"&lt;tu tarea&gt;"</span> = «resumir mis notas de la carpeta X todos los días a las 19h». Eliges la tarea, la recurrencia y el modelo local que la ejecutará.</p>
+<div class="mt-4 border-t border-dark-600 pt-3">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">Cómo verificar:</strong> al terminar, la programación aparece en la lista (ejecuta <code class="text-purple-400">hermes cron</code> de nuevo para ver la lista) y la tarea pasa a aparecer en el panel <em>Activity</em> en cuanto lo ejecutes por primera vez.</p>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🔎</span> Cómo verificar esta etapa</h3>
+<p class="text-neutral-300 text-sm">Crea una programación de prueba con horario <strong>siguiente</strong> (p. ej., dentro de unos minutos). Cuando llegue la hora, comprueba en el panel <em>Activity</em> que la tarea se ejecutó: esa es la señal de que el <code class="text-purple-400">hermes cron</code> está activando al agente por sí solo.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">hermes cron</span><p class="text-sm text-neutral-400 mt-1">Comando que abre el administrador de tareas programadas.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Tarea recurrente</span><p class="text-sm text-neutral-400 mt-1">Algo que se repite en un horario fijo.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Prompt interactivo</span><p class="text-sm text-neutral-400 mt-1">El asistente donde defines qué y cuándo.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Activación automática</span><p class="text-sm text-neutral-400 mt-1">Hermes se ejecuta sin que se lo pidas de nuevo.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 3 -->
+<section class="mb-16" data-inema-topic="modulo-3-5#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">💸 Etapa 2 — Por qué esto cuesta $0</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-5-t3-p1">Aquí está el truco de los agentes locales en segundo plano. En un servicio en la nube, dejar un agente funcionando 24/7 sería <strong class="text-red-400">caro</strong>: cada ejecución, cada token generado, se suma a la factura, y un loop que se dispara todo el día termina en una cuenta aterradora a fin de mes. Localmente, después de descargar el modelo, <strong class="text-purple-400">cada ejecución es gratuita</strong>. No hay ningún medidor. Solo pagas la energía que la máquina ya consumiría.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo del cron: el reloj activa el agente local en un bucle 24/7 y cada ciclo cuesta cero" class="w-full h-auto" role="img" viewbox="0 0 980 240">
+<defs>
+<filter height="180%" id="m35-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m35-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m35-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#m35-grid)" height="240" width="980" x="0" y="0"></rect>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="490" y="28">El ciclo de cron: se activa, se ejecuta, se repite — 24/7, a $0</text>
+<g font-family="Inter,sans-serif">
+<!-- relogio -->
+<g class="wf-a" filter="url(#m35-glow)"><circle cx="150" cy="135" fill="#1a1230" r="56" stroke="#a855f7" stroke-width="2.5"></circle></g>
+<circle cx="150" cy="135" fill="none" opacity="0.4" r="56" stroke="#c084fc" stroke-width="1"></circle>
+<line stroke="#c084fc" stroke-linecap="round" stroke-width="3" x1="150" x2="150" y1="135" y2="100"></line>
+<line stroke="#c084fc" stroke-linecap="round" stroke-width="3" x1="150" x2="178" y1="135" y2="148"></line>
+<circle cx="150" cy="135" fill="#c084fc" r="4"></circle>
+<text fill="#e9d5ff" font-size="13" text-anchor="middle" x="150" y="212">⏰ hermes cron</text>
+<!-- seta dispara -->
+<path d="M210,118 C300,90 360,90 410,115" fill="none" marker-end="url(#m35-ah)" stroke="#c084fc" stroke-width="2.5"></path>
+<text fill="#c084fc" font-size="12" text-anchor="middle" x="310" y="92">inicia la tarea</text>
+<!-- agente -->
+<g filter="url(#m35-glow)"><rect fill="#1a1230" height="80" rx="16" stroke="#c084fc" stroke-width="2.5" width="190" x="415" y="100"></rect></g>
+<text fill="#c084fc" font-size="15" font-weight="700" text-anchor="middle" x="510" y="135">Agente local</text>
+<text fill="#38bdf8" font-size="12" text-anchor="middle" x="510" y="157">ejecuta la tarea</text>
+<!-- seta resultado -->
+<path d="M605,140 L720,140" fill="none" marker-end="url(#m35-ah)" stroke="#38bdf8" stroke-width="2.5"></path>
+<rect fill="#0e1622" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="215" x="725" y="105"></rect>
+<text fill="#7dd3fc" font-size="14" font-weight="600" text-anchor="middle" x="832" y="136">Resultado en</text>
+<text fill="#7dd3fc" font-size="14" font-weight="600" text-anchor="middle" x="832" y="157">Activity</text>
+<!-- loop de volta -->
+<path d="M725,168 C560,225 320,225 170,196" fill="none" marker-end="url(#m35-ah)" stroke="#a855f7" stroke-dasharray="7 6" stroke-width="2"></path>
+<text fill="#a855f7" font-size="12" text-anchor="middle" x="450" y="232">…y en la próxima hora programada, se repite</text>
+<!-- badge $0 -->
+<g filter="url(#m35-glow)"><circle cx="900" cy="48" fill="#0e1622" r="26" stroke="#38bdf8" stroke-width="2.5"></circle></g>
+<text fill="#7dd3fc" font-size="16" font-weight="800" text-anchor="middle" x="900" y="54">$0</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-400 mt-1 px-1">O <span class="text-purple-400">reloj de cron</span> inicia el <span class="text-purple-400">agente local</span>, que ejecuta la tarea y guarda el resultado en el <span class="text-sky-400">Activity</span>; luego el ciclo vuelve a empezar a la siguiente hora programada. Fíjate en la insignia <span class="text-sky-400">$0</span>: cada vuelta de ese loop es gratis porque la inteligencia está en tu máquina; es lo contrario de la nube, donde cada vuelta de esas se sumaría a la factura.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+<h4 class="font-bold text-purple-400 mb-4">✓ Local 24/7</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>$0 por ejecución — ejecútalo tantas veces como quieras.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Sin límite de solicitudes: ningún "alcanzaste el límite".</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Factura predecible: cero, siempre.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Puedes dejar loops «costosos en tokens» en ejecución sin miedo.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Lo mismo en la nube</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Cada ejecución programada tiene un costo por token.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Un ciclo 24/7 se convierte en una sorpresa costosa en la factura.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Los límites de solicitudes pueden bloquear la programación.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Terminas "racionando" el agente para ahorrar.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-sm text-neutral-300">Como no hay costo por ejecución, conviene empezar con generosidad: programa varias tareas pequeñas y observa cuáles realmente ayudan. El único límite es el tiempo de CPU/GPU de tu computadora, no tu tarjeta de crédito.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">$0 por ejecución</span><p class="text-sm text-neutral-400 mt-1">Ejecutar en local no tiene costo por tarea ni por token.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Costo de la nube</span><p class="text-sm text-neutral-400 mt-1">Un loop 24/7 en la nube multiplica la factura.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Sin límite de solicitudes</span><p class="text-sm text-neutral-400 mt-1">Ningún límite de uso impuesto por terceros.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Límite real</span><p class="text-sm text-neutral-400 mt-1">El tiempo de máquina, no el dinero.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 4 -->
+<section class="mb-16" data-inema-topic="modulo-3-5#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🗄️ Etapa 3 — Ejecutar en Vault (privado)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-5-t4-p1">Un agente que funciona por sí solo 24/7 maneja tus datos sin que supervises cada paso. Por eso, el lugar adecuado para él es el <strong class="text-purple-400">Vault</strong> — el modo aislado de la red que viste en la Ruta 1: todo ocurre localmente, nada sale por Internet. Así, tu agente en segundo plano puede revisar notas, correos o repositorios sensibles con la garantía de que esos datos nunca se transmiten al exterior.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Recordatorio:</strong> "Vault" y el modo privado/airgapped de Hermes (literalmente, como desconectar el cable de internet). No tiene un comando propio en la lista de CLI: lo activas mediante <strong>interfaz de Hermes</strong> (el selector de modo / interruptor de privacidad). Déjalo activado antes de que se ejecute la programación.</p>
+</div>
+<div class="space-y-4 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Confirma el modelo local</h4><p class="text-sm text-neutral-400">La programación debe ejecutarse en tu modelo de Ollama (ej.: <span class="text-purple-400">qwen3-coder-64k</span>), no en la nube.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Activa el Vault en la UI</h4><p class="text-sm text-neutral-400">En Hermes, activa el modo <span class="text-purple-400">Vault</span> (airgapped) antes de que el agente se ejecute por su cuenta.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Deja que se active la programación</h4><p class="text-sm text-neutral-400">Cuando se ejecute el cron, lo hará en Vault: privado de principio a fin.</p></div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
+<h4 class="font-bold text-purple-400 mb-4">✓ Ideal para ejecutar en Vault 24/7</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Resumir correos o notas con datos personales.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Analizar código propietario de un repo privado.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Organizar archivos de clientes y financieros.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Cualquier tarea sujeta a normas de cumplimiento (salud, derecho).</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Cuidados</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Olvidar activar el Vault: la tarea puede usar la nube.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Apuntar por error a un modelo en la nube en la programación.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Una tarea que requiere internet (búsqueda web) no funciona en Vault puro.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Máquina apagada = el agente no se ejecuta (el «servidor» eres tú).</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🔎</span> Cómo verificar esta etapa</h3>
+<p class="text-neutral-300 text-sm">Con el Vault activado, <strong>desconecta internet</strong> y deja que se ejecute la programación (o fuerza una ejecución). Si la tarea termina sin conexión y el resultado aparece en el <em>Activity</em>, tienes un agente en segundo plano 100% privado.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Vault</span><p class="text-sm text-neutral-400 mt-1">Modo airgapped: todo local, nada sale.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Airgapped</span><p class="text-sm text-neutral-400 mt-1">Cómo desconectar el cable de internet.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Privacidad autónoma</span><p class="text-sm text-neutral-400 mt-1">Privado incluso cuando no estás supervisando.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Modelo local</span><p class="text-sm text-neutral-400 mt-1">La programación debe usar Ollama, no la nube.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 5 -->
+<section class="mb-16" data-inema-topic="modulo-3-5#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🩺 Etapa 4 — Monitorear la salud del agente</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-5-t5-p1">Un agente que funciona por sí solo necesita ser <strong class="text-purple-400">supervisado ligeramente</strong>: quieres saber si está activo y si funciona bien. Dos comandos reales de la CLI hacen eso. El <code class="text-purple-400">hermes status</code> muestra el <em>estado</em> actual del agente (encendido, conectado, qué modelo). El <code class="text-purple-400">hermes doctor</code> haz un <em>diagnóstico del estado</em>, señalando qué está mal y cómo corregirlo.</p>
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objetivo de los comandos</h3>
+<p class="text-sm text-neutral-300 mb-4">Confirmar que el agente esté activo y diagnosticar cualquier problema antes de que afecte las tareas programadas.</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">hermes status
+hermes doctor</code></pre>
+<p class="text-sm text-neutral-300 mt-4"><code class="text-purple-400">hermes status</code> = «¿cómo está el agente ahora?» (activo, modelo, conexión). <code class="text-purple-400">hermes doctor</code> = «¿hay algo mal?»; revisa la instalación y el estado, y sugiere cómo solucionarlo.</p>
+<div class="mt-4 border-t border-dark-600 pt-3">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">Cómo verificar:</strong> <code class="text-purple-400">hermes status</code> debe indicar el agente activo y el modelo local correcto; <code class="text-purple-400">hermes doctor</code> debe terminar sin errores críticos (o enumerar exactamente qué hay que ajustar).</p>
+</div>
+</div>
+<div class="space-y-4 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Revisa el estado</h4><p class="text-sm text-neutral-400">Ejecuta <code class="text-purple-400">hermes status</code> y confirma: agente activo, modelo local conectado.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Ejecuta el doctor</h4><p class="text-sm text-neutral-400"><code class="text-purple-400">hermes doctor</code> diagnostica el estado y señala ajustes (PATH, conexión, modelo faltante).</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Revisa el Activity</h4><p class="text-sm text-neutral-400">Crúzalo con el panel <span class="text-purple-400">Activity</span>: ¿las ejecuciones programadas realmente están ocurriendo?</p></div>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Consejo práctico</h3>
+<p class="text-sm text-neutral-300">Acostúmbrate a ejecutar <code class="text-purple-400">hermes status</code> de vez en cuando, es barato y te avisa pronto si el agente se cayó. Si algo parece extraño, el <code class="text-purple-400">hermes doctor</code> y el primer lugar que debes revisar antes de cambiar la configuración.</p>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🔎</span> Cómo verificar esta etapa</h3>
+<p class="text-neutral-300 text-sm"><code class="text-purple-400">hermes status</code> muestra el agente <strong>activo y con el modelo local</strong>, e <code class="text-purple-400">hermes doctor</code> termina <strong>sin errores críticos</strong>. Con ambos en OK, sabes que los agentes en segundo plano se ejecutarán de forma confiable.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">hermes status</span><p class="text-sm text-neutral-400 mt-1">Estado actual: en línea, modelo, conexión.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">hermes doctor</span><p class="text-sm text-neutral-400 mt-1">Diagnóstico de estado con sugerencia de solución.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Observabilidad</span><p class="text-sm text-neutral-400 mt-1">Saber qué está haciendo el agente sin tener que adivinar.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Activity como prueba</span><p class="text-sm text-neutral-400 mt-1">El registro confirma que las ejecuciones se realizaron.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 6 -->
+<section class="mb-16" data-inema-topic="modulo-3-5#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">✅ Etapa 5 — Resultado: automatización gratis y privada</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-5-t6-p1">Si llegaste hasta aquí, tienes un <strong class="text-purple-400">agente trabajando por su cuenta</strong>: se activa a la hora que programaste, se ejecuta en Vault (privado), no cobra nada por ejecución y sabes cómo vigilar su estado. Es el paso en el que la IA local deja de ser «una ventana de chat» y se convierte en <em>infraestructura</em> que trabaja para ti en segundo plano, 24/7.</p>
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🏁</span> Resultado esperado</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Una tarea programada con <code class="text-purple-400">hermes cron</code> se inicia sola a la hora indicada.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Aparece registrada en el panel <em>Activity</em>.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span>Se ejecuta en Vault, sin que nada salga de la máquina, a $0.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400">✓</span><span><code class="text-purple-400">hermes status</code> e <code class="text-purple-400">hermes doctor</code> confirman que el agente está en buen estado.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> Si algo no coincide</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>¿La tarea no se activó? Ejecuta <code class="text-purple-400">hermes cron</code> y confirma que la programación exista.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>¿El agente "no está disponible"? Comprueba <code class="text-purple-400">hermes status</code> y después <code class="text-purple-400">hermes doctor</code>.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>¿Salen datos? Confirma que Vault esté activado y que el modelo sea local.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>¿No aparece nada en Activity? Puede que la computadora estuviera apagada a la hora programada.</span></li>
+</ul>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-5#q1">
+<p class="font-medium mb-4">Autocomprobación (opcional): ¿por qué un agente en segundo plano 24/7 cuesta $0 cuando se ejecuta localmente?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque Hermes da créditos gratis de nube cada mes.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque la inteligencia se ejecuta en tu propia máquina: no hay cobro por token ni por ejecución, solo la energía que la PC ya consumiría.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque el cron limita al agente a una ejecución por día.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-8">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Resumen del proyecto</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Programado con hermes cron</strong><span class="text-neutral-400"> — tarea recurrente que el agente ejecuta por su cuenta.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Costo $0</strong><span class="text-neutral-400"> — ejecutarlo localmente 24/7 no genera una factura, a diferencia de la nube.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">En Vault</strong><span class="text-neutral-400"> — privado y aislado de la red, incluso al ejecutarse sin supervisión.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Monitoreado</strong><span class="text-neutral-400"> — hermes status y hermes doctor confirman que el agente está funcionando correctamente.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-purple-400 mb-2">Siguiente módulo:</h3>
+<p class="text-neutral-300">3.6 — Proyecto 6: Alternar entre Vault, Connected y Cloud</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la Ruta</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-6.html">Siguiente módulo →</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Agente Hermes + Ollama — Tu SO de IA 100% privado</p>
+<p>Módulo 3.5 · Ruta 3 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init({ autoResume: false }); }
+    document.addEventListener('DOMContentLoaded', function(){
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-5#q1', {
+          answer: 1,
+          explain: {
+            0: 'Nao — o Hermes nao depende de creditos de nuvem. O $0 vem de rodar na sua propria maquina.',
+            1: 'Isso! A inteligencia roda local: sem cobranca por token nem por execucao, so a energia que o PC ja usaria.',
+            2: 'Nao — o cron pode disparar quantas vezes voce quiser; o que torna $0 e ser local, nao o numero de execucoes.'
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

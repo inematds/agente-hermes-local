@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Track 2 · Hands-on | Hermes Local</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/agente-hermes-local/curso/trilha2/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/curso/trilha2/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/curso/trilha2/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentals</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Hands-on</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projects</span></a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="My journey" type="button"><span aria-hidden="true">◷</span><span class="hidden md:inline">Journey</span><span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span></button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Appearance" type="button"><span aria-hidden="true">◑</span><span class="hidden md:inline">Appearance</span></button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div><p class="text-xs text-neutral-400 mb-1.5">Theme</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Dark</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Of course</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Focus</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">High contrast</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Source</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">System</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Reading</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Size</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Line spacing</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compact</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Comfortable</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Accent</p><div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Teal"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div></div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Toggle light/dark">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+<a class="hover:text-blue-400" href="../../index.html">Start</a><span>/</span><span class="text-blue-400">Track 2</span>
+</nav>
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">TRAIL 2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🛠️ Hands-on</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">Enough theory — time to install. You’ll install Ollama on your computer, choose a model that fits your hardware, download it and chat with it, prepare the agent model (Qwen 3 Coder with 64k context), and connect everything to the Hermes Agent — desktop, terminal, or Telegram. Each module includes commands ready to copy and paste.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Track 2 hands-on workflow: install Ollama, download a model, create the 64k model, and connect it to Agent Hermes running 100% locally" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="t2h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="t2h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t2h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t2h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#t2h-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1622" height="50" rx="12" stroke="#60a5fa" stroke-width="2" width="150" x="30" y="90"></rect><text fill="#bfdbfe" text-anchor="middle" x="105" y="112">1 · install</text><text fill="#93c5fd" font-size="11" text-anchor="middle" x="105" y="129">Ollama</text></g>
+<path d="M180,115 L222,115" fill="none" marker-end="url(#t2h-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<g class="wf-a"><rect fill="#0e1622" height="50" rx="12" stroke="#60a5fa" stroke-width="2" width="150" x="222" y="90"></rect><text fill="#bfdbfe" text-anchor="middle" x="297" y="112">2 · download</text><text fill="#93c5fd" font-size="11" text-anchor="middle" x="297" y="129">a model</text></g>
+<path d="M372,115 L414,115" fill="none" marker-end="url(#t2h-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<g class="wf-a"><rect fill="#0e1622" height="50" rx="12" stroke="#60a5fa" stroke-width="2" width="150" x="414" y="90"></rect><text fill="#bfdbfe" text-anchor="middle" x="489" y="112">3 · create 64k</text><text fill="#93c5fd" font-size="11" text-anchor="middle" x="489" y="129">qwen-coder-64k</text></g>
+<path d="M564,115 L606,115" fill="none" marker-end="url(#t2h-ah)" stroke="#38bdf8" stroke-width="2"></path>
+<g class="wf-a" filter="url(#t2h-glow)"><rect fill="url(#t2h-grad)" height="62" opacity="0.16" rx="14" stroke="url(#t2h-grad)" stroke-width="2.5" width="170" x="606" y="84"></rect><text fill="#60a5fa" font-size="14" font-weight="700" text-anchor="middle" x="691" y="110">4 · Hermes</text><text fill="#bfdbfe" font-size="11" text-anchor="middle" x="691" y="129">connected local model</text></g>
+<g filter="url(#t2h-glow)"><rect fill="#1f1604" height="52" rx="13" stroke="#FACC15" stroke-width="2.5" width="142" x="828" y="89"></rect></g>
+<text fill="#FACC15" font-size="13" font-weight="700" text-anchor="middle" x="899" y="111">100% local</text>
+<text fill="#fde68a" font-size="11" text-anchor="middle" x="899" y="129">$0 · offline</text>
+<path d="M776,115 C800,115 808,115 828,115" fill="none" marker-end="url(#t2h-ah)" opacity="0.6" stroke="#38bdf8" stroke-width="1.8"></path>
+</g>
+</svg>
+<p class="text-xs text-neutral-400 mt-1 px-1">The four practical steps in this track, from left to right: <span class="text-blue-400">install Ollama</span>, download a model, create the 64k version, and plug everything into the <span class="text-blue-400">Hermes Agent</span> — arriving at an agent running 100% on your machine.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Modules</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">36</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~3h</div><div class="text-xs text-neutral-400">Duration</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practical</div><div class="text-xs text-neutral-400">Level</div></div>
+</div>
+<div aria-label="Learning path 2 progress" aria-valuemax="100" aria-valuemin="0" class="mt-6 max-w-md" data-inema-meter="trilha:2" role="progressbar">
+<div class="flex items-center justify-between mb-1"><span class="text-xs text-neutral-400">Learning path progress</span><span class="text-xs font-bold text-blue-400" data-inema-meter-pct="">0%</span></div>
+<div class="inema-bar h-2 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 36</span> topics</span>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- MAPA DA TRILHA -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Track map</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-1">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">⬇️ Install Ollama</h3>
+<p class="text-xs text-neutral-400">One command and you’re done</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-2">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🎚️ The right model</h3>
+<p class="text-xs text-neutral-400">Fit your hardware</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-3">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">💬 Your 1st model</h3>
+<p class="text-xs text-neutral-400">Download and chat</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-4">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🪟 The agent model</h3>
+<p class="text-xs text-neutral-400">Qwen 3 Coder 64k</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-5">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🔌 Connect to Hermes</h3>
+<p class="text-xs text-neutral-400">Plugged-in local model</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-6">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🖥️ Desktop and Telegram</h3>
+<p class="text-xs text-neutral-400">Three ways to communicate</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Detailed content</h2>
+<!-- MODULO 2.1 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-1" data-inema-track="2" id="modulo-2-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">⬇️ Install Ollama</h3>
+<p class="text-neutral-400 text-sm mb-3">The first practical step: get Ollama from the website, install it via the terminal (Mac/Linux) or the installer (Windows), and check that everything worked — with commands ready to paste.</p>
+<div aria-label="Module 2.1 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:2-1" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t21-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🌐</span><div><span class="font-medium">Get Ollama</span><span class="text-neutral-500 text-sm ml-2">- ollama.com → Download</span></div></button><div class="topic-explanation px-6 pb-4" id="t21-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You start on the official ollama.com site, where you’ll find the Download button and the installation command.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Getting it from the official source avoids fake versions and ensures you get the right installer for your system.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Official source, Download, system detection.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t21-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">💻</span><div><span class="font-medium">Install via terminal</span><span class="text-neutral-500 text-sm ml-2">- one command (Mac/Linux)</span></div></button><div class="topic-explanation px-6 pb-4" id="t21-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">On Mac/Linux, a single command (curl ... | sh) downloads and installs Ollama all at once.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the fastest way and the one you’ll actually paste in—without clicking through screens.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">curl, pipe to sh, installation script.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t21-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🪟</span><div><span class="font-medium">Windows / Mac app</span><span class="text-neutral-500 text-sm ml-2">- the graphical installer</span></div></button><div class="topic-explanation px-6 pb-4" id="t21-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">On Windows (and Mac too), you can download the installer from the website and click to install.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">If you don’t like the terminal, this is the command-line-free path.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Graphical installer, tray app.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t21-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">✅</span><div><span class="font-medium">Check the installation</span><span class="text-neutral-500 text-sm ml-2">- ollama --version</span></div></button><div class="topic-explanation px-6 pb-4" id="t21-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Running ollama --version and ollama list confirms it’s installed and responding.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Checking before moving on prevents wasting time later on a "command not found" error.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Verification, --version, empty list.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t21-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🧰</span><div><span class="font-medium">The app vs. the terminal</span><span class="text-neutral-500 text-sm ml-2">- two paths</span></div></button><div class="topic-explanation px-6 pb-4" id="t21-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Ollama has a windowed app and terminal commands—they do the same thing.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Knowing both exist lets you choose whichever feels more comfortable.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">GUI vs CLI, same engine underneath.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t21-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🆘</span><div><span class="font-medium">Did it go wrong?</span><span class="text-neutral-500 text-sm ml-2">- PATH and reopening the terminal</span></div></button><div class="topic-explanation px-6 pb-4" id="t21-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The most common issue is that the terminal can't "see" the newly installed ollama—just reopen the terminal.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Resolves 90% of installation scares without needing to reinstall anything.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">PATH, reopen the terminal, new session.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-1')">View in Modal</button><a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-1.html">View Full</a></div>
+</div>
+<!-- MODULO 2.2 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-2" data-inema-track="2" id="modulo-2-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🎚️ Choose the right model for your hardware</h3>
+<p class="text-neutral-400 text-sm mb-3">Before downloading gigabytes, find out what your machine can handle: check the hardware, ask Hermes for a recommendation, understand the effort levels, and learn the rule of leaving RAM headroom.</p>
+<div aria-label="Module 2.2 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:2-2" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t22-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🖥️</span><div><span class="font-medium">Know your hardware</span><span class="text-neutral-500 text-sm ml-2">- RAM and chip</span></div></button><div class="topic-explanation px-6 pb-4" id="t22-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Check how much memory (RAM) and which chip you have — on a Mac, in “About This Mac.”</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">RAM determines which model fits; without that, you're downloading blindly.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">RAM, chip/GPU, “About This Mac”.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t22-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🤝</span><div><span class="font-medium">Ask for a recommendation</span><span class="text-neutral-500 text-sm ml-2">- Hermes suggests</span></div></button><div class="topic-explanation px-6 pb-4" id="t22-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You show Hermes your hardware, and it suggests models that will fit (e.g., M4 Max 36GB → Qwen 32B / 30B-A3B).</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Takes the guesswork out of the choice; the agent itself points you in the right direction.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Recommendations by hardware, options by size.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t22-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🎚️</span><div><span class="font-medium">Effort levels</span><span class="text-neutral-500 text-sm ml-2">- Minimal → Max</span></div></button><div class="topic-explanation px-6 pb-4" id="t22-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">In the Hermes selector, you adjust the effort (Minimal, Low, Medium, High, Max) and toggle Thinking/Fast.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">This is how you balance quality and speed without switching models.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Effort, Thinking, Fast.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t22-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">⚖️</span><div><span class="font-medium">Headroom rule</span><span class="text-neutral-500 text-sm ml-2">- leave some RAM free</span></div></button><div class="topic-explanation px-6 pb-4" id="t22-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The model needs to fit in RAM with room for the rest of the system; if it’s too full, the machine freezes.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Avoids the classic mistake of choosing the largest model and making the machine choke.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Headroom, RAM buffer, download→test→delete.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t22-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🏃</span><div><span class="font-medium">Fast vs. capable</span><span class="text-neutral-500 text-sm ml-2">- what q4_K_M is</span></div></button><div class="topic-explanation px-6 pb-4" id="t22-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The q4_K_M suffix indicates a quantized (compressed) model that takes up less memory.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Understanding quantization lets you fit larger models in the same RAM.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Quantization, q4_K_M, size vs. accuracy.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t22-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🎯</span><div><span class="font-medium">Which one to download first</span><span class="text-neutral-500 text-sm ml-2">- the practical choice</span></div></button><div class="topic-explanation px-6 pb-4" id="t22-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A concrete recommendation to get started: qwen3:30b-a3b-q4_K_M, fast and well-balanced.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Starting with a tested model helps you avoid choice paralysis.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">First model, qwen3:30b-a3b-q4_K_M.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-2')">View in Modal</button><a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-2.html">View Full</a></div>
+</div>
+<!-- MODULO 2.3 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-3" data-inema-track="2" id="modulo-2-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">💬 Download and chat with your 1st model</h3>
+<p class="text-neutral-400 text-sm mb-3">The “wow” moment: download the model, run it in the terminal or app, understand “thinking,” and manage what’s on disk — all running offline on your machine.</p>
+<div aria-label="Module 2.3 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:2-3" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t23-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">⬇️</span><div><span class="font-medium">Download the model</span><span class="text-neutral-500 text-sm ml-2">- ollama pull</span></div></button><div class="topic-explanation px-6 pb-4" id="t23-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The ollama pull command downloads the chosen model (about 18 GB) to your drive, with a progress bar.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">And it’s the only time you need the internet; after that, it runs offline.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">pull, one-time download, progress bar.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t23-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">💬</span><div><span class="font-medium">Chat in the terminal</span><span class="text-neutral-500 text-sm ml-2">- ollama run and /bye</span></div></button><div class="topic-explanation px-6 pb-4" id="t23-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">ollama run opens a chat in the terminal itself; you type, it responds, and you exit with /bye.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the most direct way to prove that the local model works.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">run, prompt in the terminal, /bye.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t23-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🖼️</span><div><span class="font-medium">Chat in the app</span><span class="text-neutral-500 text-sm ml-2">- no terminal</span></div></button><div class="topic-explanation px-6 pb-4" id="t23-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The Ollama app has a chat window; choose a model from the list and chat as you would in a regular app.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the comfortable path for those who prefer the mouse to the keyboard.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Chat app, model selector.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t23-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🧠</span><div><span class="font-medium">The “thinking”</span><span class="text-neutral-500 text-sm ml-2">- Thought for 6.2s</span></div></button><div class="topic-explanation px-6 pb-4" id="t23-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Reasoning models "think" before responding; the app shows something like "Thought for 6.2 seconds".</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Explains why the response takes a little while — and why it’s usually better.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Thinking, reasoning, “thinking” time.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t23-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">⏱️</span><div><span class="font-medium">Speed and the first load</span><span class="text-neutral-500 text-sm ml-2">- load into memory</span></div></button><div class="topic-explanation px-6 pb-4" id="t23-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The first time you ask a question, the model loads into memory and takes longer; after that, it gets faster.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Knowing this helps you avoid thinking it’s “frozen” right away.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Cold start, loading into RAM, warm-up.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t23-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🗑️</span><div><span class="font-medium">Manage models</span><span class="text-neutral-500 text-sm ml-2">- list, ps and rm</span></div></button><div class="topic-explanation px-6 pb-4" id="t23-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">ollama list shows what you downloaded, ollama ps shows what’s running, and ollama rm deletes a model.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You’ll try several; deleting the ones you don’t use frees up disk space.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">list, ps, rm, disk cleanup.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-3')">View in Modal</button><a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-3.html">View Full</a></div>
+</div>
+<!-- MODULO 2.4 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-4" data-inema-track="2" id="modulo-2-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🪟 The agent model: Qwen 3 Coder 64k</h3>
+<p class="text-neutral-400 text-sm mb-3">The agent requires 64k of context. You’ll understand why, learn about Qwen 3 Coder, write a Modelfile that raises num_ctx, and create the 64k derived model with one command.</p>
+<div aria-label="Module 2.4 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:2-4" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t24-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">❓</span><div><span class="font-medium">Why another model</span><span class="text-neutral-500 text-sm ml-2">- the agent requires 64k</span></div></button><div class="topic-explanation px-6 pb-4" id="t24-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Hermes Agent needs a model with 64,000 context tokens; the one from module 2.3 doesn’t always have that.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s why you prepare a specific model before connecting the agent.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">64k requirement, agent model.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t24-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔎</span><div><span class="font-medium">What Qwen 3 Coder is</span><span class="text-neutral-500 text-sm ml-2">- good at coding and tools</span></div></button><div class="topic-explanation px-6 pb-4" id="t24-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">An open model from the Qwen family designed for coding and tool use—ideal for an agent.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Knowing why it’s chosen helps you switch later with confidence.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Qwen 3 Coder, a model for agents and tools.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t24-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🧩</span><div><span class="font-medium">The num_ctx trick</span><span class="text-neutral-500 text-sm ml-2">- a Modelfile</span></div></button><div class="topic-explanation px-6 pb-4" id="t24-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A Modelfile is a short recipe: it starts with a base model and sets num_ctx to 65536 (64k).</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">This is how you “make” the 64k model from one you already have.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Modelfile, FROM, PARAMETER num_ctx 65536.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t24-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🏗️</span><div><span class="font-medium">Create the derived model</span><span class="text-neutral-500 text-sm ml-2">- ollama create</span></div></button><div class="topic-explanation px-6 pb-4" id="t24-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">ollama create qwen3-coder-64k -f Modelfile creates a new model with the context set to 64k.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">This derived model is what you’ll point Hermes to in module 2.5.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">create, derived model, -f Modelfile.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t24-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">✅</span><div><span class="font-medium">Check</span><span class="text-neutral-500 text-sm ml-2">- ollama show and list</span></div></button><div class="topic-explanation px-6 pb-4" id="t24-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">ollama show qwen3-coder-64k and ollama list confirm that the model exists and has 64k.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Checking before plugging it into the agent prevents context errors down the line.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">show, list, check num_ctx.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t24-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">⚖️</span><div><span class="font-medium">64k uses memory</span><span class="text-neutral-500 text-sm ml-2">- large context takes a toll</span></div></button><div class="topic-explanation px-6 pb-4" id="t24-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A larger context uses more RAM; 64k uses more than the same model's default context.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Turn the headroom rule back on: you need spare capacity to run the agent.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Context memory cost, headroom.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-4')">View in Modal</button><a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-4.html">View Full</a></div>
+</div>
+<!-- MODULO 2.5 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-5" data-inema-track="2" id="modulo-2-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔌 Connect the local model to the Hermes Agent</h3>
+<p class="text-neutral-400 text-sm mb-3">The final connection: install/update Hermes (open source, MIT, Nous Research), select the local 64k model, diagnose and test the connection while running 100% offline.</p>
+<div aria-label="Module 2.5 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:2-5" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t25-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🌐</span><div><span class="font-medium">What Hermes is</span><span class="text-neutral-500 text-sm ml-2">- open-source, MIT</span></div></button><div class="topic-explanation px-6 pb-4" id="t25-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Hermes Agent is the open-source “AI OS” from Nous Research, under the MIT license.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Open source + MIT = you can run, audit, and adapt it without restrictions.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Open source, MIT license, Nous Research.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t25-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">⬇️</span><div><span class="font-medium">Install / update</span><span class="text-neutral-500 text-sm ml-2">- hermes update</span></div></button><div class="topic-explanation px-6 pb-4" id="t25-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">hermes update brings Hermes up to the latest version; when it finishes, "HERMES IS READY" appears.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Starting with the latest version helps you avoid bugs that have already been fixed.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">hermes update, "HERMES IS READY".</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t25-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🔗</span><div><span class="font-medium">Select the local model</span><span class="text-neutral-500 text-sm ml-2">- appears in the corner</span></div></button><div class="topic-explanation px-6 pb-4" id="t25-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">In the Hermes selector, you choose qwen3-coder-64k; the active model appears in the lower-right corner.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the step that makes the agent use YOUR local model instead of the cloud.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Model selector, bottom-right corner.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t25-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">📏</span><div><span class="font-medium">The 64k requirement</span><span class="text-neutral-500 text-sm ml-2">- why module 2.4</span></div></button><div class="topic-explanation px-6 pb-4" id="t25-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Hermes only works well with the 64k model; that’s why you prepared the derived version beforehand.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Closes the loop: module 2.4 exists exactly for this moment.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Context requirements, the right model.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t25-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🩺</span><div><span class="font-medium">Diagnostics</span><span class="text-neutral-500 text-sm ml-2">- hermes doctor and status</span></div></button><div class="topic-explanation px-6 pb-4" id="t25-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">hermes doctor checks the installation's health, and hermes status shows its current state.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">They’re your first commands when something won’t connect.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">hermes doctor, hermes status.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t25-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">✅</span><div><span class="font-medium">Test the connection</span><span class="text-neutral-500 text-sm ml-2">- a 100% local "hello"</span></div></button><div class="topic-explanation px-6 pb-4" id="t25-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Send a "hi" in Hermes with the local model selected and see the response come from your machine.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the final proof that the agent is running 100% locally.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Smoke test, local response.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-5')">View in Modal</button><a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-5.html">View Full</a></div>
+</div>
+<!-- MODULO 2.6 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-6" data-inema-track="2" id="modulo-2-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🖥️ Desktop app, terminal, and Telegram</h3>
+<p class="text-neutral-400 text-sm mb-3">Three ways to communicate with Hermes: the desktop app (user-friendly), the terminal (powerful), and Telegram (from anywhere) — plus sessions, branch/fork, and artifacts.</p>
+<div aria-label="Module 2.6 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:2-6" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t26-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🖥️</span><div><span class="font-medium">The desktop app</span><span class="text-neutral-500 text-sm ml-2">- less intimidating</span></div></button><div class="topic-explanation px-6 pb-4" id="t26-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A Hermes app window, friendlier than the terminal for beginners.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the path of least friction for using the agent day to day.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Desktop app, graphical interface.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t26-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">⌨️</span><div><span class="font-medium">The terminal</span><span class="text-neutral-500 text-sm ml-2">- hermes dashboard</span></div></button><div class="topic-explanation px-6 pb-4" id="t26-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">From the terminal, you can run hermes dashboard, hermes setup, and the agent’s other commands.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The terminal is the most powerful and automatable route.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">hermes dashboard, hermes setup.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t26-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">💬</span><div><span class="font-medium">Telegram</span><span class="text-neutral-500 text-sm ml-2">- talk via chat</span></div></button><div class="topic-explanation px-6 pb-4" id="t26-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You can chat with the agent on Telegram, like messaging a contact.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">And that’s what lets you use your phone’s agent from anywhere (Project 7 of Track 3).</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Telegram, remote access, chat.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t26-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🗂️</span><div><span class="font-medium">Sessions</span><span class="text-neutral-500 text-sm ml-2">- persistence vs. session</span></div></button><div class="topic-explanation px-6 pb-4" id="t26-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Each conversation is a “session”; you open New session, and Hermes saves the history.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Organizing by sessions keeps contexts separate (work, study, etc.).</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Session, New session, history.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t26-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🌿</span><div><span class="font-medium">Chat branch / fork</span><span class="text-neutral-500 text-sm ml-2">- two lines</span></div></button><div class="topic-explanation px-6 pb-4" id="t26-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You can "fork" a conversation at a point and continue along two different paths.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Lets you test approaches without losing the original thread.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Branch, fork, parallel lines.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t26-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">📦</span><div><span class="font-medium">Artifacts</span><span class="text-neutral-500 text-sm ml-2">- save outputs</span></div></button><div class="topic-explanation px-6 pb-4" id="t26-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The agent's outputs (code, text, files) can be saved and revisited as artifacts.</p></div><div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">And it’s where the agent’s work “lives,” ready to use later.</p></div><div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Artifacts, saved outputs, reuse.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-6')">View in Modal</button><a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-6.html">View Full</a></div>
+</div>
+<!-- Navegacao entre trilhas -->
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha1/index.html">← Track 1: Fundamentals</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="../trilha3/index.html">Track 3: Projects →</a>
+</div>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Hermes Agent + Ollama — Your 100% Private AI OS</p>
+<p>Track 2 · Hands-on · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<!-- MODAIS (iframe) -->
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-1" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.1</span><span class="font-semibold">Install Ollama</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-2-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-2" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.2</span><span class="font-semibold">Choosing the right model</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-2-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-3" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.3</span><span class="font-semibold">Download and chat</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-2-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-4" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.4</span><span class="font-semibold">The agent’s model: 64k</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-2-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-5" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.5</span><span class="font-semibold">Connect to the Hermes Agent</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-2-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-6" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.6</span><span class="font-semibold">Desktop, terminal, and Telegram</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-2-6.html"></iframe></div></div>
+<script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ const f=m.querySelector('iframe'); if(f && !f.src && f.dataset.src){ f.src=f.dataset.src; } m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>

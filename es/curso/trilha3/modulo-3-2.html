@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Proyecto 2 · Agente Hermes ejecutándose localmente | Hermes Local</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-200 { color: #1f2937; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124,58,237,0.10); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/agente-hermes-local/curso/trilha3/modulo-3-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/curso/trilha3/modulo-3-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/curso/trilha3/modulo-3-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Ir al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Manos a la obra</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Proyectos</span></a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="Mi recorrido" type="button"><span aria-hidden="true">◷</span><span class="hidden md:inline">Recorrido</span><span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span></button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Apariencia" type="button"><span aria-hidden="true">◑</span><span class="hidden md:inline">Apariencia</span></button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Oscuro</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Claro</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Enfoque</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">Alto contraste</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Fuente</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">Sistema</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Lectura</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Tamaño</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Interlineado</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compacto</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Cómodo</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Verde azulado"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div></div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Alternar entre claro y oscuro">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+<a class="hover:text-purple-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Ruta 3</a><span>/</span>
+<span class="text-purple-400">Módulo 3.2</span>
+</nav>
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.2 · PROYECTO</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 Proyecto 2: Agente Hermes ejecutándose localmente (Vault de principio a fin)</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">El salto del Proyecto 1: del chat al <strong>agente completo</strong>. Vas a conectar el modelo de 64k al Agente Hermes, activar el modo Vault (airgapped) y pedirle al agente que ejecute una tarea real, todo sin que salga un solo byte de la máquina. Es el "santo grial" del curso: potente, 100% privado y a $0.</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Etapas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Práctico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Proyecto</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:flex lg:gap-10">
+<!-- TOC sticky -->
+<aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
+<nav aria-label="Índice de la página" class="lg:sticky lg:top-20" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-2">Etapa <span class="inema-toc-pos" data-inema-section-counter="">1</span> de 6</p>
+<ol class="space-y-1 text-sm">
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-1">1. Objetivo</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-2">2. Tener qwen3-coder-64k</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-3">3. Conectarse a Hermes</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-4">4. Activar Vault</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-5">5. Tarea real local</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-purple-400" href="#topico-6">6. Confirmar privacidad</a></li>
+</ol>
+<div aria-label="Progreso del módulo 3.2" aria-valuemax="100" aria-valuemin="0" class="mt-4" data-inema-meter="modulo:3-2" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 de 6</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</nav>
+</aside>
+<div class="lg:flex-1 min-w-0 inema-prose">
+<!-- VISAO GERAL DO PROJETO (timeline) -->
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-10 overflow-hidden">
+<svg aria-label="Flujo del proyecto: tener el modelo 64k, conectarlo a Hermes, activar Vault, ejecutar una tarea y confirmar que no salió nada" class="w-full h-auto" role="img" viewbox="0 0 980 150">
+<defs>
+<filter height="180%" id="m32-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m32-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m32-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#m32-grid)" height="150" width="980" x="0" y="0"></rect>
+<line marker-end="url(#m32-ah)" opacity="0.4" stroke="#a855f7" stroke-dasharray="6 6" stroke-width="2" x1="80" x2="900" y1="75" y2="75"></line>
+<g font-family="Inter,sans-serif" font-size="12" text-anchor="middle">
+<g><circle cx="120" cy="75" fill="#1a1230" r="22" stroke="#a855f7" stroke-width="2.5"></circle><text font-size="16" font-weight="700" x="120" y="80">🪟</text><text fill="#e9d5ff" x="120" y="118">modelo de 64k</text></g>
+<g><circle cx="330" cy="75" fill="#1a1230" r="22" stroke="#a855f7" stroke-width="2.5"></circle><text font-size="16" font-weight="700" x="330" y="80">🔗</text><text fill="#e9d5ff" x="330" y="118">conectar</text></g>
+<g filter="url(#m32-glow)"><circle cx="540" cy="75" fill="#1a1230" r="24" stroke="#38bdf8" stroke-width="2.5"></circle></g><text font-size="16" font-weight="700" x="540" y="80">🗄️</text><text fill="#bfe6ff" x="540" y="120">Vault activado</text>
+<g><circle cx="750" cy="75" fill="#1a1230" r="22" stroke="#a855f7" stroke-width="2.5"></circle><text font-size="16" font-weight="700" x="750" y="80">🧪</text><text fill="#e9d5ff" x="750" y="118">tarea real</text></g>
+<g filter="url(#m32-glow)"><circle cx="900" cy="75" fill="#1f1604" r="22" stroke="#FACC15" stroke-width="2.5"></circle></g><text fill="#FACC15" font-size="16" font-weight="700" x="900" y="80">✅</text><text fill="#fde68a" x="900" y="118">no salió nada</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-400 mt-1 px-1">La línea del proyecto: del <span class="text-purple-400">modelo de 64k</span> hasta la confirmación de que <span class="text-yellow-400">no salió nada</span>, con el <span class="text-sky-400">Vault</span> conectado en medio: el paso que hace que el agente sea seguro para datos sensibles.</p>
+</div>
+<!-- ETAPA 1 -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🎯 Objetivo: el agente completo en el Vault</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t1-p1">La meta de este proyecto es ejecutar el <strong class="text-purple-400">Agente Hermes de principio a fin</strong> usando solo tu modelo local, en modo Vault — aislado de internet. A diferencia del Proyecto 1 (que era un chat), aquí el agente <strong>actúa</strong>: usa herramientas, ejecuta tareas, pero todo dentro de tu máquina.</p>
+<figure class="rounded-2xl border border-purple-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="Sitio de Hermes Agent, de Nous Research: de código abierto, con licencia MIT y el lema 'THE AGENT GROWS YOU'" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../../assets/img/hermes-site.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Hermes Agent — Nous Research · licencia MIT · "THE AGENT GROWS YOU".</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Fotograma del video: Hermes Agent es de código abierto, con licencia MIT, de Nous Research. "Open-source" + "MIT" significan que puedes ver y usar el código libremente: una combinación perfecta con la idea de propiedad y privacidad del curso.</figcaption>
+</figure>
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧭</span> Qué tendrás al final</h3>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>El modelo de 64k (del Módulo 2.4) conectado a Hermes.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>El agente operando en modo Vault, sin red.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>Una tarea real completada 100% local.</span></li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-1">•</span><span>La confirmación de que ningún dato salió de la máquina.</span></li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">¿Nuevo por aquí?</strong> "End-to-end" (de punta a punta) quiere decir que todo el flujo —desde tu solicitud hasta el resultado— ocurre sin salir de la máquina. "Airgapped" es el término de seguridad para un sistema físicamente aislado de la red; el modo Vault lo simula desconectando al agente de internet.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Agente</span><p class="text-sm text-neutral-400 mt-1">LLM + herramientas: actúa, no solo responde.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Hermes (MIT)</span><p class="text-sm text-neutral-400 mt-1">Open-source, de Nous Research; tú controlas el flujo.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Vault</span><p class="text-sm text-neutral-400 mt-1">Modo airgapped: el agente aislado de la red.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">End-to-end</span><p class="text-sm text-neutral-400 mt-1">Del pedido al resultado, todo en tu máquina.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 2 -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">🪟 Tener qwen3-coder-64k listo</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t2-p1"><strong class="text-purple-400">Objetivo de la etapa:</strong> confirmar que el modelo de contexto 64k que creaste en el Módulo 2.4 está disponible en Ollama. El agente Hermes <strong>requiere 64k de contexto</strong> — un modelo de chat común no sirve, porque la memoria y las herramientas ocupan mucho espacio.</p>
+<div class="bg-dark-900/60 rounded-xl border border-purple-500/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Comprobar el modelo (y volver a crearlo, si hace falta)</h3>
+<p class="text-sm text-neutral-400 mb-2">Comando para pegar (objetivo: comprobar si existe el modelo de 64k):</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">ollama list
+# procure por:
+# qwen3-coder-64k</code></pre>
+<p class="text-sm text-neutral-400 mt-3 mb-2">Si NO aparece, vuelve a crearlo a partir del Modelfile del Módulo 2.4 (objetivo: derivar el modelo con 64k de contexto):</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200"># Modelfile (conteudo):
+# FROM &lt;qwen3-coder:30b&gt;
+# PARAMETER num_ctx 65536
+
+ollama create qwen3-coder-64k -f Modelfile</code></pre>
+<p class="text-sm text-neutral-400 mt-3">Cómo verificar: <code class="font-mono">ollama list</code> muestra <code class="font-mono text-purple-400">qwen3-coder-64k</code>. El fragmento <code class="font-mono">&lt;qwen3-coder:30b&gt;</code> y es la parte variable: es el modelo base que elegiste.</p>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Por qué 64k, en números</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>65.536 tokens</strong> de contexto (≈ 25-30 mil palabras de "memoria de trabajo").</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>El agente consume contexto con memoria, instrucciones y el resultado de las herramientas.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Sin margen de contexto, el agente "olvida" el inicio de la tarea a mitad del proceso.</span></li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Atención:</strong> un contexto amplio consume memoria. Un modelo con 64k ocupa más RAM que el mismo modelo con un contexto pequeño. Si el equipo se queda corto, aquí puede trabarse: revisa el margen de RAM (visto en el Módulo 1.4).</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">num_ctx 65536</span><p class="text-sm text-neutral-400 mt-1">El parámetro que define los 64k de contexto.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">ollama create</span><p class="text-sm text-neutral-400 mt-1">Deriva el modelo a partir de un Modelfile.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Exigencia del agente</span><p class="text-sm text-neutral-400 mt-1">Hermes requiere 64k; un chat común no sirve.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Costo de memoria</span><p class="text-sm text-neutral-400 mt-1">El contexto grande ocupa más RAM.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 3 -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🔗 Conectar el modelo a Hermes</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t3-p1"><strong class="text-purple-400">Objetivo de la etapa:</strong> garantizar que Hermes esté actualizado y seleccionar tu modelo local como el cerebro del agente. Primero, el comando real de actualización; después, la acción en la interfaz para asignarle tu modelo al agente.</p>
+<div class="bg-dark-900/60 rounded-xl border border-purple-500/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Actualizar y comprobar Hermes</h3>
+<p class="text-sm text-neutral-400 mb-2">Comando para pegar (objetivo: dejar Hermes listo):</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">hermes update
+# ao terminar, o painel mostra: "HERMES IS READY / Launch Hermes"</code></pre>
+<p class="text-sm text-neutral-400 mt-3 mb-2">Cómo verificar (el agente está en buen estado):</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">hermes status</code></pre>
+</div>
+<figure class="rounded-2xl border border-purple-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="App de escritorio del Agente Hermes en la pantalla «New session», lista para iniciar una conversación con el agente" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../../assets/img/hermes-dashboard.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ App de escritorio de Hermes en "New session".</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Fotograma del video: la aplicación de escritorio de Hermes en "New session". Desde aquí seleccionas el modelo. El modelo elegido aparece en <strong>esquina inferior derecha</strong> — y es donde confirmas que el agente está usando tu <code class="font-mono">qwen3-coder-64k</code> local, no la nube.</figcaption>
+</figure>
+<div class="bg-dark-900/60 rounded-xl border border-purple-500/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🖱️</span> Acción en la interfaz (seleccionar el modelo local)</h3>
+<ol class="space-y-2 text-sm text-neutral-300 list-decimal list-inside">
+<li>Abre el selector de modelos de Hermes.</li>
+<li>Elige tu modelo de Ollama: <code class="font-mono text-purple-400">qwen3-coder-64k</code>.</li>
+<li>Confirma: el nombre aparece en la esquina inferior derecha.</li>
+</ol>
+<p class="text-sm text-neutral-400 mt-3">Cómo verificar: en la esquina inferior derecha aparece seleccionado tu modelo local.</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Honestidad:</strong> seleccionar el modelo es una acción en la interfaz, no un comando de terminal. Los comandos reales de Hermes que usas aquí son <code class="font-mono">hermes update</code> e <code class="font-mono">hermes status</code>; el resto es hacer clic en el selector.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">hermes update</span><p class="text-sm text-neutral-400 mt-1">Actualiza Hermes ("HERMES IS READY").</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">hermes status</span><p class="text-sm text-neutral-400 mt-1">Muestra el estado del agente.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Selector de modelo</span><p class="text-sm text-neutral-400 mt-1">Dónde se conecta el agente al modelo local.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Esquina inferior derecha</span><p class="text-sm text-neutral-400 mt-1">Dónde se confirma el modelo activo.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 4 -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🗄️ Activar Vault (airgapped)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t4-p1"><strong class="text-purple-400">Objetivo de la etapa:</strong> activar el modo <strong>Vault</strong>, que aísla al agente de la red —como desconectar el cable de internet—. Es la garantía técnica de que nada se filtra: el agente simplemente no tiene por dónde salir.</p>
+<figure class="rounded-2xl border border-purple-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="Diagrama de los modos de Hermes: Vault (airgapped) alterna con Connected, bajo el título «Toggle your privacy»" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../../assets/img/modes.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Modos de Hermes — Vault ⇄ Connected · "Toggle your privacy".</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Fotograma del video: el diagrama "Toggle your privacy". Para este proyecto te quedas en el extremo <strong>Vault</strong> (airgapped, todo local). Fíjate que aquí la privacidad es un botón: tú eliges cuándo el agente puede o no comunicarse con el mundo.</figcaption>
+</figure>
+<div class="space-y-4 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Selecciona el modo Vault</h4><p class="text-sm text-neutral-400">En la interfaz, elige Vault. El agente pasa a usar solo el modelo local.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Para asegurarte, desconecta la red</h4><p class="text-sm text-neutral-400">Wi-fi apagado ou cable desconectado: la prueba física del airgap.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Confirma el estado</h4><p class="text-sm text-neutral-400">Hermes indica que está en Vault / offline.</p></div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Con Vault GANAS</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Los datos de clientes, salud e IP nunca salen.</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Funciona sin conexión (avión, fuera de la red).</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>$0 por uso, incluso si lo ejecutas mucho.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Con Vault CEDES</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Sin búsquedas web recientes.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Sin el modelo de frontera de la nube.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>La velocidad es la de tu máquina.</span></li>
+</ul>
+</div>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Sin ideología:</strong> Vault no es para "siempre". Es el modo adecuado para datos sensibles y para trabajar sin conexión. Cuando la tarea sea difícil y no haya datos sensibles, puedes pasar a Connected o Cloud — eso es lo que enseña el Proyecto 6.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Modo Vault</span><p class="text-sm text-neutral-400 mt-1">El agente aislado de Internet.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Airgapped</span><p class="text-sm text-neutral-400 mt-1">Sin conexión, los datos no tienen por dónde salir.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Toggle your privacy</span><p class="text-sm text-neutral-400 mt-1">La privacidad se convierte en un botón que tú controlas.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Trade-off</span><p class="text-sm text-neutral-400 mt-1">Privacidad total a cambio de la potencia de la nube.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 5 -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🧪 Tarea real, 100% local</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t5-p1"><strong class="text-purple-400">Objetivo de la etapa:</strong> darle una tarea concreta al agente y ver cómo <strong>usar herramientas</strong> para resolver: demuestra que no solo conversa, también actúa. Todo esto en Vault, sin red.</p>
+<div class="bg-dark-900/60 rounded-xl border border-purple-500/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-purple-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Sugerencias de tareas (acción en el chat del agente)</h3>
+<ol class="space-y-2 text-sm text-neutral-300 list-decimal list-inside">
+<li>"Lee este archivo y dame un resumen en 5 puntos."</li>
+<li>"Organiza estas notas sueltas en una lista de tareas."</li>
+<li>"Escribe un borrador de correo electrónico a partir de estos temas."</li>
+</ol>
+<p class="text-sm text-neutral-400 mt-3">Cómo verificar: la tarea termina con un resultado útil y ves al agente "trabajando" (usando herramientas), no solo respondiendo.</p>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Ajusta tus expectativas</h3>
+<p class="text-neutral-300 text-sm mb-3">El modelo local alcanza en el benchmark SWE-bench alrededor de <strong>74</strong> (el Qwen mencionado en el video, «runs on a laptop»), mientras que lo más avanzado de la nube llega a ~88. Es decir: es muy capaz, pero no es un modelo de frontera. Para las tareas del día a día, en Vault, funciona bien.</p>
+<p class="text-neutral-400 text-xs">La velocidad depende de tu máquina; la primera respuesta puede tardar más (el modelo se está cargando en la memoria).</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Consejo:</strong> empieza con una tarea que podrías hacer por tu cuenta. Así es fácil evaluar si el agente acertó y ganas confianza antes de delegar tareas más grandes.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceptos clave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Usar herramientas</span><p class="text-sm text-neutral-400 mt-1">El agente actúa (lee, organiza, escribe), no solo habla.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Tarea verificable</span><p class="text-sm text-neutral-400 mt-1">Empieza con algo que sepas evaluar.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">~74 en SWE-bench</span><p class="text-sm text-neutral-400 mt-1">Capaz, pero no está en la frontera de la nube.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-purple-400 font-semibold text-sm">Velocidad local</span><p class="text-sm text-neutral-400 mt-1">Depende del hardware; la 1.ª carga tarda más.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- ETAPA 6 -->
+<section class="mb-16" data-inema-topic="modulo-3-2#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">✅ Confirmar la privacidad: nada salió</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-2-t6-p1"><strong class="text-purple-400">Resultado esperado:</strong> un agente capaz que ejecutó una tarea real <strong>sin enviar nada a internet</strong>. Con la red desconectada y Vault activado, tienes la confirmación que hace que el agente pueda usarse con datos sensibles: el objetivo del proyecto.</p>
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🧾</span> Lista de verificación de finalización</h3>
+<div class="space-y-3">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><span class="text-neutral-300 text-sm"><code class="font-mono">ollama list</code> muestra el <code class="font-mono">qwen3-coder-64k</code>.</span></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><span class="text-neutral-300 text-sm"><code class="font-mono">hermes status</code> indica que el agente está en buen estado.</span></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><span class="text-neutral-300 text-sm">El modelo local aparece en la esquina inferior derecha.</span></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><span class="text-neutral-300 text-sm">La tarea se ejecutó sin conexión a internet, en Vault.</span></div>
+</div>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> ¿Salió mal?</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>El agente no encuentra el modelo: confirma el selector y que Ollama esté funcionando.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>"Contexto insuficiente": confirma que usaste el modelo 64k, no el de chat común.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Se bloqueó o va lento: el contexto de 64k consume RAM; cierra otras tareas.</span></li>
+</ul>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-2#q1">
+<p class="font-medium mb-4">Autocomprobación (opcional): ¿por qué el agente necesita el <code class="font-mono">qwen3-coder-64k</code>, y no de un modelo de chat común?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque el modelo 64k responde más rápido que los demás.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque el agente consume contexto con la memoria y las herramientas, y Hermes exige 64k.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque solo el modelo 64k se ejecuta en modo Vault.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como leído</span><span class="inema-label-done">Leído ✓</span>
+</button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-8">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Resumen del proyecto</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Objetivo cumplido</strong><span class="text-neutral-400"> — todo el Agente Hermes ejecutándose localmente, en Vault, a $0.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Modelo conectado de 64k</strong><span class="text-neutral-400"> — o <code class="font-mono">qwen3-coder-64k</code> conectado a Hermes mediante <code class="font-mono">hermes update</code>/<code class="font-mono">status</code>.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Vault activado</strong><span class="text-neutral-400"> — airgapped: el agente no tiene por dónde filtrar datos.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-neutral-100">Tarea real + privacidad</strong><span class="text-neutral-400"> — el agente actuó sin conexión y nada salió de la máquina.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-purple-400 mb-2">Siguiente proyecto:</h3>
+<p class="text-neutral-300">3.3 — Memoria, personas y skills: personaliza el SO del agente.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="modulo-3-1.html">← Proyecto anterior</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-3.html">Siguiente proyecto →</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Agente Hermes + Ollama — Tu SO de IA 100% privado</p>
+<p>Módulo 3.2 · Ruta 3 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init({ autoResume: false }); }
+    document.addEventListener('DOMContentLoaded', function(){
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-2#q1', {
+          answer: 1,
+          explain: {
+            0: 'Nao — o 64k nao e "mais rapido"; na verdade contexto grande pesa MAIS na memoria.',
+            1: 'Isso! Memoria + instrucoes + saida das ferramentas consomem contexto, por isso o Hermes pede 64k.',
+            2: 'Nao — o Vault funciona com qualquer modelo local; o 64k e exigencia do AGENTE, nao do modo.'
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

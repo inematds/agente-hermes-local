@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Hermes Agent + Ollama — Your 100% Private AI OS | INEMA.CLUB</title>
+<!-- ANTI-FOUC: bloqueante, ANTES do Tailwind. Default dark no erro. -->
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<!-- MANIFESTO do curso (identico em TODA pagina) -->
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: {
+        primary: '#FACC15',
+        dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+      } } }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/learn.css" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+
+    /* ===== Light mode base ===== */
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    /* ===== Acentos das 3 trilhas (nav usa as 3 em toda pagina) ===== */
+    /* T1 Emerald */
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    /* T2 Blue */
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    /* T3 Purple */
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+
+    /* ===== Remove gradientes + cores especiais ===== */
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+
+    /* ===== Nav ===== */
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    /* ===== Dark: bordas/divisores suaves ===== */
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+
+    /* ===== SVG ilustrativo: conter intensidade no claro ===== */
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    /* ===== animacao de pulso dos diagramas ===== */
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/agente-hermes-local/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../es/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<!-- NAVIGATION (completo, identico em todas as paginas) -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="index.html">
+<span class="text-2xl">🔒</span>
+<span class="font-bold text-lg hidden sm:inline">Hermes Local</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="curso/trilha1/index.html">
+<span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentals</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="curso/trilha2/index.html">
+<span class="sm:hidden">T2</span><span class="hidden sm:inline">Hands-on</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="curso/trilha3/index.html">
+<span class="sm:hidden">T3</span><span class="hidden sm:inline">Projects</span>
+</a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="My journey" type="button">
+<span aria-hidden="true">◷</span><span class="hidden md:inline">Journey</span>
+<span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span>
+</button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Appearance" type="button">
+<span aria-hidden="true">◑</span><span class="hidden md:inline">Appearance</span>
+</button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div>
+<p class="text-xs text-neutral-400 mb-1.5">Theme</p>
+<div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Dark</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Of course</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Focus</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">High contrast</button>
+</div>
+</div>
+<div>
+<p class="text-xs text-neutral-400 mb-1.5">Source</p>
+<div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">System</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Reading</button>
+</div>
+</div>
+<div>
+<p class="text-xs text-neutral-400 mb-1.5">Size</p>
+<div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div>
+</div>
+<div>
+<p class="text-xs text-neutral-400 mb-1.5">Line spacing</p>
+<div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compact</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Comfortable</button>
+</div>
+</div>
+<div>
+<p class="text-xs text-neutral-400 mb-1.5">Accent</p>
+<div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Teal"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div>
+</div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Toggle light/dark">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<!-- HERO -->
+<header class="bg-gradient-to-br from-emerald-900/20 via-dark-900 to-dark-900 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+<div class="grid lg:grid-cols-2 gap-10 items-center">
+<div>
+<span class="inline-block px-3 py-1 bg-primary/10 text-primary border border-primary/30 text-xs font-semibold rounded-full mb-5">PRACTICAL COURSE · INEMA.CLUB</span>
+<h1 class="text-4xl sm:text-5xl font-bold mb-5 leading-tight">Hermes Agent + Ollama<br/><span class="text-emerald-400">Your 100% private AI OS</span></h1>
+<p class="text-lg text-neutral-300 mb-6 max-w-xl">Run a complete AI agent on your own machine — no monthly fee, no rate limit, no internet, and <strong class="text-neutral-100">without any data leaving your home</strong>. From the fundamentals to 7 step-by-step projects.</p>
+<div class="flex flex-wrap justify-start gap-3 mb-8">
+<a class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold transition-colors" href="curso/trilha1/index.html">Start with the fundamentals →</a>
+<a class="px-6 py-3 bg-dark-700 hover:bg-dark-600 text-neutral-200 rounded-lg font-semibold transition-colors" href="curso/trilha3/index.html">View the projects</a>
+</div>
+<button class="text-sm text-emerald-400 hover:text-emerald-300 font-medium" data-inema-resume="" type="button">↪ Continue where I left off</button>
+</div>
+<div>
+<figure class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 overflow-hidden">
+<img alt="Hermes Agent operating system screen showing memory, connections, and skills in one place" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../assets/img/hero-os.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🔒 The "Hermes OS": a home for memory, skills, connections, and agents — all running on your machine.</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Hermes’s “operating system” brings together memory, skills, and connections — and in this course it runs 100% locally.</figcaption>
+</figure>
+</div>
+</div>
+<!-- Progresso do curso -->
+<div class="mt-12 max-w-xl">
+<div aria-label="Course progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter bg-dark-800/60 border border-dark-600 rounded-xl p-4" data-inema-meter="curso" role="progressbar">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-semibold text-neutral-200">Your course progress</span>
+<span class="text-sm font-bold text-emerald-400" data-inema-meter-pct="">0%</span>
+</div>
+<div class="inema-bar h-2 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<p class="text-xs text-neutral-400 mt-2"><span data-inema-meter-frac="">0 of 114</span> topics read · mark each section as you go</p>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+<!-- O QUE E -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-4">What you’ll build</h2>
+<div class="inema-prose text-neutral-300 leading-relaxed space-y-4 mb-8">
+<p data-inema-block="land-oque-p1">This course takes the concept of <strong class="text-emerald-400">Local, private AI</strong> and takes you from theory to practice: installing <strong>Ollama</strong>, choose and download open models (Qwen, DeepSeek, Gemma, Mistral), connect a model to the <strong>Hermes Agent</strong> and build your own "AI operating system"—everything running on your machine, for free and forever.</p>
+<p data-inema-block="land-oque-p2">The core idea is <strong class="text-primary">ownership</strong>: stop renting intelligence. Your data never leaves home, you don't pay per token, it works without internet (on a plane, off-grid), and there's no gatekeeper. Where the cloud still wins in raw quality, you learn to switch — without being ideological, using the right tool for each task.</p>
+</div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><div class="text-2xl mb-2">🔒</div><h3 class="font-semibold mb-1">100% private</h3><p class="text-sm text-neutral-400">The data never leaves your machine.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><div class="text-2xl mb-2">💸</div><h3 class="font-semibold mb-1">$0 per token</h3><p class="text-sm text-neutral-400">Download once, run forever.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><div class="text-2xl mb-2">✈️</div><h3 class="font-semibold mb-1">Works offline</h3><p class="text-sm text-neutral-400">No internet, no rate limits.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><div class="text-2xl mb-2">⚙️</div><h3 class="font-semibold mb-1">You’re in charge</h3><p class="text-sm text-neutral-400">No vendor lock-in, no gatekeeper.</p></div>
+</div>
+</section>
+<!-- AS TRILHAS -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-6">The 3 tracks</h2>
+<div class="grid md:grid-cols-3 gap-6">
+<a class="group bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-2xl border border-emerald-500/30 p-6 hover:border-emerald-500/60 transition-all" href="curso/trilha1/index.html">
+<div class="flex items-center justify-between mb-3"><span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TRAIL 1</span><span class="text-xs text-neutral-500">6 modules</span></div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">🧠 Fundamentals</h3>
+<p class="text-sm text-neutral-400 mb-4">Why local is the future, the vocabulary (LLM, agent, AI OS), Ollama, context window, and the three modes.</p>
+<div aria-label="Learning path 1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter" data-inema-meter="trilha:1" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 36</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</a>
+<a class="group bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-2xl border border-blue-500/30 p-6 hover:border-blue-500/60 transition-all" href="curso/trilha2/index.html">
+<div class="flex items-center justify-between mb-3"><span class="px-2.5 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">TRAIL 2</span><span class="text-xs text-neutral-500">6 modules</span></div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">🛠️ Hands-on</h3>
+<p class="text-sm text-neutral-400 mb-4">Install Ollama, choose the model for your hardware, download/chat, set up Qwen 3 Coder 64k, and connect to Hermes.</p>
+<div aria-label="Learning path 2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter" data-inema-meter="trilha:2" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 36</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</a>
+<a class="group bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-2xl border border-purple-500/30 p-6 hover:border-purple-500/60 transition-all" href="curso/trilha3/index.html">
+<div class="flex items-center justify-between mb-3"><span class="px-2.5 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full">TRAIL 3</span><span class="text-xs text-neutral-500">7 projects</span></div>
+<h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">🚀 Projects</h3>
+<p class="text-sm text-neutral-400 mb-4">7 projects step by step: private chat, local agent, memory/personas/skills, GitHub, 24/7 background agents, and mobile.</p>
+<div aria-label="Learning path 3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter" data-inema-meter="trilha:3" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-purple-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 42</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</a>
+</div>
+</section>
+<!-- COMO FUNCIONA -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold mb-6">How the course works</h2>
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><h3 class="font-semibold mb-1 text-emerald-400">Mark what you've read</h3><p class="text-sm text-neutral-400">Each section has a “mark as read” button. Progress by module, track, and course is calculated automatically.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><h3 class="font-semibold mb-1 text-emerald-400">Take notes right in the text</h3><p class="text-sm text-neutral-400">Select a passage to highlight, annotate, or mark as a question. Everything is saved in your browser.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><h3 class="font-semibold mb-1 text-emerald-400">My journey</h3><p class="text-sm text-neutral-400">A dashboard brings together progress, questions, and notes, and takes you back to where you left off. Export/import in .json.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><h3 class="font-semibold mb-1 text-emerald-400">Copy-and-run examples</h3><p class="text-sm text-neutral-400">Real Ollama commands, ready to paste and run, with the expected results.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><h3 class="font-semibold mb-1 text-emerald-400">Real screenshots</h3><p class="text-sm text-neutral-400">The screens come straight from the source video: Ollama, terminal, the Hermes app, model selection, and benchmarks.</p></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-5"><h3 class="font-semibold mb-1 text-emerald-400">Read your way</h3><p class="text-sm text-neutral-400">Themes (dark/light/sepia/focus/high contrast), font size, width, and line spacing in the “Appearance” button.</p></div>
+</div>
+</section>
+<!-- PRE-REQUISITOS -->
+<section class="mb-4">
+<div class="bg-primary/10 rounded-2xl border border-primary/30 p-6">
+<h2 class="text-xl font-semibold text-primary mb-3 flex items-center"><span class="mr-2">✅</span> Prerequisites</h2>
+<ul class="space-y-2 text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span><span>A computer (Mac, Linux, or Windows) with some free disk space—models take up ~2 GB to dozens of GB.</span></li>
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span><span>Willingness to open the terminal a few times (we explain every command).</span></li>
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">•</span><span>No prior AI knowledge required—Track 1 defines every term from scratch.</span></li>
+</ul>
+</div>
+</section>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Hermes Agent + Ollama — Your 100% Private AI OS</p>
+<p>Hands-on course · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<!-- Scripts nucleo v1 -->
+<script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+<!-- Camada de aprendizagem -->
+<script src="../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }
+    document.addEventListener('click', function(e){
+      var r = e.target.closest('[data-inema-resume]');
+      if (r && window.INEMA && INEMA.resume) { e.preventDefault(); INEMA.resume(); }
+    });
+  </script>
+</body>
+</html>

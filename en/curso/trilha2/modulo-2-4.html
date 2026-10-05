@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Module 2.4 · The agent model: Qwen 3 Coder 64k | Hermes Local</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37,99,235,0.10); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/30 { background-color: rgba(5,150,105,0.10); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/agente-hermes-local/curso/trilha2/modulo-2-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/curso/trilha2/modulo-2-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/curso/trilha2/modulo-2-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentals</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Hands-on</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projects</span></a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="My journey" type="button"><span aria-hidden="true">◷</span><span class="hidden md:inline">Journey</span><span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span></button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Appearance" type="button"><span aria-hidden="true">◑</span><span class="hidden md:inline">Appearance</span></button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div><p class="text-xs text-neutral-400 mb-1.5">Theme</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Dark</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Of course</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Focus</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">High contrast</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Source</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">System</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Reading</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Size</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Line spacing</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compact</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Comfortable</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Accent</p><div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Teal"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div></div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Toggle light/dark">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+<a class="hover:text-blue-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Track 2</a><span>/</span>
+<span class="text-blue-400">Module 2.4</span>
+</nav>
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.4</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🪟 The agent model: Qwen 3 Coder 64k</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">The model that works for conversation isn’t always right for <strong>act</strong>. An agent needs to remember many things at once — which calls for a larger context window. In this module, you’ll get Qwen 3 Coder and, with a three-line file, create a version with 64k context ready to power Hermes.</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~25</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practical</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Hands-on</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:flex lg:gap-10">
+<!-- TOC sticky -->
+<aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
+<nav aria-label="Page index" class="lg:sticky lg:top-20" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-2">Section <span class="inema-toc-pos" data-inema-section-counter="">1</span> of 6</p>
+<ol class="space-y-1 text-sm">
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-1">1. Why another model</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-2">2. What is Qwen 3 Coder</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-3">3. The num_ctx trick</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-4">4. Create the derived model</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-5">5. Check that it worked</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-6">6. 64k uses memory</a></li>
+</ol>
+<div aria-label="Module 2.4 progress" aria-valuemax="100" aria-valuemin="0" class="mt-4" data-inema-meter="modulo:2-4" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</nav>
+</aside>
+<div class="lg:flex-1 min-w-0 inema-prose" data-inema-module="2-4" data-inema-track="2" id="modulo-2-4">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">❓ Why the agent requires a different model</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t1-p1">In module 2.3, you downloaded a “fast” model and chatted with it. To <strong>chat</strong>, it's perfect. But Hermes doesn't just want to chat — it wants to <strong class="text-blue-400">act</strong>: read files, run commands, remember what it has already done, and plan the next steps. All of that takes up the context window. That's why the agent needs a model with <strong>64k context</strong>, rather than the default model.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Reminder:</strong> "context window" is the model’s working memory — how much text it can keep in mind at once. We covered this in Track 1 (module 1.4). 64k tokens is roughly equivalent to 25,000–30,000 words of working space.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ AGENT model (64k)</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>The entire task history fits.</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Leaves room for tool descriptions.</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Reads large files without “forgetting” the beginning.</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Supports multiple reasoning steps.</span></li>
+</ul>
+</div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
+<h4 class="font-bold text-red-400 mb-4">✗ Default chat model</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>A short context fills up quickly when using tools.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>"Forget" instructions from the start of the task.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Loses track during multi-step tasks.</span></li>
+<li class="flex items-start gap-2"><span class="text-red-400">✗</span><span>Great for conversation, weak for automation.</span></li>
+</ul>
+</div>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Key concepts</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Acting vs. chatting</span><p class="text-sm text-neutral-400 mt-1">An agent uses tools; chat only responds with text.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Context in use</span><p class="text-sm text-neutral-400 mt-1">History + tools consume the context window.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">64k tokens</span><p class="text-sm text-neutral-400 mt-1">The minimum headroom the agent comfortably asks for.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Dedicated model</span><p class="text-sm text-neutral-400 mt-1">A model just for the agent’s work.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Mark as read</span><span class="inema-label-done">Read ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">🔎 What is Qwen 3 Coder</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t2-p1">O <strong class="text-blue-400">Qwen 3 Coder</strong> and an open model from the Qwen family, trained with a focus on <strong>code and agent tasks</strong>: read files, follow technical instructions, write and fix programs. It's exactly the kind of model an AI OS needs underneath, because most of the agent's work is "editing files and running things."</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Why it's the foundation of the agent</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Open weights:</strong> downloads once, runs locally, with no monthly fee.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Coding training:</strong> good at reading, writing, and editing files.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>30B size:</strong> runs on machines with generous RAM (see module 2.2).</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Flexible foundation:</strong> you can derive a version with more context — and that’s what we’ll do.</span></li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">New here?</strong> "Coder" in the name doesn’t mean it’s only useful for programming—it means it was trained for this kind of structured task. Since an agent’s work looks a lot like programming (steps, tools, files), this profile is a perfect fit.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Key concepts</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Qwen 3 Coder</span><p class="text-sm text-neutral-400 mt-1">Open model focused on code and agents.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Open weights</span><p class="text-sm text-neutral-400 mt-1">The weights are public; you run them locally.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">30b tag</span><p class="text-sm text-neutral-400 mt-1">Variant with ~30 billion parameters.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Base model</span><p class="text-sm text-neutral-400 mt-1">From it, we created a 64k version.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Mark as read</span><span class="inema-label-done">Read ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">🧩 The num_ctx trick (the Modelfile)</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t3-p1">Here's the key insight: you <strong>doesn't need to</strong> another download to get more context. You take the model that already exists and create a "recipe" that tells Ollama: <strong class="text-blue-400">use this model, but with the context window set to 64k</strong>. This recipe is a file called <strong>Modelfile</strong>.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">New here?</strong> One <strong>Modelfile</strong> and a text file with instructions for Ollama to build a model. Think of it as a recipe: the line <code class="text-blue-400">FROM</code> says which model is the base; <code class="text-blue-400">PARAMETER</code> adjusts a behavior. Here we only change the <code class="text-blue-400">num_ctx</code> (number of context tokens).</p>
+</div>
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-base font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objective</h3>
+<p class="text-sm text-neutral-300 mb-4">Create a text file called <code class="text-blue-400">Modelfile</code> (without an extension) in a folder of your choice, with exactly these two lines. The first points to the base model; the second opens the window to 65536 tokens (= 64k).</p>
+<p class="text-xs text-neutral-400 mb-2">File contents <code class="text-blue-400">Modelfile</code>:</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">FROM qwen3-coder:30b
+PARAMETER num_ctx 65536</code></pre>
+<div class="mt-4 bg-dark-900/60 rounded-lg p-4 border border-dark-700">
+<p class="text-xs text-neutral-400"><strong class="text-blue-400">How to verify:</strong> the file should contain only these 2 lines, in plain text. Check with <code class="text-blue-400">cat Modelfile</code> (Mac/Linux) or by opening it in Notepad. <code class="text-blue-400">65536</code> = 64 × 1024; that's the number shown in the video (<code class="text-blue-400">context_length: 65536</code>).</p>
+</div>
+<p class="text-xs text-neutral-500 mt-3">Variable: <code class="text-neutral-300">&lt;qwen3-coder:30b&gt;</code> and the base model—switch only if you use a different tag/model. Everything else stays the same.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Key concepts</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Modelfile</span><p class="text-sm text-neutral-400 mt-1">The text recipe that defines a derived model.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">FROM</span><p class="text-sm text-neutral-400 mt-1">Points to the base model (here, qwen3-coder:30b).</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">PARAMETER num_ctx</span><p class="text-sm text-neutral-400 mt-1">Determines the context window size.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">65536</span><p class="text-sm text-neutral-400 mt-1">64k tokens (64 × 1024).</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Mark as read</span><span class="inema-label-done">Read ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🏗️ Create the derived model</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t4-p1">With the Modelfile saved, a single command builds the new model. Ollama reads the recipe, reuses the weights already on your disk (it doesn't download them again), and registers a new model called <strong class="text-blue-400">qwen3-coder-64k</strong>.</p>
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-base font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objective</h3>
+<p class="text-sm text-neutral-300 mb-4">Run this command in the <strong>same folder</strong> where the Modelfile is. The <code class="text-blue-400">-f Modelfile</code> says which recipe to use; <code class="text-blue-400">qwen3-coder-64k</code> and the name your new model will have.</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">ollama create qwen3-coder-64k -f Modelfile</code></pre>
+<div class="mt-4 bg-dark-900/60 rounded-lg p-4 border border-dark-700">
+<p class="text-xs text-neutral-400"><strong class="text-blue-400">How to verify:</strong> the terminal shows progress lines and ends with <code class="text-blue-400">success</code>. It's fast — it doesn't download the model again, it just creates the new configuration on top of what's already there.</p>
+</div>
+<p class="text-xs text-neutral-500 mt-3">Variable: the name <code class="text-neutral-300">qwen3-coder-64k</code> and choose your own—use any label that helps you remember "this is the agent's one, with 64k."</p>
+</div>
+<figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="Video screen showing the Modelfile with PARAMETER num_ctx 65536 and the conversation about the qwen3-coder-64k model with 64k context" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../../assets/img/qwen-coder-64k.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Modelfile with PARAMETER num_ctx 65536 → qwen3-coder-64k model created.</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Video frame: notice the <span class="text-blue-400">PARAMETER num_ctx 65536</span> and in the name of the derived model (<span class="text-blue-400">qwen3-coder-64k</span>). This is the version the agent will use, not the default model — because it has the 64k window open.</figcaption>
+</figure>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Key concepts</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">ollama create</span><p class="text-sm text-neutral-400 mt-1">Builds a model from a Modelfile.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">-f Modelfile</span><p class="text-sm text-neutral-400 mt-1">Points to the recipe file to use.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Weight reuse</span><p class="text-sm text-neutral-400 mt-1">It doesn’t download again; it uses the model already on disk.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">qwen3-coder-64k</span><p class="text-sm text-neutral-400 mt-1">The name of the new derived model.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Mark as read</span><span class="inema-label-done">Read ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">✅ Check that it worked</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t5-p1">Before connecting to Hermes, it’s worth confirming that the model exists and that it really has 64k. Two commands do the trick: one lists the models, and the other shows the details—including the <strong class="text-blue-400">context length</strong>.</p>
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-base font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objective</h3>
+<p class="text-sm text-neutral-300 mb-4">Confirm that <code class="text-blue-400">qwen3-coder-64k</code> appears in the list and inspect its context.</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">ollama list
+ollama show qwen3-coder-64k</code></pre>
+<div class="mt-4 bg-dark-900/60 rounded-lg p-4 border border-dark-700">
+<p class="text-xs text-neutral-400"><strong class="text-blue-400">How to verify:</strong> in <code class="text-blue-400">ollama list</code> the name <code class="text-blue-400">qwen3-coder-64k</code> should appear in the table. In <code class="text-blue-400">ollama show</code> look for <code class="text-blue-400">context_length: 65536</code> (or the parameter <code class="text-blue-400">num_ctx 65536</code>). If you see 65536, it's ready.</p>
+</div>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Workflow: the qwen3-coder:30b base model plus a Modelfile with num_ctx 65536 creates the qwen3-coder-64k model with a 64k window" class="w-full h-auto" role="img" viewbox="0 0 980 210">
+<defs>
+<filter height="180%" id="m24-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m24-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m24-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#m24-grid)" height="210" width="980" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1622" height="90" rx="14" stroke="#60a5fa" stroke-width="2" width="200" x="40" y="60"></rect>
+<text fill="#bfdbfe" font-size="14" font-weight="700" text-anchor="middle" x="140" y="95">qwen3-coder:30b</text>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="140" y="118">base model</text>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="140" y="136">default context</text>
+<rect fill="#1f2937" height="90" rx="14" stroke="#38bdf8" stroke-width="2" width="220" x="320" y="60"></rect>
+<text fill="#7dd3fc" font-size="13" font-weight="700" text-anchor="middle" x="430" y="92">Modelfile</text>
+<text fill="#e5e7eb" font-family="monospace" font-size="12" text-anchor="middle" x="430" y="114">FROM qwen3-coder:30b</text>
+<text fill="#7dd3fc" font-family="monospace" font-size="12" text-anchor="middle" x="430" y="132">num_ctx 65536</text>
+<path d="M240,105 L318,105" fill="none" marker-end="url(#m24-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<g filter="url(#m24-glow)"><rect fill="#0e1622" height="106" rx="16" stroke="#60a5fa" stroke-width="2.6" width="296" x="640" y="52"></rect></g>
+<path d="M540,105 L636,105" fill="none" marker-end="url(#m24-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<text fill="#60a5fa" font-size="15" font-weight="800" text-anchor="middle" x="788" y="92">qwen3-coder-64k</text>
+<text fill="#bfdbfe" font-size="12" text-anchor="middle" x="788" y="116">64k window open</text>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="788" y="138">ready for the agent ✓</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="490" y="190">the base model isn’t downloaded again—it just gets a larger context window</text>
+</svg>
+<p class="text-xs text-neutral-400 mt-1 px-1">The recipe (<span class="text-blue-400">Modelfile</span>) gets the <span class="text-blue-400">base model</span> and opens the window to 64k, producing the <span class="text-blue-400">qwen3-coder-64k</span>. Notice: there’s no new download along the way — the context boost comes from configuration, not reinstallation.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Key concepts</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">ollama list</span><p class="text-sm text-neutral-400 mt-1">Table of installed models.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">ollama show</span><p class="text-sm text-neutral-400 mt-1">Model details, including context.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">context_length</span><p class="text-sm text-neutral-400 mt-1">It should read 65536 = 64k confirmed.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Check first</span><p class="text-sm text-neutral-400 mt-1">Prove 64k before connecting to Hermes.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Mark as read</span><span class="inema-label-done">Read ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">⚖️ 64k costs memory</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t6-p1">There’s no free lunch: opening the window to 64k <strong class="text-blue-400">uses more RAM</strong>. The larger the context, the more memory Ollama reserves to hold everything the model is "reading" at once. That’s why the headroom rule (module 2.2) applies here again.</p>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> The mistake to avoid</h3>
+<p class="text-neutral-300 text-sm">Forcing 64k on a machine with tight RAM can slow the model down or make the system use disk as memory (swap). If it freezes, reduce the <code class="text-red-400">num_ctx</code> (e.g., 32768) or use a smaller base model. Context means capability, but weights matter too.</p>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Practical tip</h3>
+<p class="text-sm text-neutral-300">Leave some headroom: the agent needs the model loaded AND the full context at the same time. If your machine is low-spec, test with the default model first and increase the <code class="text-primary">num_ctx</code> gradually. Downloading, testing, and deleting remain inexpensive.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Key concepts</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Context uses RAM</span><p class="text-sm text-neutral-400 mt-1">Larger window = more memory reserved.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Headroom</span><p class="text-sm text-neutral-400 mt-1">Leave some RAM free for the full context.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Swap = slow</span><p class="text-sm text-neutral-400 mt-1">Without RAM, the system uses disk and slows to a crawl.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Adjust num_ctx</span><p class="text-sm text-neutral-400 mt-1">Reduce to 32768 if you run out of memory.</p></div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-4#q1">
+<p class="font-medium mb-4">Optional self-check: Why did we create qwen3-coder-64k instead of using the default chat model?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because Hermes prohibits the chat model.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because the agent needs 64k of context, and we open this window with a Modelfile (num_ctx 65536) on top of a model we already have.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because qwen3-coder-64k is a completely new and faster download.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Mark as read</span><span class="inema-label-done">Read ✓</span>
+</button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-8">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Module summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">The agent asks for 64k</strong><span class="text-neutral-400"> — history + tools take up the window; the chat model is too small.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Qwen 3 Coder is the foundation</strong><span class="text-neutral-400"> — open model focused on code/agents, great as the engine behind Hermes.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">2-line Modelfile</strong><span class="text-neutral-400"> — FROM + PARAMETER num_ctx 65536, then ollama create qwen3-coder-64k -f Modelfile.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Check and weigh</strong><span class="text-neutral-400"> — ollama show displays 65536; remember that 64k uses more RAM.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Next module:</h3>
+<p class="text-neutral-300">2.5 — Connect the local model to Agent Hermes</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to the Track</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-5.html">Next module →</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Hermes Agent + Ollama — Your 100% Private AI OS</p>
+<p>Module 2.4 · Track 2 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init({ autoResume: false }); }
+    document.addEventListener('DOMContentLoaded', function(){
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-4#q1', {
+          answer: 1,
+          explain: {
+            0: 'Nao — o Hermes nao proibe o modelo de chat; ele so precisa de um modelo com 64k para trabalhar bem.',
+            1: 'Isso! O agente exige 64k; o Modelfile (num_ctx 65536) abre essa janela sobre um modelo que ja temos, sem novo download.',
+            2: 'Nao — qwen3-coder-64k nao e download novo; ele reusa os pesos do modelo base, so com a janela maior (o que custa mais RAM, nao menos).'
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

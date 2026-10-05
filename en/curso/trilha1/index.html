@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Track 1 · Fundamentals | Hermes Local</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark') ? 'dark' : 'light'));
+      html.setAttribute('data-font', p.font || 'inter');
+      html.setAttribute('data-accent', p.accent || 'emerald');
+      var s = html.style, scale = (+p.fontScale || 100);
+      s.setProperty('--inema-font-scale', (scale/100).toString());
+      s.setProperty('font-size', scale + '%');
+      s.setProperty('--measure', (+p.lineWidth || 68) + 'ch');
+      s.setProperty('--lh-body', (+p.leading || 1.7).toString());
+      var fam = p.font==='system' ? 'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif' : (p.font==='leitura' ? '"Atkinson Hyperlegible","Inter",system-ui,sans-serif' : '"Inter",system-ui,sans-serif');
+      s.setProperty('--font-body', fam);
+      var ACC = { emerald:[152,76,45], blue:[217,91,60], purple:[258,90,66], amber:[38,92,50], teal:[174,72,41], rose:[350,89,60] };
+      var a = ACC[p.accent] || ACC.emerald;
+      s.setProperty('--accent-h', a[0]+''); s.setProperty('--accent-s', a[1]+'%'); s.setProperty('--accent-l', a[2]+'%');
+      s.setProperty('--accent', 'hsl('+a[0]+' '+a[1]+'% '+a[2]+'%)');
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "hermes-local",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos", "modules": [
+        { "id": "1-1", "title": "Por que IA local e o futuro", "topics": 6 },
+        { "id": "1-2", "title": "O vocabulario: LLM, agente e SO de IA", "topics": 6 },
+        { "id": "1-3", "title": "O que e o Ollama e os modelos abertos", "topics": 6 },
+        { "id": "1-4", "title": "Janela de contexto e parametros", "topics": 6 },
+        { "id": "1-5", "title": "O trade-off: privacidade, performance e preco", "topics": 6 },
+        { "id": "1-6", "title": "Os tres modos: Vault, Connected e Cloud", "topics": 6 }
+      ]},
+      { "n": "2", "title": "Mao na massa", "modules": [
+        { "id": "2-1", "title": "Instalar o Ollama", "topics": 6 },
+        { "id": "2-2", "title": "Escolher o modelo certo pro seu hardware", "topics": 6 },
+        { "id": "2-3", "title": "Baixar e conversar com seu 1o modelo", "topics": 6 },
+        { "id": "2-4", "title": "O modelo do agente: Qwen 3 Coder 64k", "topics": 6 },
+        { "id": "2-5", "title": "Conectar o modelo local ao Agente Hermes", "topics": 6 },
+        { "id": "2-6", "title": "App desktop, terminal e Telegram", "topics": 6 }
+      ]},
+      { "n": "3", "title": "Projetos", "modules": [
+        { "id": "3-1", "title": "Projeto 1: Chat privado 100% local", "topics": 6 },
+        { "id": "3-2", "title": "Projeto 2: Agente Hermes rodando local", "topics": 6 },
+        { "id": "3-3", "title": "Projeto 3: Memoria, personas e skills", "topics": 6 },
+        { "id": "3-4", "title": "Projeto 4: GitHub e documentos", "topics": 6 },
+        { "id": "3-5", "title": "Projeto 5: Background agents 24/7 a $0", "topics": 6 },
+        { "id": "3-6", "title": "Projeto 6: Alternar Vault, Connected e Cloud", "topics": 6 },
+        { "id": "3-7", "title": "Projeto 7: Hermes no celular de qualquer lugar", "topics": 6 }
+      ]}
+    ]
+  }
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id] { scroll-margin-top: 4.5rem; }
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:bg-emerald-500\/10:hover { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:bg-blue-500\/10:hover { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:bg-purple-500\/10:hover { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+    @keyframes wf-pulse { 0%,100% { opacity:.5 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/agente-hermes-local/curso/trilha1/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/curso/trilha1/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/curso/trilha1/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentals</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Hands-on</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projects</span></a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="My journey" type="button"><span aria-hidden="true">◷</span><span class="hidden md:inline">Journey</span><span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span></button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Appearance" type="button"><span aria-hidden="true">◑</span><span class="hidden md:inline">Appearance</span></button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div><p class="text-xs text-neutral-400 mb-1.5">Theme</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Dark</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Of course</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Focus</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">High contrast</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Source</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">System</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Reading</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Size</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Line spacing</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compact</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Comfortable</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Accent</p><div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Teal"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div></div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Toggle light/dark">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span><span class="text-emerald-400">Track 1</span>
+</nav>
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">TRAIL 1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧠 Fundamentals</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">Before installing anything: why run AI locally, the vocabulary you’ll use throughout the course (LLM, agent, “AI OS”), what Ollama is, what a context window is—and the three ways to operate between private and cloud.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="From the cloud to local: data that used to go to external servers now stays on your machine, powering memory, the agent, and the model" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="t1h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="t1h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t1h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t1h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+<marker id="t1h-ahc" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#t1h-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="80"></rect>
+<text fill="#9ad6ff" font-size="15" font-weight="600" text-anchor="middle" x="125" y="110">Cloud</text>
+<text fill="#bfe6ff" font-size="12" text-anchor="middle" x="125" y="132">your data leaves</text>
+<path d="M210,115 L300,115" fill="none" marker-end="url(#t1h-ahc)" opacity="0.6" stroke="#9ca3af" stroke-dasharray="7 7" stroke-width="1.8"></path>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="255" y="104">past</text>
+<g filter="url(#t1h-glow)"><rect fill="url(#t1h-grad)" height="82" opacity="0.16" rx="16" stroke="url(#t1h-grad)" stroke-width="2.5" width="180" x="300" y="74"></rect></g>
+<text fill="#34d399" font-size="16" font-weight="700" text-anchor="middle" x="390" y="106">Your machine</text>
+<text fill="#a7f3d0" font-size="12" text-anchor="middle" x="390" y="130">the data stays at home</text>
+<g fill="none" opacity="0.7" stroke="#34d399" stroke-width="2">
+<path d="M480,95  C560,95 580,60 660,60" marker-end="url(#t1h-ah)"></path>
+<path d="M480,115 L660,115" marker-end="url(#t1h-ah)"></path>
+<path d="M480,135 C560,135 580,170 660,170" marker-end="url(#t1h-ah)"></path>
+</g>
+<g font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e2018" height="32" rx="9" stroke="#34d399" stroke-width="2" width="150" x="660" y="44"></rect><text fill="#a7f3d0" text-anchor="middle" x="735" y="65">memory</text></g>
+<g class="wf-a"><rect fill="#0e2018" height="32" rx="9" stroke="#34d399" stroke-width="2" width="150" x="660" y="99"></rect><text fill="#a7f3d0" text-anchor="middle" x="735" y="120">agent</text></g>
+<g class="wf-a"><rect fill="#0e2018" height="32" rx="9" stroke="#34d399" stroke-width="2" width="150" x="660" y="154"></rect><text fill="#a7f3d0" text-anchor="middle" x="735" y="175">local model</text></g>
+</g>
+<g filter="url(#t1h-glow)"><rect fill="#1f1604" height="52" rx="13" stroke="#FACC15" stroke-width="2.5" width="116" x="852" y="89"></rect></g>
+<text fill="#FACC15" font-size="14" font-weight="700" text-anchor="middle" x="910" y="112">$0 / token</text>
+<text fill="#fde68a" font-size="11" text-anchor="middle" x="910" y="130">offline · private</text>
+<g fill="none" opacity="0.55" stroke="#38bdf8" stroke-width="1.8">
+<path d="M810,60  C835,60 840,115 852,115"></path>
+<path d="M810,170 C835,170 840,115 852,115"></path>
+</g>
+</g>
+</svg>
+<p class="text-xs text-neutral-400 mt-1 px-1">Read from left to right: what went to the <span class="text-sky-400">cloud</span> moves into the <span class="text-emerald-400">your machine</span>, which powers memory, the agent, and the model — resulting in zero cost, offline and private.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Modules</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">36</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~3h</div><div class="text-xs text-neutral-400">Duration</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Basic</div><div class="text-xs text-neutral-400">Level</div></div>
+</div>
+<div aria-label="Learning path 1 progress" aria-valuemax="100" aria-valuemin="0" class="mt-6 max-w-md" data-inema-meter="trilha:1" role="progressbar">
+<div class="flex items-center justify-between mb-1"><span class="text-xs text-neutral-400">Learning path progress</span><span class="text-xs font-bold text-emerald-400" data-inema-meter-pct="">0%</span></div>
+<div class="inema-bar h-2 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 36</span> topics</span>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- MAPA DA TRILHA -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Track map</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-1">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🌍 Why local is the future</h3>
+<p class="text-xs text-neutral-400">The cloud was the past</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-2">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🗣️ The vocabulary</h3>
+<p class="text-xs text-neutral-400">LLM, agent, AI OS</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-3">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">📦 What is Ollama</h3>
+<p class="text-xs text-neutral-400">The key to open models</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-4">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🪟 Context and parameters</h3>
+<p class="text-xs text-neutral-400">Why 64k matters</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-5">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">⚖️ The trade-off</h3>
+<p class="text-xs text-neutral-400">Privacy, performance, price</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-6">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🗄️ The three modes</h3>
+<p class="text-xs text-neutral-400">Vault, Connected, Cloud</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Detailed content</h2>
+<!-- MODULO 1.1 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-1" data-inema-track="1" id="modulo-1-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🌍 Why local AI is the future</h3>
+<p class="text-neutral-400 text-sm mb-3">The industry’s direction of travel: from cloud to local. Ownership, zero cost, offline access, and the cases where this changes the game.</p>
+<div aria-label="Module 1.1 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:1-1" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-controls="t11-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🌍</span><div><span class="font-medium">The direction is local</span><span class="text-neutral-500 text-sm ml-2">- the cloud was the past</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="t11-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The industry moved everything to the cloud; now the movement is back to the user’s machine — local computing.</p></div>
+<div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Understanding the “direction of travel” puts you ahead: the ability to run things locally will be as basic as using a computer.</p></div>
+<div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Cloud→local, ownership, personal supercomputer (the Jensen Huang analogy).</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-controls="t11-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔒</span><div><span class="font-medium">Ownership</span><span class="text-neutral-500 text-sm ml-2">- you own the intelligence</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="t11-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You physically own the model and the data; nothing goes to OpenAI or Anthropic.</p></div>
+<div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Stopping “renting intelligence” changes the game for cost, privacy, and control.</p></div>
+<div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Ownership, data at home, no surveillance, no vendor lock-in.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-controls="t11-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">💸</span><div><span class="font-medium">Zero cost per token</span><span class="text-neutral-500 text-sm ml-2">- download once, run forever</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="t11-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">After downloading the model, every use is free—there are no per-token charges or monthly fees.</p></div>
+<div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Background agents can run 24/7 without giving you a bill shock.</p></div>
+<div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">CAPEX vs OPEX, $0/token, no rate limit.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-controls="t11-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">✈️</span><div><span class="font-medium">Works offline</span><span class="text-neutral-500 text-sm ml-2">- no internet, anywhere</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="t11-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Because the model runs on your machine, it works without a network connection—on a plane, off-grid, wherever.</p></div>
+<div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Your productivity no longer depends on a connection or a service being up.</p></div>
+<div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Availability, resilience, network independence.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-controls="t11-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🏢</span><div><span class="font-medium">Real-world cases</span><span class="text-neutral-500 text-sm ml-2">- sensitive data and compliance</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="t11-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Customer, health, and proprietary IP data, and regulated environments (SOC 2, GDPR, ISO 27001).</p></div>
+<div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">For many companies, local isn’t a luxury — it’s the only legal way to use AI with certain data.</p></div>
+<div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Compliance, data sovereignty, the team’s “private brain.”</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-controls="t11-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧭</span><div><span class="font-medium">No ideology</span><span class="text-neutral-500 text-sm ml-2">- the right tool for each task</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4" id="t11-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Local isn’t a religion: bring the best tool for the job, and switch when it’s no longer the best.</p></div>
+<div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Avoids the mistake of forcing local use when the cloud delivers much more — and vice versa.</p></div>
+<div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Pragmatism, “follow what works,” split by % of work.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-1')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-1.html">View Full</a>
+</div>
+</div>
+<!-- MODULO 1.2 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-2" data-inema-track="1" id="modulo-1-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🗣️ The vocabulary: LLM, agent, and AI OS</h3>
+<p class="text-neutral-400 text-sm mb-3">The terms that come up throughout the course, defined from scratch: LLM, agent, tools, memory, persona, skill, and what an "AI operating system" is.</p>
+<div aria-label="Module 1.2 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:1-2" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t12-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🤖</span><div><span class="font-medium">What an LLM is</span><span class="text-neutral-500 text-sm ml-2">- the model behind the chat</span></div></button><div class="topic-explanation px-6 pb-4" id="t12-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">An LLM is the type of AI model that runs behind ChatGPT—it predicts the next word based on the text.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the piece you’ll download and run; knowing what it is demystifies everything else.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Model, token prediction, weights.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t12-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🛠️</span><div><span class="font-medium">What an agent is</span><span class="text-neutral-500 text-sm ml-2">- LLM + tools</span></div></button><div class="topic-explanation px-6 pb-4" id="t12-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">An agent is an LLM that uses “tools”: searching the web, running code, editing files—on its own.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Hermes is an agent; understanding tools explains why it does things, not just responds.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Tools, actions, reasoning loop.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t12-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">🖥️</span><div><span class="font-medium">What an “AI OS” is</span><span class="text-neutral-500 text-sm ml-2">- Hermes as a system</span></div></button><div class="topic-explanation px-6 pb-4" id="t12-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A single place that brings together memory, skills, connections, and agents from your AI world.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">And that’s what you’ll build in Track 3 — the “Hermes OS” running locally.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Orchestration, one home for everything, configurable.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t12-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🧠</span><div><span class="font-medium">Memory, personas, and skills</span><span class="text-neutral-500 text-sm ml-2">- the OS components</span></div></button><div class="topic-explanation px-6 pb-4" id="t12-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Memory = what it remembers; persona = how it acts; skill = a capability you plug in.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">They’re the building blocks you configure to make the agent YOUR agent.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Persistent memory, behavior, pluggable capabilities.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t12-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔌</span><div><span class="font-medium">Connections</span><span class="text-neutral-500 text-sm ml-2">- GitHub, documents</span></div></button><div class="topic-explanation px-6 pb-4" id="t12-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Integrations that give the agent access to sources — repositories, files, tools.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Connections turn the agent from a “conversationalist” into an “operator” for your work.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Integrations, external context, real-world actions.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t12-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">☁️</span><div><span class="font-medium">Local vs. cloud</span><span class="text-neutral-500 text-sm ml-2">- where each one runs</span></div></button><div class="topic-explanation px-6 pb-4" id="t12-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Local = runs on your machine; cloud = runs on a company’s infrastructure.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the distinction that organizes the entire course and the three modes in module 1.6.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Your own versus rented infrastructure, and where the data lives.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-2')">View in Modal</button><a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-2.html">View Full</a></div>
+</div>
+<!-- MODULO 1.3 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-3" data-inema-track="1" id="modulo-1-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">📦 What Ollama and open models are</h3>
+<p class="text-neutral-400 text-sm mb-3">The program that unlocks open models (Qwen, DeepSeek, Gemma, Mistral) on your machine — download it once and run it for free forever.</p>
+<div aria-label="Module 1.3 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:1-3" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t13-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">📦</span><div><span class="font-medium">What Ollama is</span><span class="text-neutral-500 text-sm ml-2">- the local “app store”</span></div></button><div class="topic-explanation px-6 pb-4" id="t13-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A program that downloads, manages, and runs AI models on your machine, with an app and terminal.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the foundation for everything: without it, there’s no local model for the agent to use.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Local runtime, model manager, easy to use.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t13-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔓</span><div><span class="font-medium">Open models</span><span class="text-neutral-500 text-sm ml-2">- Qwen, DeepSeek, Gemma, Mistral</span></div></button><div class="topic-explanation px-6 pb-4" id="t13-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Models publicly released for you to download and run without asking anyone for a license.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Open source competition is what makes local computing viable and keeps making it better.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Open weights, model families, choosing by task.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t13-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">⬇️</span><div><span class="font-medium">Download once, run locally</span><span class="text-neutral-500 text-sm ml-2">- no back-and-forth to the cloud</span></div></button><div class="topic-explanation px-6 pb-4" id="t13-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The model stays on your disk; after downloading it, you only need the internet to download others.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Explains “offline” and “$0/token” in practice.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">One-time download, local execution, disk cache.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t13-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🗂️</span><div><span class="font-medium">How Ollama serves the model</span><span class="text-neutral-500 text-sm ml-2">- under the hood</span></div></button><div class="topic-explanation px-6 pb-4" id="t13-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">It starts a local service that receives your text and returns the model’s response.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">This is how the Hermes Agent will “talk” to the model in Track 2.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Local server, endpoint, model loaded in memory.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t13-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔢</span><div><span class="font-medium">Parameters (the “B”)</span><span class="text-neutral-500 text-sm ml-2">- billions of parameters</span></div></button><div class="topic-explanation px-6 pb-4" id="t13-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">“30B” in the name means 30 billion parameters — the size of the model.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">More parameters = more capable, but heavier for your machine.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Parameters, size vs. capacity, hardware cost.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t13-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🆚</span><div><span class="font-medium">Ollama vs. cloud</span><span class="text-neutral-500 text-sm ml-2">- what changes</span></div></button><div class="topic-explanation px-6 pb-4" id="t13-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">With the cloud, you use their infrastructure; with Ollama, everything runs and stays on your computer.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Makes clear what you gain (privacy/cost) and what you give up (raw power).</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Metered vs. local, control, trade-off.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-3')">View in Modal</button><a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-3.html">View Full</a></div>
+</div>
+<!-- MODULO 1.4 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-4" data-inema-track="1" id="modulo-1-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🪟 Context window and parameters</h3>
+<p class="text-neutral-400 text-sm mb-3">What a context window is, what a token is, why Hermes Agent requires 64k—and how model size relates to your RAM.</p>
+<div aria-label="Module 1.4 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:1-4" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t14-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🪟</span><div><span class="font-medium">What is a context window</span><span class="text-neutral-500 text-sm ml-2">- the "working memory"</span></div></button><div class="topic-explanation px-6 pb-4" id="t14-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">How much text the model can “hold in its head” at once while responding.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s what limits (or enables) long tasks, such as an agent with memory.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Context, input + output limit, working memory.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t14-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔤</span><div><span class="font-medium">What a token is</span><span class="text-neutral-500 text-sm ml-2">- word fragment</span></div></button><div class="topic-explanation px-6 pb-4" id="t14-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The unit the model reads or generates — a token is about 3/4 of an English word.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The context window is measured in tokens; 64k tokens ≈ 25–30 thousand words.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Token, tokenization, tokens ≠ words.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t14-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">📏</span><div><span class="font-medium">Why the agent needs 64k</span><span class="text-neutral-500 text-sm ml-2">- the Hermes requirement</span></div></button><div class="topic-explanation px-6 pb-4" id="t14-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Hermes Agent requires a model with at least 64,000 context tokens because of its memory and tools.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">And that’s why you download Qwen 3 Coder 64k in Track 2, not just any model.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Context requirement, agent memory, tools use context.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t14-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🔢</span><div><span class="font-medium">Parameters vs. context</span><span class="text-neutral-500 text-sm ml-2">- two different things</span></div></button><div class="topic-explanation px-6 pb-4" id="t14-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Parameters = the size of the “brain”; context = how much it reads at once. They’re independent.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">A 30B model may have a small context window; you need to look at both numbers.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Size ≠ context; check the model specs.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t14-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">⚖️</span><div><span class="font-medium">Model size vs. RAM</span><span class="text-neutral-500 text-sm ml-2">- needs headroom</span></div></button><div class="topic-explanation px-6 pb-4" id="t14-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The model needs to fit in memory with room to spare; if it’s too large, the machine slows down.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Avoids the mistake of downloading a model that slows down your computer.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">RAM/VRAM, headroom, download→test→delete.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t14-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🎯</span><div><span class="font-medium">Choosing context for each task</span><span class="text-neutral-500 text-sm ml-2">- not everything needs 64k</span></div></button><div class="topic-explanation px-6 pb-4" id="t14-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">For short conversations, a smaller, faster model is enough; 64k is for the agent.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You can have more than one model and use the right one for each task.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Fast model vs. agent model, multiple models.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-4')">View in Modal</button><a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-4.html">View Full</a></div>
+</div>
+<!-- MODULO 1.5 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-5" data-inema-track="1" id="modulo-1-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">⚖️ The trade-off: privacy, performance, and price</h3>
+<p class="text-neutral-400 text-sm mb-3">The honest truth: the best local model is about 1 year behind the frontier. What you trade off, what the benchmarks say, and how to split up your work.</p>
+<div aria-label="Module 1.5 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:1-5" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t15-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🔐</span><div><span class="font-medium">Privacy</span><span class="text-neutral-500 text-sm ml-2">- what you gain</span></div></button><div class="topic-explanation px-6 pb-4" id="t15-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">With local, the data never leaves your machine — no company sees what you write.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the local setup’s biggest strength and the number one reason for many use cases.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Confidentiality, data sovereignty.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t15-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">⚡</span><div><span class="font-medium">Performance</span><span class="text-neutral-500 text-sm ml-2">- the “1 year ago”</span></div></button><div class="topic-explanation px-6 pb-4" id="t15-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The best local model today is equivalent to the best frontier model from ~12 months ago.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Set expectations: it’s very good, but it’s not the absolute best.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">About a 1-year lag, in line with the pace of open source.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t15-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">💰</span><div><span class="font-medium">Price</span><span class="text-neutral-500 text-sm ml-2">- $0 forever</span></div></button><div class="topic-explanation px-6 pb-4" id="t15-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Beyond the hardware you already have, usage is free—no subscription.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Changes the economics of running agents all day.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">$0/token, no subscription, just the cost of electricity/hardware.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t15-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">📊</span><div><span class="font-medium">Benchmarks</span><span class="text-neutral-500 text-sm ml-2">- Opus 4.8 vs Qwen</span></div></button><div class="topic-explanation px-6 pb-4" id="t15-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Numbers comparing models (e.g., ~88,6 for Opus 4.8 vs ~74 for the Qwen you run).</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Helps you read comparisons with a critical eye, without becoming beholden to benchmarks.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Benchmark, critical reading, “optimize benchmark”.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t15-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🐢</span><div><span class="font-medium">As fast as your machine</span><span class="text-neutral-500 text-sm ml-2">- the limit is the hardware</span></div></button><div class="topic-explanation px-6 pb-4" id="t15-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Response speed depends on your computer; large models can be slow.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You choose between speed and quality based on what you need at the time.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Latency, hardware, model size.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t15-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🧩</span><div><span class="font-medium">Dividing the work into %</span><span class="text-neutral-500 text-sm ml-2">- where local shines</span></div></button><div class="topic-explanation px-6 pb-4" id="t15-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Imagine 100% of your work: one part calls for total privacy, another calls for maximum quality.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">And it’s the reasoning that leads straight to the three modes in module 1.6.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Break tasks into parts; use the best tool for each part.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-5')">View in Modal</button><a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-5.html">View Full</a></div>
+</div>
+<!-- MODULO 1.6 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-6" data-inema-track="1" id="modulo-1-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🗄️ The three modes: Vault, Connected, and Cloud</h3>
+<p class="text-neutral-400 text-sm mb-3">How to operate between full privacy and the best quality: Vault (private), Connected (performance), and Cloud (quality)—and when to use each one.</p>
+<div aria-label="Module 1.6 progress" aria-valuemax="100" aria-valuemin="0" class="max-w-xs" data-inema-meter="modulo:1-6" role="progressbar"><div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden"><div class="inema-bar__fill h-full bg-emerald-500" data-inema-meter-fill="" style="width:0%"></div></div><span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 of 6</span> · <span data-inema-meter-pct="">0%</span></span></div>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item"><button aria-controls="t16-1" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span><span class="text-lg">🗄️</span><div><span class="font-medium">Vault (private)</span><span class="text-neutral-500 text-sm ml-2">- everything local</span></div></button><div class="topic-explanation px-6 pb-4" id="t16-1"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Vault mode: the agent only uses the local model; nothing leaves the machine.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the mode for sensitive data and when you’re offline.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Vault mode, isolation, total privacy.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t16-2" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span><span class="text-lg">🔗</span><div><span class="font-medium">Connected (performance)</span><span class="text-neutral-500 text-sm ml-2">- more power</span></div></button><div class="topic-explanation px-6 pb-4" id="t16-2"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Connected mode, which brings more power when you need a boost.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the middle ground between total privacy and maximum quality.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Performance mode, balanced.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t16-3" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span><span class="text-lg">☁️</span><div><span class="font-medium">Cloud (quality)</span><span class="text-neutral-500 text-sm ml-2">- the best answer</span></div></button><div class="topic-explanation px-6 pb-4" id="t16-3"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Cloud mode, for when raw quality matters more than privacy.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Knowing when to turn on the cloud helps you avoid wasting time on local models for difficult tasks.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Cloud mode, quality &gt; privacy, fresh web data.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t16-4" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span><span class="text-lg">🩺</span><div><span class="font-medium">When to use Vault</span><span class="text-neutral-500 text-sm ml-2">- sensitive data</span></div></button><div class="topic-explanation px-6 pb-4" id="t16-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Customer data, financial data, health notes, proprietary code, or simply no internet connection.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the practical rule that tells you which mode to use.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Sensitivity criterion, decision rule.</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t16-5" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span><span class="text-lg">🔄</span><div><span class="font-medium">Switch dynamically</span><span class="text-neutral-500 text-sm ml-2">- switch instantly</span></div></button><div class="topic-explanation px-6 pb-4" id="t16-5"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You can ask Hermes to send one task to the private model and another to the cloud.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the heart of Project 6 in Track 3.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Dynamic routing, “send it to private.”</p></div></div></div></div>
+<div class="topic-item"><button aria-controls="t16-6" aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)"><span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span><span class="text-lg">🤖</span><div><span class="font-medium">24/7 background agents</span><span class="text-neutral-500 text-sm ml-2">- running at $0</span></div></button><div class="topic-explanation px-6 pb-4" id="t16-6"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9"><div><span class="text-emerald-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Since local is free, you can leave agents working all day without usage fees.</p></div><div><span class="text-emerald-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s one of the biggest practical advantages of Vault mode.</p></div><div><span class="text-emerald-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Background agents, zero cost, automation.</p></div></div></div></div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3"><button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-6')">View in Modal</button><a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-6.html">View Full</a></div>
+</div>
+<!-- Navegacao entre trilhas -->
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../../index.html">← Home</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../trilha2/index.html">Track 2: Hands-on →</a>
+</div>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Hermes Agent + Ollama — Your 100% Private AI OS</p>
+<p>Track 1 · Fundamentals · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<!-- MODAIS (iframe) -->
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-1" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.1</span><span class="font-semibold">Why local AI is the future</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-1-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-2" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">The vocabulary</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-1-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-3" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.3</span><span class="font-semibold">What Ollama is</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-1-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-4" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.4</span><span class="font-semibold">Context window and parameters</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-1-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-5" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.5</span><span class="font-semibold">The trade-off</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-1-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-6" onclick="if(event.target===this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.6</span><span class="font-semibold">The three modes</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" data-src="modulo-1-6.html"></iframe></div></div>
+<script>
+    function toggleTopic(button){
+      const item = button.closest('.topic-item');
+      const exp = item.querySelector('.topic-explanation');
+      const card = button.closest('.bg-dark-800');
+      if (card) card.querySelectorAll('.topic-explanation.active').forEach(e=>{ if(e!==exp) e.classList.remove('active'); });
+      const open = exp.classList.toggle('active');
+      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    (function(){
+      const tt=document.getElementById('theme-toggle'), di=document.getElementById('theme-toggle-dark-icon'), li=document.getElementById('theme-toggle-light-icon'), html=document.documentElement;
+      function sync(){ if(html.classList.contains('dark')){ li.classList.remove('hidden'); di.classList.add('hidden'); } else { di.classList.remove('hidden'); li.classList.add('hidden'); } }
+      sync();
+      if(tt) tt.addEventListener('click', ()=>{ html.classList.toggle('dark'); localStorage.setItem('theme', html.classList.contains('dark')?'dark':'light'); if(window.INEMA&&INEMA.setPref){ INEMA.setPref('theme', html.classList.contains('dark')?'inema-dark':'claro'); } sync(); });
+    })();
+    function openModal(id){ const m=document.getElementById(id); if(m){ const f=m.querySelector('iframe'); if(f && !f.src && f.dataset.src){ f.src=f.dataset.src; } m.classList.remove('hidden'); document.body.style.overflow='hidden'; } }
+    function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init(); }</script>
+</body>
+</html>

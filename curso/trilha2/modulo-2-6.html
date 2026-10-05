@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="hermes-local">
-  <title>Modulo 2.6 · App desktop, terminal e Telegram | Hermes Local</title>
 
-  <script>
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="hermes-local" name="inema-course"/>
+<title>Modulo 2.6 · App desktop, terminal e Telegram | Hermes Local</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -39,8 +39,7 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
   </script>
-
-  <script type="application/json" data-inema-manifest>
+<script data-inema-manifest="" type="application/json">
   {
     "course": "hermes-local",
     "tracks": [
@@ -72,14 +71,13 @@
     ]
   }
   </script>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
     tailwind.config = { darkMode:'class', theme:{ extend:{ colors:{ primary:'#FACC15', dark:{900:'#111827',800:'#1f2937',700:'#374151',600:'#4b5563'} } } } }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
     .topic-explanation { display: none; }
@@ -141,419 +139,376 @@
       .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s} .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
     }
   </style>
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-
-  <a href="#conteudo" class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg">Pular para o conteudo</a>
-
-  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-14">
-        <div class="flex items-center space-x-3">
-          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
-          <span class="text-neutral-600">|</span>
-          <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
-        </div>
-        <div class="flex items-center space-x-1 sm:space-x-2">
-          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Mao na massa</span></a>
-          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projetos</span></a>
-          <button type="button" data-inema-journey-open class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Minha jornada"><span aria-hidden="true">◷</span><span class="hidden md:inline">Jornada</span><span class="inema-journey-badge hidden" data-inema-journey-badge data-count="0"></span></button>
-          <div class="relative">
-            <button type="button" data-inema-appearance-toggle="[data-inema-appearance]" aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" title="Aparencia"><span aria-hidden="true">◑</span><span class="hidden md:inline">Aparencia</span></button>
-            <div data-inema-appearance class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left">
-              <div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
-                <button data-inema-set-theme="inema-dark" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Escuro</button>
-                <button data-inema-set-theme="claro" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Claro</button>
-                <button data-inema-set-theme="sepia" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sepia</button>
-                <button data-inema-set-theme="foco" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Foco</button>
-                <button data-inema-set-theme="contraste" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Alto contraste</button>
-              </div></div>
-              <div><p class="text-xs text-neutral-400 mb-1.5">Fonte</p><div class="inema-segment flex flex-wrap gap-1.5">
-                <button data-inema-set-font="inter" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Inter</button>
-                <button data-inema-set-font="system" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Sistema</button>
-                <button data-inema-set-font="leitura" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Leitura</button>
-              </div></div>
-              <div><p class="text-xs text-neutral-400 mb-1.5">Tamanho</p><div class="inema-segment flex flex-wrap gap-1.5">
-                <button data-inema-set-fontscale="100" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A</button>
-                <button data-inema-set-fontscale="112" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A+</button>
-                <button data-inema-set-fontscale="125" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">A++</button>
-              </div></div>
-              <div><p class="text-xs text-neutral-400 mb-1.5">Entrelinha</p><div class="inema-segment flex flex-wrap gap-1.5">
-                <button data-inema-set-leading="1.45" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Compacto</button>
-                <button data-inema-set-leading="1.7" class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs">Confortavel</button>
-              </div></div>
-              <div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
-                <button data-inema-set-accent="emerald" class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" title="Emerald"></button>
-                <button data-inema-set-accent="blue" class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" title="Blue"></button>
-                <button data-inema-set-accent="purple" class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" title="Purple"></button>
-                <button data-inema-set-accent="amber" class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" title="Amber"></button>
-                <button data-inema-set-accent="teal" class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" title="Teal"></button>
-                <button data-inema-set-accent="rose" class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" title="Rose"></button>
-              </div></div>
-            </div>
-          </div>
-          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" title="Alternar claro/escuro">
-            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <main id="conteudo">
-    <header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
-          <a href="../../index.html" class="hover:text-blue-400">Inicio</a><span>/</span>
-          <a href="index.html" class="hover:text-blue-400">Trilha 2</a><span>/</span>
-          <span class="text-blue-400">Modulo 2.6</span>
-        </nav>
-        <span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.6</span>
-        <h1 class="text-3xl sm:text-4xl font-bold mb-4">🖥️ App desktop, terminal e Telegram</h1>
-        <p class="text-lg text-neutral-400 max-w-3xl">Com o agente conectado, agora e sobre <strong>como falar com ele</strong>. O Hermes oferece tres portas — app desktop, terminal e Telegram — e algumas ferramentas que mudam o jogo: sessions, branch/fork de conversa e artifacts. Este e o ultimo modulo pratico antes dos projetos.</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
-          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
-          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~25</div><div class="text-xs text-neutral-400">Minutos</div></div>
-          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Pratico</div><div class="text-xs text-neutral-400">Nivel</div></div>
-          <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Hands-on</div><div class="text-xs text-neutral-400">Tipo</div></div>
-        </div>
-      </div>
-    </header>
-
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="lg:flex lg:gap-10">
-
-        <!-- TOC sticky -->
-        <aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
-          <nav data-inema-toc aria-label="Indice da pagina" class="lg:sticky lg:top-20">
-            <p class="text-sm text-neutral-400 mb-2">Secao <span class="inema-toc-pos" data-inema-section-counter>1</span> de 6</p>
-            <ol class="space-y-1 text-sm">
-              <li><a href="#topico-1" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400">1. O app desktop</a></li>
-              <li><a href="#topico-2" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400">2. O terminal</a></li>
-              <li><a href="#topico-3" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400">3. Telegram</a></li>
-              <li><a href="#topico-4" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400">4. Sessions</a></li>
-              <li><a href="#topico-5" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400">5. Branch / fork de chat</a></li>
-              <li><a href="#topico-6" class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400">6. Artifacts</a></li>
-            </ol>
-            <div class="mt-4" data-inema-meter="modulo:2-6" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do modulo 2.6">
-              <div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill style="width:0%"></div></div>
-              <span class="text-xs text-neutral-500"><span data-inema-meter-frac>0 de 6</span> · <span data-inema-meter-pct>0%</span></span>
-            </div>
-          </nav>
-        </aside>
-
-        <div class="lg:flex-1 min-w-0 inema-prose" id="modulo-2-6" data-inema-module="2-6" data-inema-track="2">
-
-          <!-- TOPICO 1 -->
-          <section id="topico-1" data-inema-topic="modulo-2-6#topico-1" class="mb-16">
-            <div class="flex items-center space-x-4 mb-6">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
-              <h2 class="text-2xl font-bold">🖥️ O app desktop</h2>
-            </div>
-            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t1-p1">A porta mais amigavel para o Hermes e o <strong class="text-blue-400">app desktop</strong>. Ele tem cara de aplicativo de chat: voce abre, comeca uma sessao e conversa — sem precisar decorar comandos. Para quem acha o terminal intimidante, e por aqui que vale comecar.</p>
-
-            <figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
-              <img src="../../assets/img/hermes-dashboard.jpg" alt="App desktop do Hermes em New session, com a interface de conversa do agente" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
-              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ App desktop do Hermes — tela "New session".</div>
-              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Frame do video: o app desktop em <span class="text-blue-400">New session</span>. Repare que e uma janela de chat comum — comeca uma sessao e digita. O modelo ativo (o seu local) fica visivel no canto inferior direito, como vimos no modulo 2.5.</figcaption>
-            </figure>
-
-            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
-              <p class="text-sm text-neutral-300"><strong class="text-primary">Dica:</strong> o app desktop e o terminal sao duas portas para o <em>mesmo</em> agente. Escolher um nao desliga o outro — e questao de conforto. Comece no app; migre para o terminal quando quiser comandos.</p>
-            </div>
-
-            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
-            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">App desktop</span><p class="text-sm text-neutral-400 mt-1">Interface grafica de chat para o Hermes.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Menos intimidante</span><p class="text-sm text-neutral-400 mt-1">Bom ponto de partida para iniciantes.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">New session</span><p class="text-sm text-neutral-400 mt-1">Inicia uma nova conversa com o agente.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Mesma engine</span><p class="text-sm text-neutral-400 mt-1">App e terminal falam com o mesmo agente.</p></div>
-            </div>
-
-            <div class="flex justify-start">
-              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
-                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- TOPICO 2 -->
-          <section id="topico-2" data-inema-topic="modulo-2-6#topico-2" class="mb-16">
-            <div class="flex items-center space-x-4 mb-6">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
-              <h2 class="text-2xl font-bold">⌨️ O terminal</h2>
-            </div>
-            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t2-p1">Para quem gosta de controle, o Hermes tambem vive no <strong class="text-blue-400">terminal</strong>. Voce ja viu alguns comandos (<code class="text-blue-400">update</code>, <code class="text-blue-400">status</code>, <code class="text-blue-400">doctor</code>). Aqui entram mais dois: <strong>hermes dashboard</strong>, que abre o painel, e <strong>hermes setup</strong>, para a configuracao inicial.</p>
-
-            <div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
-              <h3 class="text-base font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objetivo</h3>
-              <p class="text-sm text-neutral-300 mb-4">Abrir o painel do Hermes e (se ainda nao fez) rodar a configuracao inicial — tudo pela linha de comando.</p>
-              <pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">hermes dashboard
+<link href="https://inematds.github.io/agente-hermes-local/curso/trilha2/modulo-2-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/en/curso/trilha2/modulo-2-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/agente-hermes-local/es/curso/trilha2/modulo-2-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-2-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha2/modulo-2-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha2/modulo-2-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="skip sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-dark-900 focus:rounded-lg" href="#conteudo">Pular para o conteudo</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-3">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🔒</span><span class="font-bold text-lg hidden sm:inline">Hermes Local</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Fundamentos</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Mao na massa</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Projetos</span></a>
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-journey-open="" title="Minha jornada" type="button"><span aria-hidden="true">◷</span><span class="hidden md:inline">Jornada</span><span class="inema-journey-badge hidden" data-count="0" data-inema-journey-badge=""></span></button>
+<div class="relative">
+<button aria-expanded="false" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors text-sm" data-inema-appearance-toggle="[data-inema-appearance]" title="Aparencia" type="button"><span aria-hidden="true">◑</span><span class="hidden md:inline">Aparencia</span></button>
+<div class="inema-appearance-pop hidden absolute right-0 mt-2 w-72 p-4 rounded-xl bg-dark-800 border border-dark-600 shadow-2xl z-50 space-y-3 text-left" data-inema-appearance="">
+<div><p class="text-xs text-neutral-400 mb-1.5">Tema</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="inema-dark">Escuro</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="claro">Claro</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="sepia">Sepia</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="foco">Foco</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-theme="contraste">Alto contraste</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Fonte</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="inter">Inter</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="system">Sistema</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-font="leitura">Leitura</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Tamanho</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="100">A</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="112">A+</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-fontscale="125">A++</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Entrelinha</p><div class="inema-segment flex flex-wrap gap-1.5">
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.45">Compacto</button>
+<button class="px-2.5 py-1 rounded-md bg-dark-700 border border-dark-600 text-xs" data-inema-set-leading="1.7">Confortavel</button>
+</div></div>
+<div><p class="text-xs text-neutral-400 mb-1.5">Acento</p><div class="inema-accent-grid flex flex-wrap gap-2">
+<button class="w-6 h-6 rounded-full bg-emerald-500 border border-dark-600" data-inema-set-accent="emerald" title="Emerald"></button>
+<button class="w-6 h-6 rounded-full bg-blue-500 border border-dark-600" data-inema-set-accent="blue" title="Blue"></button>
+<button class="w-6 h-6 rounded-full bg-purple-500 border border-dark-600" data-inema-set-accent="purple" title="Purple"></button>
+<button class="w-6 h-6 rounded-full bg-amber-500 border border-dark-600" data-inema-set-accent="amber" title="Amber"></button>
+<button class="w-6 h-6 rounded-full bg-teal-500 border border-dark-600" data-inema-set-accent="teal" title="Teal"></button>
+<button class="w-6 h-6 rounded-full bg-rose-500 border border-dark-600" data-inema-set-accent="rose" title="Rose"></button>
+</div></div>
+</div>
+</div>
+<button class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle" title="Alternar claro/escuro">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<main id="conteudo">
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<nav class="flex items-center space-x-2 text-sm text-neutral-400 mb-6">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Trilha 2</a><span>/</span>
+<span class="text-blue-400">Modulo 2.6</span>
+</nav>
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULO 2.6</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🖥️ App desktop, terminal e Telegram</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Com o agente conectado, agora e sobre <strong>como falar com ele</strong>. O Hermes oferece tres portas — app desktop, terminal e Telegram — e algumas ferramentas que mudam o jogo: sessions, branch/fork de conversa e artifacts. Este e o ultimo modulo pratico antes dos projetos.</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~25</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Pratico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Hands-on</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:flex lg:gap-10">
+<!-- TOC sticky -->
+<aside class="lg:w-56 lg:flex-shrink-0 mb-8 lg:mb-0">
+<nav aria-label="Indice da pagina" class="lg:sticky lg:top-20" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-2">Secao <span class="inema-toc-pos" data-inema-section-counter="">1</span> de 6</p>
+<ol class="space-y-1 text-sm">
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-1">1. O app desktop</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-2">2. O terminal</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-3">3. Telegram</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-4">4. Sessions</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-5">5. Branch / fork de chat</a></li>
+<li><a class="inema-toc-link block py-1 px-2 rounded text-neutral-400 hover:text-blue-400" href="#topico-6">6. Artifacts</a></li>
+</ol>
+<div aria-label="Progresso do modulo 2.6" aria-valuemax="100" aria-valuemin="0" class="mt-4" data-inema-meter="modulo:2-6" role="progressbar">
+<div class="inema-bar h-1.5 rounded-full bg-dark-700 overflow-hidden mb-1"><div class="inema-bar__fill h-full bg-blue-500" data-inema-meter-fill="" style="width:0%"></div></div>
+<span class="text-xs text-neutral-500"><span data-inema-meter-frac="">0 de 6</span> · <span data-inema-meter-pct="">0%</span></span>
+</div>
+</nav>
+</aside>
+<div class="lg:flex-1 min-w-0 inema-prose" data-inema-module="2-6" data-inema-track="2" id="modulo-2-6">
+<!-- TOPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-1" id="topico-1">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span>
+<h2 class="text-2xl font-bold">🖥️ O app desktop</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t1-p1">A porta mais amigavel para o Hermes e o <strong class="text-blue-400">app desktop</strong>. Ele tem cara de aplicativo de chat: voce abre, comeca uma sessao e conversa — sem precisar decorar comandos. Para quem acha o terminal intimidante, e por aqui que vale comecar.</p>
+<figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="App desktop do Hermes em New session, com a interface de conversa do agente" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../assets/img/hermes-dashboard.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ App desktop do Hermes — tela "New session".</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Frame do video: o app desktop em <span class="text-blue-400">New session</span>. Repare que e uma janela de chat comum — comeca uma sessao e digita. O modelo ativo (o seu local) fica visivel no canto inferior direito, como vimos no modulo 2.5.</figcaption>
+</figure>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Dica:</strong> o app desktop e o terminal sao duas portas para o <em>mesmo</em> agente. Escolher um nao desliga o outro — e questao de conforto. Comece no app; migre para o terminal quando quiser comandos.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">App desktop</span><p class="text-sm text-neutral-400 mt-1">Interface grafica de chat para o Hermes.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Menos intimidante</span><p class="text-sm text-neutral-400 mt-1">Bom ponto de partida para iniciantes.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">New session</span><p class="text-sm text-neutral-400 mt-1">Inicia uma nova conversa com o agente.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Mesma engine</span><p class="text-sm text-neutral-400 mt-1">App e terminal falam com o mesmo agente.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-2" id="topico-2">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span>
+<h2 class="text-2xl font-bold">⌨️ O terminal</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t2-p1">Para quem gosta de controle, o Hermes tambem vive no <strong class="text-blue-400">terminal</strong>. Voce ja viu alguns comandos (<code class="text-blue-400">update</code>, <code class="text-blue-400">status</code>, <code class="text-blue-400">doctor</code>). Aqui entram mais dois: <strong>hermes dashboard</strong>, que abre o painel, e <strong>hermes setup</strong>, para a configuracao inicial.</p>
+<div class="bg-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-base font-semibold text-blue-400 mb-2 flex items-center"><span class="mr-2">🎯</span> Objetivo</h3>
+<p class="text-sm text-neutral-300 mb-4">Abrir o painel do Hermes e (se ainda nao fez) rodar a configuracao inicial — tudo pela linha de comando.</p>
+<pre class="bg-dark-900 border border-dark-600 rounded-lg p-4 overflow-x-auto"><code class="font-mono text-sm text-neutral-200">hermes dashboard
 hermes setup</code></pre>
-              <div class="mt-4 bg-dark-900/60 rounded-lg p-4 border border-dark-700">
-                <p class="text-xs text-neutral-400"><strong class="text-blue-400">Como verificar:</strong> <code class="text-blue-400">hermes dashboard</code> abre o painel do agente; <code class="text-blue-400">hermes setup</code> conduz a configuracao inicial. Para checar a saude antes, lembre de <code class="text-blue-400">hermes status</code> e <code class="text-blue-400">hermes doctor</code> (modulo 2.5).</p>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-                <h4 class="font-bold text-emerald-400 mb-4">✓ Quando o terminal brilha</h4>
-                <ul class="space-y-3 text-neutral-300 text-sm">
-                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Automacao e scripts.</span></li>
-                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Diagnostico rapido (status/doctor).</span></li>
-                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Acesso a maquinas remotas/servidores.</span></li>
-                  <li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Controle fino de tudo.</span></li>
-                </ul>
-              </div>
-              <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
-                <h4 class="font-bold text-blue-400 mb-4">🖥️ Quando o app brilha</h4>
-                <ul class="space-y-3 text-neutral-300 text-sm">
-                  <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Uso diario e conversa.</span></li>
-                  <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Visualizar sessions e artifacts.</span></li>
-                  <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Sem decorar comandos.</span></li>
-                  <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Conforto para iniciantes.</span></li>
-                </ul>
-              </div>
-            </div>
-
-            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
-            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">hermes dashboard</span><p class="text-sm text-neutral-400 mt-1">Abre o painel do agente.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">hermes setup</span><p class="text-sm text-neutral-400 mt-1">Faz a configuracao inicial.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Controle fino</span><p class="text-sm text-neutral-400 mt-1">Terminal e ideal para automacao.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Duas portas</span><p class="text-sm text-neutral-400 mt-1">App e terminal, mesmo agente por baixo.</p></div>
-            </div>
-
-            <div class="flex justify-start">
-              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
-                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- TOPICO 3 -->
-          <section id="topico-3" data-inema-topic="modulo-2-6#topico-3" class="mb-16">
-            <div class="flex items-center space-x-4 mb-6">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
-              <h2 class="text-2xl font-bold">💬 Telegram: o agente no seu bolso</h2>
-            </div>
-            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t3-p1">A terceira porta e a mais surpreendente: voce pode falar com o seu agente pelo <strong class="text-blue-400">Telegram</strong>, como se ele fosse um contato. Voce manda uma mensagem no celular, e o Hermes — rodando na sua maquina em casa — responde. E o seu agente local acessivel de qualquer lugar, por um app de chat que voce ja usa.</p>
-
-            <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-              <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📲</span> O que isso destrava</h3>
-              <ul class="space-y-2 text-neutral-300 text-sm">
-                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Mobilidade:</strong> fale com o agente sem estar na frente do computador.</span></li>
-                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Familiaridade:</strong> a interface e o chat do Telegram, que voce ja conhece.</span></li>
-                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Continuidade:</strong> a inteligencia mora na sua maquina; o celular e so o controle remoto.</span></li>
-              </ul>
-            </div>
-
-            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
-              <p class="text-sm text-neutral-300"><strong class="text-primary">Atencao a privacidade:</strong> usar o Telegram coloca um app de mensagens no meio do caminho. Para tarefas com dados sensiveis, lembre dos modos da Trilha 1 — voce vai aprofundar isso no Projeto 7 (Trilha 3), onde o agente no celular e o tema central.</p>
-            </div>
-
-            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
-            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Telegram</span><p class="text-sm text-neutral-400 mt-1">Falar com o agente por um app de chat.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Controle remoto</span><p class="text-sm text-neutral-400 mt-1">O celular comanda; o cerebro fica em casa.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Mobilidade</span><p class="text-sm text-neutral-400 mt-1">Acesso de qualquer lugar.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Ponte pro Projeto 7</span><p class="text-sm text-neutral-400 mt-1">A Trilha 3 aprofunda o uso no celular.</p></div>
-            </div>
-
-            <div class="flex justify-start">
-              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
-                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- TOPICO 4 -->
-          <section id="topico-4" data-inema-topic="modulo-2-6#topico-4" class="mb-16">
-            <div class="flex items-center space-x-4 mb-6">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
-              <h2 class="text-2xl font-bold">🗂️ Sessions: conversas que persistem</h2>
-            </div>
-            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t4-p1">Uma <strong class="text-blue-400">session</strong> e uma conversa salva com o agente. Voce comeca uma "New session", trabalha nela, fecha o app — e pode voltar depois exatamente de onde parou. Diferente de um chat efemero, a session <strong>persiste</strong>: o contexto daquela tarefa fica guardado.</p>
-
-            <div class="space-y-4 mb-6">
-              <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
-                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">New session</h4><p class="text-sm text-neutral-400">Cada tarefa pode ter a sua propria conversa, separada das outras.</p></div>
-              </div>
-              <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
-                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Persistencia</h4><p class="text-sm text-neutral-400">Feche e reabra: a session continua la, com o historico preservado.</p></div>
-              </div>
-              <div class="flex items-start space-x-4">
-                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
-                <div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Organizacao</h4><p class="text-sm text-neutral-400">Separar por session evita misturar contextos de tarefas diferentes.</p></div>
-              </div>
-            </div>
-
-            <figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
-              <img src="../../assets/img/branch-fork.jpg" alt="Tela do Hermes mostrando a lista de Sessions e Pinned, com a opcao de criar branch ou fork de uma conversa" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();">
-              <div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Hermes — lista de Sessions/Pinned e a opcao de branch/fork.</div>
-              <figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Frame do video: a barra de <span class="text-blue-400">Sessions</span> (e <span class="text-blue-400">Pinned</span> para fixar as importantes). Cada item e uma conversa que persiste — repare como da para ter varias em paralelo sem uma atrapalhar a outra.</figcaption>
-            </figure>
-
-            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
-            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Session</span><p class="text-sm text-neutral-400 mt-1">Conversa salva e retomavel com o agente.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Persistencia</span><p class="text-sm text-neutral-400 mt-1">O historico sobrevive ao fechar o app.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Pinned</span><p class="text-sm text-neutral-400 mt-1">Fixar as sessions mais importantes.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Contexto isolado</span><p class="text-sm text-neutral-400 mt-1">Uma tarefa por session evita mistura.</p></div>
-            </div>
-
-            <div class="flex justify-start">
-              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
-                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- TOPICO 5 -->
-          <section id="topico-5" data-inema-topic="modulo-2-6#topico-5" class="mb-16">
-            <div class="flex items-center space-x-4 mb-6">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
-              <h2 class="text-2xl font-bold">🌿 Branch / fork de chat</h2>
-            </div>
-            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t5-p1">Aqui esta um recurso poderoso: voce pode <strong class="text-blue-400">forkar</strong> uma conversa. Num ponto qualquer, o chat se divide em duas linhas que partem do mesmo historico mas seguem caminhos diferentes — como uma estrada que bifurca. Util para explorar duas abordagens sem perder nenhuma.</p>
-
-            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
-              <p class="text-sm text-neutral-300"><strong class="text-primary">Novo aqui?</strong> "Branch" (ramo) e "fork" (bifurcacao) vem do mundo do codigo: significam criar uma copia que parte de um ponto comum e segue por conta propria. Numa conversa, isso deixa voce testar "e se eu pedisse de outro jeito?" sem apagar a versao original.</p>
-            </div>
-
-            <div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-              <svg viewBox="0 0 980 220" class="w-full h-auto" role="img" aria-label="Uma conversa que bifurca: do mesmo ponto saem duas linhas, branch A e branch B, exploradas em paralelo">
-                <defs>
-                  <filter id="m26-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                  <pattern id="m26-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#3b82f6" opacity="0.12"/></pattern>
-                  <marker id="m26-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"/></marker>
-                </defs>
-                <rect x="0" y="0" width="980" height="220" fill="url(#m26-grid)"/>
-                <g font-family="Inter,sans-serif">
-                  <rect x="40" y="92" width="220" height="40" rx="20" fill="#1f2937" stroke="#60a5fa" stroke-width="1.6"/><text x="150" y="117" text-anchor="middle" fill="#bfdbfe" font-size="13">conversa inicial</text>
-                  <g filter="url(#m26-glow)"><circle cx="330" cy="112" r="16" fill="#0e1622" stroke="#38bdf8" stroke-width="2.4"/></g>
-                  <text x="330" y="117" text-anchor="middle" fill="#7dd3fc" font-size="14" font-weight="700">⑂</text>
-                  <text x="330" y="160" text-anchor="middle" fill="#9ca3af" font-size="11">ponto de fork</text>
-                  <path d="M260,112 L312,112" fill="none" stroke="#60a5fa" stroke-width="2" marker-end="url(#m26-ah)"/>
-
-                  <path d="M348,104 C420,70 470,62 540,62" fill="none" stroke="#60a5fa" stroke-width="2" marker-end="url(#m26-ah)"/>
-                  <path d="M348,120 C420,154 470,162 540,162" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#m26-ah)"/>
-
-                  <rect x="544" y="40" width="380" height="44" rx="14" fill="#0e1622" stroke="#60a5fa" stroke-width="2"/><text x="734" y="67" text-anchor="middle" fill="#bfdbfe" font-size="13">branch A — abordagem 1</text>
-                  <rect x="544" y="140" width="380" height="44" rx="14" fill="#0e1622" stroke="#38bdf8" stroke-width="2"/><text x="734" y="167" text-anchor="middle" fill="#7dd3fc" font-size="13">branch B — abordagem 2</text>
-                </g>
-                <text x="490" y="208" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12">mesmo historico ate o fork; depois, dois caminhos independentes</text>
-              </svg>
-              <p class="text-xs text-neutral-400 mt-1 px-1">No <span class="text-blue-400">ponto de fork</span>, a conversa se divide: a <span class="text-blue-400">branch A</span> testa um caminho e a <span class="text-blue-400">branch B</span> outro, ambas partindo do mesmo historico. Voce compara as duas sem perder nenhuma — ideal para "e se eu tentasse de outro jeito?".</p>
-            </div>
-
-            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
-            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Fork / branch</span><p class="text-sm text-neutral-400 mt-1">Dividir uma conversa em duas linhas.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Historico comum</span><p class="text-sm text-neutral-400 mt-1">As duas linhas partem do mesmo ponto.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Explorar em paralelo</span><p class="text-sm text-neutral-400 mt-1">Testar abordagens sem perder a original.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Sem destruir</span><p class="text-sm text-neutral-400 mt-1">A versao de partida continua intacta.</p></div>
-            </div>
-
-            <div class="flex justify-start">
-              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
-                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- TOPICO 6 -->
-          <section id="topico-6" data-inema-topic="modulo-2-6#topico-6" class="mb-16">
-            <div class="flex items-center space-x-4 mb-6">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
-              <h2 class="text-2xl font-bold">📦 Artifacts: salvar e ver as saidas</h2>
-            </div>
-            <p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t6-p1">Quando o agente produz algo concreto — um arquivo, um trecho de codigo, um documento — isso vira um <strong class="text-blue-400">artifact</strong>. Em vez de ficar perdido no meio da conversa, o resultado e guardado como um objeto que voce pode ver, abrir e reaproveitar depois. E o jeito do Hermes nao deixar o seu trabalho escorrer pelo chat.</p>
-
-            <div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
-              <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📦</span> Por que artifacts importam</h3>
-              <ul class="space-y-2 text-neutral-300 text-sm">
-                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Resultado nao se perde:</strong> a saida fica separada do bate-papo.</span></li>
-                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Reaproveitavel:</strong> voce volta nele depois, em outra session.</span></li>
-                <li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Tangivel:</strong> o trabalho do agente vira algo que voce guarda, nao so texto que rola na tela.</span></li>
-              </ul>
-            </div>
-
-            <div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
-              <h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Fechando a Trilha 2</h3>
-              <p class="text-sm text-neutral-300">Voce instalou o Ollama, escolheu o modelo, criou o qwen3-coder-64k, conectou ao Hermes e agora sabe falar com ele por tres portas, organizar em sessions, forkar conversas e guardar artifacts. A base esta pronta — na Trilha 3, tudo isso vira projetos reais.</p>
-            </div>
-
-            <h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
-            <div class="grid sm:grid-cols-2 gap-3 mb-6">
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Artifact</span><p class="text-sm text-neutral-400 mt-1">Uma saida concreta salva pelo agente.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Separado do chat</span><p class="text-sm text-neutral-400 mt-1">O resultado nao se perde na conversa.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Reaproveitavel</span><p class="text-sm text-neutral-400 mt-1">Voce volta nele em outra session.</p></div>
-              <div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Trabalho tangivel</span><p class="text-sm text-neutral-400 mt-1">Sai do efemero e vira algo guardavel.</p></div>
-            </div>
-
-            <!-- CHECAGEM LEVE -->
-            <div data-inema-check="modulo-2-6#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
-              <p class="font-medium mb-4">Auto-checagem (opcional): o que e fazer "fork" de uma conversa no Hermes?</p>
-              <div class="inema-check-options space-y-2">
-                <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Apagar a conversa atual e comecar do zero.</button>
-                <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Dividir a conversa em duas linhas que partem do mesmo historico e seguem caminhos diferentes, sem perder a original.</button>
-                <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Exportar a conversa para o Telegram.</button>
-              </div>
-              <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-            </div>
-
-            <div class="flex justify-start mt-6">
-              <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors">
-                <span class="inema-ico-todo" aria-hidden="true">○</span><span class="inema-ico-done" aria-hidden="true">●</span>
-                <span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
-              </button>
-            </div>
-          </section>
-
-          <!-- RESUMO -->
-          <section class="mb-8">
-            <div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
-              <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Resumo do modulo</h2>
-              <div class="space-y-4 mb-8">
-                <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Tres portas</strong><span class="text-neutral-400"> — app desktop (amigavel), terminal (controle: dashboard/setup) e Telegram (mobilidade), mesmo agente.</span></div></div>
-                <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Sessions</strong><span class="text-neutral-400"> — conversas que persistem; New session por tarefa, Pinned para as importantes.</span></div></div>
-                <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Branch / fork</strong><span class="text-neutral-400"> — divide a conversa em duas linhas a partir do mesmo ponto, sem perder a original.</span></div></div>
-                <div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Artifacts</strong><span class="text-neutral-400"> — saidas concretas salvas como objetos, separadas do chat e reaproveitaveis.</span></div></div>
-              </div>
-              <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-                <h3 class="font-semibold text-blue-400 mb-2">Fim da Trilha 2! Proxima parada:</h3>
-                <p class="text-neutral-300">Trilha 3 — Projetos: cada modulo vira um projeto pratico com o que voce montou aqui.</p>
-              </div>
-              <div class="flex flex-col sm:flex-row gap-4">
-                <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para a Trilha</a>
-                <a href="../trilha3/index.html" class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors">Proximo: Trilha 3 →</a>
-              </div>
-            </div>
-          </section>
-
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer class="border-t border-dark-600 py-8 mt-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
-      <p>🔒 Agente Hermes + Ollama — Seu SO de IA 100% Privado</p>
-      <p>Modulo 2.6 · Trilha 2 · <a href="https://inema.club" target="_blank" rel="noopener" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a> · 2026</p>
-    </div>
-  </footer>
-
-  <script>
+<div class="mt-4 bg-dark-900/60 rounded-lg p-4 border border-dark-700">
+<p class="text-xs text-neutral-400"><strong class="text-blue-400">Como verificar:</strong> <code class="text-blue-400">hermes dashboard</code> abre o painel do agente; <code class="text-blue-400">hermes setup</code> conduz a configuracao inicial. Para checar a saude antes, lembre de <code class="text-blue-400">hermes status</code> e <code class="text-blue-400">hermes doctor</code> (modulo 2.5).</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
+<h4 class="font-bold text-emerald-400 mb-4">✓ Quando o terminal brilha</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Automacao e scripts.</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Diagnostico rapido (status/doctor).</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Acesso a maquinas remotas/servidores.</span></li>
+<li class="flex items-start gap-2"><span class="text-emerald-400">✓</span><span>Controle fino de tudo.</span></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
+<h4 class="font-bold text-blue-400 mb-4">🖥️ Quando o app brilha</h4>
+<ul class="space-y-3 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Uso diario e conversa.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Visualizar sessions e artifacts.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Sem decorar comandos.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span>Conforto para iniciantes.</span></li>
+</ul>
+</div>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">hermes dashboard</span><p class="text-sm text-neutral-400 mt-1">Abre o painel do agente.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">hermes setup</span><p class="text-sm text-neutral-400 mt-1">Faz a configuracao inicial.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Controle fino</span><p class="text-sm text-neutral-400 mt-1">Terminal e ideal para automacao.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Duas portas</span><p class="text-sm text-neutral-400 mt-1">App e terminal, mesmo agente por baixo.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-3" id="topico-3">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span>
+<h2 class="text-2xl font-bold">💬 Telegram: o agente no seu bolso</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t3-p1">A terceira porta e a mais surpreendente: voce pode falar com o seu agente pelo <strong class="text-blue-400">Telegram</strong>, como se ele fosse um contato. Voce manda uma mensagem no celular, e o Hermes — rodando na sua maquina em casa — responde. E o seu agente local acessivel de qualquer lugar, por um app de chat que voce ja usa.</p>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📲</span> O que isso destrava</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Mobilidade:</strong> fale com o agente sem estar na frente do computador.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Familiaridade:</strong> a interface e o chat do Telegram, que voce ja conhece.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Continuidade:</strong> a inteligencia mora na sua maquina; o celular e so o controle remoto.</span></li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Atencao a privacidade:</strong> usar o Telegram coloca um app de mensagens no meio do caminho. Para tarefas com dados sensiveis, lembre dos modos da Trilha 1 — voce vai aprofundar isso no Projeto 7 (Trilha 3), onde o agente no celular e o tema central.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Telegram</span><p class="text-sm text-neutral-400 mt-1">Falar com o agente por um app de chat.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Controle remoto</span><p class="text-sm text-neutral-400 mt-1">O celular comanda; o cerebro fica em casa.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Mobilidade</span><p class="text-sm text-neutral-400 mt-1">Acesso de qualquer lugar.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Ponte pro Projeto 7</span><p class="text-sm text-neutral-400 mt-1">A Trilha 3 aprofunda o uso no celular.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-4" id="topico-4">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span>
+<h2 class="text-2xl font-bold">🗂️ Sessions: conversas que persistem</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t4-p1">Uma <strong class="text-blue-400">session</strong> e uma conversa salva com o agente. Voce comeca uma "New session", trabalha nela, fecha o app — e pode voltar depois exatamente de onde parou. Diferente de um chat efemero, a session <strong>persiste</strong>: o contexto daquela tarefa fica guardado.</p>
+<div class="space-y-4 mb-6">
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">1</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">New session</h4><p class="text-sm text-neutral-400">Cada tarefa pode ter a sua propria conversa, separada das outras.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">2</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Persistencia</h4><p class="text-sm text-neutral-400">Feche e reabra: a session continua la, com o historico preservado.</p></div>
+</div>
+<div class="flex items-start space-x-4">
+<div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center"><span class="text-blue-400 font-bold">3</span></div>
+<div class="flex-1 bg-dark-800 rounded-xl p-5 border border-dark-600"><h4 class="font-semibold text-neutral-100 mb-1">Organizacao</h4><p class="text-sm text-neutral-400">Separar por session evita misturar contextos de tarefas diferentes.</p></div>
+</div>
+</div>
+<figure class="rounded-2xl border border-blue-500/30 bg-dark-900/40 overflow-hidden mb-6">
+<img alt="Tela do Hermes mostrando a lista de Sessions e Pinned, com a opcao de criar branch ou fork de uma conversa" class="w-full h-auto" loading="lazy" onerror="this.closest('figure').querySelector('.img-fallback').classList.remove('hidden'); this.remove();" src="../../assets/img/branch-fork.jpg"/>
+<div class="img-fallback hidden p-8 text-center text-neutral-400 text-sm">🖼️ Hermes — lista de Sessions/Pinned e a opcao de branch/fork.</div>
+<figcaption class="px-4 py-2 text-xs text-neutral-400 border-t border-dark-600">Frame do video: a barra de <span class="text-blue-400">Sessions</span> (e <span class="text-blue-400">Pinned</span> para fixar as importantes). Cada item e uma conversa que persiste — repare como da para ter varias em paralelo sem uma atrapalhar a outra.</figcaption>
+</figure>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Session</span><p class="text-sm text-neutral-400 mt-1">Conversa salva e retomavel com o agente.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Persistencia</span><p class="text-sm text-neutral-400 mt-1">O historico sobrevive ao fechar o app.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Pinned</span><p class="text-sm text-neutral-400 mt-1">Fixar as sessions mais importantes.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Contexto isolado</span><p class="text-sm text-neutral-400 mt-1">Uma tarefa por session evita mistura.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-5" id="topico-5">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span>
+<h2 class="text-2xl font-bold">🌿 Branch / fork de chat</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t5-p1">Aqui esta um recurso poderoso: voce pode <strong class="text-blue-400">forkar</strong> uma conversa. Num ponto qualquer, o chat se divide em duas linhas que partem do mesmo historico mas seguem caminhos diferentes — como uma estrada que bifurca. Util para explorar duas abordagens sem perder nenhuma.</p>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-primary">Novo aqui?</strong> "Branch" (ramo) e "fork" (bifurcacao) vem do mundo do codigo: significam criar uma copia que parte de um ponto comum e segue por conta propria. Numa conversa, isso deixa voce testar "e se eu pedisse de outro jeito?" sem apagar a versao original.</p>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Uma conversa que bifurca: do mesmo ponto saem duas linhas, branch A e branch B, exploradas em paralelo" class="w-full h-auto" role="img" viewbox="0 0 980 220">
+<defs>
+<filter height="180%" id="m26-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="m26-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="m26-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#m26-grid)" height="220" width="980" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#1f2937" height="40" rx="20" stroke="#60a5fa" stroke-width="1.6" width="220" x="40" y="92"></rect><text fill="#bfdbfe" font-size="13" text-anchor="middle" x="150" y="117">conversa inicial</text>
+<g filter="url(#m26-glow)"><circle cx="330" cy="112" fill="#0e1622" r="16" stroke="#38bdf8" stroke-width="2.4"></circle></g>
+<text fill="#7dd3fc" font-size="14" font-weight="700" text-anchor="middle" x="330" y="117">⑂</text>
+<text fill="#9ca3af" font-size="11" text-anchor="middle" x="330" y="160">ponto de fork</text>
+<path d="M260,112 L312,112" fill="none" marker-end="url(#m26-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<path d="M348,104 C420,70 470,62 540,62" fill="none" marker-end="url(#m26-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<path d="M348,120 C420,154 470,162 540,162" fill="none" marker-end="url(#m26-ah)" stroke="#38bdf8" stroke-width="2"></path>
+<rect fill="#0e1622" height="44" rx="14" stroke="#60a5fa" stroke-width="2" width="380" x="544" y="40"></rect><text fill="#bfdbfe" font-size="13" text-anchor="middle" x="734" y="67">branch A — abordagem 1</text>
+<rect fill="#0e1622" height="44" rx="14" stroke="#38bdf8" stroke-width="2" width="380" x="544" y="140"></rect><text fill="#7dd3fc" font-size="13" text-anchor="middle" x="734" y="167">branch B — abordagem 2</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="490" y="208">mesmo historico ate o fork; depois, dois caminhos independentes</text>
+</svg>
+<p class="text-xs text-neutral-400 mt-1 px-1">No <span class="text-blue-400">ponto de fork</span>, a conversa se divide: a <span class="text-blue-400">branch A</span> testa um caminho e a <span class="text-blue-400">branch B</span> outro, ambas partindo do mesmo historico. Voce compara as duas sem perder nenhuma — ideal para "e se eu tentasse de outro jeito?".</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Fork / branch</span><p class="text-sm text-neutral-400 mt-1">Dividir uma conversa em duas linhas.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Historico comum</span><p class="text-sm text-neutral-400 mt-1">As duas linhas partem do mesmo ponto.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Explorar em paralelo</span><p class="text-sm text-neutral-400 mt-1">Testar abordagens sem perder a original.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Sem destruir</span><p class="text-sm text-neutral-400 mt-1">A versao de partida continua intacta.</p></div>
+</div>
+<div class="flex justify-start">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+</button>
+</div>
+</section>
+<!-- TOPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-6" id="topico-6">
+<div class="flex items-center space-x-4 mb-6">
+<span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span>
+<h2 class="text-2xl font-bold">📦 Artifacts: salvar e ver as saidas</h2>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t6-p1">Quando o agente produz algo concreto — um arquivo, um trecho de codigo, um documento — isso vira um <strong class="text-blue-400">artifact</strong>. Em vez de ficar perdido no meio da conversa, o resultado e guardado como um objeto que voce pode ver, abrir e reaproveitar depois. E o jeito do Hermes nao deixar o seu trabalho escorrer pelo chat.</p>
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 rounded-xl border border-blue-500/30 p-6 mb-6">
+<h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📦</span> Por que artifacts importam</h3>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Resultado nao se perde:</strong> a saida fica separada do bate-papo.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Reaproveitavel:</strong> voce volta nele depois, em outra session.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400">•</span><span><strong>Tangivel:</strong> o trabalho do agente vira algo que voce guarda, nao so texto que rola na tela.</span></li>
+</ul>
+</div>
+<div class="bg-primary/10 rounded-xl border border-primary/30 p-5 mb-6">
+<h3 class="text-base font-semibold text-primary mb-2 flex items-center"><span class="mr-2">💡</span> Fechando a Trilha 2</h3>
+<p class="text-sm text-neutral-300">Voce instalou o Ollama, escolheu o modelo, criou o qwen3-coder-64k, conectou ao Hermes e agora sabe falar com ele por tres portas, organizar em sessions, forkar conversas e guardar artifacts. A base esta pronta — na Trilha 3, tudo isso vira projetos reais.</p>
+</div>
+<h3 class="text-sm font-semibold text-neutral-400 uppercase tracking-wide mb-3">Conceitos-chave</h3>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Artifact</span><p class="text-sm text-neutral-400 mt-1">Uma saida concreta salva pelo agente.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Separado do chat</span><p class="text-sm text-neutral-400 mt-1">O resultado nao se perde na conversa.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Reaproveitavel</span><p class="text-sm text-neutral-400 mt-1">Voce volta nele em outra session.</p></div>
+<div class="bg-dark-800 rounded-lg border border-dark-600 p-4"><span class="text-blue-400 font-semibold text-sm">Trabalho tangivel</span><p class="text-sm text-neutral-400 mt-1">Sai do efemero e vira algo guardavel.</p></div>
+</div>
+<!-- CHECAGEM LEVE -->
+<div class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-6#q1">
+<p class="font-medium mb-4">Auto-checagem (opcional): o que e fazer "fork" de uma conversa no Hermes?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Apagar a conversa atual e comecar do zero.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Dividir a conversa em duas linhas que partem do mesmo historico e seguem caminhos diferentes, sem perder a original.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Exportar a conversa para o Telegram.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button">
+<span aria-hidden="true" class="inema-ico-todo">○</span><span aria-hidden="true" class="inema-ico-done">●</span>
+<span class="inema-label-todo">Marcar como lido</span><span class="inema-label-done">Lido ✓</span>
+</button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-8">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🎯</span> Resumo do modulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Tres portas</strong><span class="text-neutral-400"> — app desktop (amigavel), terminal (controle: dashboard/setup) e Telegram (mobilidade), mesmo agente.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Sessions</strong><span class="text-neutral-400"> — conversas que persistem; New session por tarefa, Pinned para as importantes.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Branch / fork</strong><span class="text-neutral-400"> — divide a conversa em duas linhas a partir do mesmo ponto, sem perder a original.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-neutral-100">Artifacts</strong><span class="text-neutral-400"> — saidas concretas salvas como objetos, separadas do chat e reaproveitaveis.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8">
+<h3 class="font-semibold text-blue-400 mb-2">Fim da Trilha 2! Proxima parada:</h3>
+<p class="text-neutral-300">Trilha 3 — Projetos: cada modulo vira um projeto pratico com o que voce montou aqui.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Voltar para a Trilha</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../trilha3/index.html">Proximo: Trilha 3 →</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<footer class="border-t border-dark-600 py-8 mt-8">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm space-y-2">
+<p>🔒 Agente Hermes + Ollama — Seu SO de IA 100% Privado</p>
+<p>Modulo 2.6 · Trilha 2 · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a> · 2026</p>
+</div>
+</footer>
+<script>
     function toggleTopic(button){
       const item = button.closest('.topic-item');
       const exp = item.querySelector('.topic-explanation');
@@ -572,8 +527,8 @@ hermes setup</code></pre>
     function closeModal(){ document.querySelectorAll('.modal').forEach(m=>m.classList.add('hidden')); document.body.style.overflow='auto'; }
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
   </script>
-  <script src="../../assets/learn.js"></script>
-  <script>
+<script src="../../assets/learn.js"></script>
+<script>
     if (window.INEMA && typeof window.INEMA.init === 'function') { window.INEMA.init({ autoResume: false }); }
     document.addEventListener('DOMContentLoaded', function(){
       if (window.INEMA && INEMA.registerCheck) {
